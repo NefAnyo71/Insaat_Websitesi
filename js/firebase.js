@@ -3,7 +3,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
 // API URL - Vercel'deki proxy server adresinizi buraya yazın
-const API_URL = 'https://safe-api-three.vercel.app/';
+const API_URL = 'https://safe-api-three.vercel.app';
 
 let app, db;
 
