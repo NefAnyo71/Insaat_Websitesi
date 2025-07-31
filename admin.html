@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>İnşaat Admin Panel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <div class="admin-container">
+    <div class="admin-header">
+      <h1><i class="fas fa-tools"></i> İnşaat Admin Paneli</h1>
+      <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Ana Sayfaya Dön</a>
+    </div>
+    
+    <div class="admin-content">
+      <!-- Tab Navigation -->
+      <div class="tabs">
+        <button class="tab active" onclick="showTab('services')"><i class="fas fa-cogs"></i> Hizmetler</button>
+        <button class="tab" onclick="showTab('projects')"><i class="fas fa-building"></i> Projeler</button>
+        <button class="tab" onclick="showTab('employees')"><i class="fas fa-users"></i> Çalışanlar</button>
+        <button class="tab" onclick="showTab('blogs')"><i class="fas fa-blog"></i> Blog</button>
+      </div>
+
+      <!-- Hizmetler Tab -->
+      <div id="services" class="tab-content active">
+        <div class="form-section">
+          <h2><i class="fas fa-plus-circle"></i> Yeni Hizmet Ekle</h2>
+          <div class="form-group">
+            <input type="text" id="service-title" placeholder="Hizmet Adı (Örn: Genel İnşaat)">
+            <input type="text" id="service-text" placeholder="Kısa Metin (Örn: İNŞAAT)" maxlength="10">
+            <select id="service-text-style">
+              <option value="">Metin Stili Seçin</option>
+              <option value="bold">Kalın (Bold)</option>
+              <option value="italic">Eğik (Italic)</option>
+              <option value="uppercase">BÜYÜK HARF</option>
+              <option value="gradient">Renkli Gradient</option>
+              <option value="shadow">Gölgeli</option>
+              <option value="outline">Konturlu</option>
+              <option value="modern">Modern</option>
+            </select>
+            <input type="url" id="service-image" placeholder="Hizmet Resim URL (isteğe bağlı)">
+            <small style="color: #666; font-size: 0.8rem;">Resim yüklemek için: <a href="https://resimlink.com/" target="_blank" style="color: #FF6B35;">resimlink.com</a></small>
+            <textarea id="service-desc" placeholder="Hizmet açıklaması..."></textarea>
+          </div>
+          
+          <!-- Önizleme Alanı -->
+          <div class="preview-section" id="service-preview" style="display: none;">
+            <h3><i class="fas fa-eye"></i> Önizleme</h3>
+            <div class="service-card preview-card">
+              <div class="service-text" id="preview-service-text">
+                <span id="preview-text-content">METIN</span>
+              </div>
+              <h3 id="preview-service-title">Hizmet Adı</h3>
+              <p id="preview-service-desc">Hizmet açıklaması...</p>
+            </div>
+          </div>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="btn" onclick="previewService()"><i class="fas fa-eye"></i> Önizle</button>
+            <button class="btn" onclick="addService()"><i class="fas fa-plus"></i> Hizmet Ekle</button>
+          </div>
+        </div>
+        
+        <div class="items-section">
+          <h3><i class="fas fa-list"></i> Mevcut Hizmetler</h3>
+          <div id="services-list" class="items-list"></div>
+        </div>
+      </div>
+
+      <!-- Projeler Tab -->
+      <div id="projects" class="tab-content">
+        <div class="form-section">
+          <h2><i class="fas fa-plus-circle"></i> Yeni Proje Ekle</h2>
+          <div class="form-group">
+            <input type="text" id="project-title" placeholder="Proje Adı">
+            <input type="text" id="project-text" placeholder="Kısa Metin (Örn: YENİ)" maxlength="10">
+            <select id="project-text-style">
+              <option value="">Metin Stili Seçin</option>
+              <option value="bold">Kalın (Bold)</option>
+              <option value="italic">Eğik (Italic)</option>
+              <option value="uppercase">BÜYÜK HARF</option>
+              <option value="gradient">Renkli Gradient</option>
+              <option value="shadow">Gölgeli</option>
+              <option value="outline">Konturlu</option>
+              <option value="modern">Modern</option>
+            </select>
+            <select id="project-category">
+              <option value="">Kategori Seçin</option>
+              <option value="Architecture">Mimarlık</option>
+              <option value="Interior Design">İç Tasarım</option>
+              <option value="House & Exterior">Ev & Dış Mekan</option>
+              <option value="Commercial">Ticari</option>
+            </select>
+            <input type="url" id="project-image" placeholder="Proje Resim URL">
+            <small style="color: #666; font-size: 0.8rem;">Resim yüklemek için: <a href="https://resimlink.com/" target="_blank" style="color: #FF6B35;">resimlink.com</a></small>
+            <textarea id="project-desc" placeholder="Proje açıklaması..."></textarea>
+          </div>
+          <button class="btn" onclick="addProject()"><i class="fas fa-plus"></i> Proje Ekle</button>
+        </div>
+        
+        <div class="items-section">
+          <h3><i class="fas fa-list"></i> Mevcut Projeler</h3>
+          <div id="projects-list" class="items-list"></div>
+        </div>
+      </div>
+
+      <!-- Çalışanlar Tab -->
+      <div id="employees" class="tab-content">
+        <div class="form-section">
+          <h2><i class="fas fa-plus-circle"></i> Yeni Çalışan Ekle</h2>
+          <div class="form-group">
+            <input type="text" id="employee-name" placeholder="Çalışan Adı">
+            <input type="text" id="employee-text" placeholder="Kısa Metin (Örn: UZMAN)" maxlength="10">
+            <select id="employee-text-style">
+              <option value="">Metin Stili Seçin</option>
+              <option value="bold">Kalın (Bold)</option>
+              <option value="italic">Eğik (Italic)</option>
+              <option value="uppercase">BÜYÜK HARF</option>
+              <option value="gradient">Renkli Gradient</option>
+              <option value="shadow">Gölgeli</option>
+              <option value="outline">Konturlu</option>
+              <option value="modern">Modern</option>
+            </select>
+            <input type="text" id="employee-position" placeholder="Pozisyon">
+            <input type="number" id="employee-experience" placeholder="Deneyim (yıl)">
+            <input type="url" id="employee-image" placeholder="Çalışan Resim URL">
+            <small style="color: #666; font-size: 0.8rem;">Resim yüklemek için: <a href="https://resimlink.com/" target="_blank" style="color: #FF6B35;">resimlink.com</a></small>
+          </div>
+          <button class="btn" onclick="addEmployee()"><i class="fas fa-plus"></i> Çalışan Ekle</button>
+        </div>
+        
+        <div class="items-section">
+          <h3><i class="fas fa-list"></i> Mevcut Çalışanlar</h3>
+          <div id="employees-list" class="items-list"></div>
+        </div>
+      </div>
+
+      <!-- Blog Tab -->
+      <div id="blogs" class="tab-content">
+        <div class="form-section">
+          <h2><i class="fas fa-plus-circle"></i> Yeni Blog Yazısı Ekle</h2>
+          <div class="form-group">
+            <input type="text" id="blog-title" placeholder="Blog Başlığı">
+            <input type="text" id="blog-text" placeholder="Kısa Metin (Örn: YENİ)" maxlength="10">
+            <select id="blog-text-style">
+              <option value="">Metin Stili Seçin</option>
+              <option value="bold">Kalın (Bold)</option>
+              <option value="italic">Eğik (Italic)</option>
+              <option value="uppercase">BÜYÜK HARF</option>
+              <option value="gradient">Renkli Gradient</option>
+              <option value="shadow">Gölgeli</option>
+              <option value="outline">Konturlu</option>
+              <option value="modern">Modern</option>
+            </select>
+            <input type="text" id="blog-author" placeholder="Yazar Adı">
+            <input type="url" id="blog-image" placeholder="Blog Resim URL">
+            <small style="color: #666; font-size: 0.8rem;">Resim yüklemek için: <a href="https://resimlink.com/" target="_blank" style="color: #FF6B35;">resimlink.com</a></small>
+            <textarea id="blog-content" placeholder="Blog içeriği..."></textarea>
+          </div>
+          <button class="btn" onclick="addBlog()"><i class="fas fa-plus"></i> Blog Ekle</button>
+        </div>
+        
+        <div class="items-section">
+          <h3><i class="fas fa-list"></i> Mevcut Blog Yazıları</h3>
+          <div id="blogs-list" class="items-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showTab(tabName) {
+      // Tüm tab içeriklerini gizle
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      // Tüm tab butonlarından active sınıfını kaldır
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Seçilen tab içeriğini göster
+      document.getElementById(tabName).classList.add('active');
+      
+      // Seçilen tab butonunu aktif yap
+      event.target.classList.add('active');
+    }
+  </script>
+  
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="module" src="js/firebase.js"></script>
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>

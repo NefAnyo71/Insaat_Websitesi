@@ -1,0 +1,601 @@
+/* GENEL STİLLER */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', 'Roboto', 'Segoe UI', 'Helvetica Neue', 'Arial', sans-serif;
+  line-height: 1.7;
+  color: #2c3e50;
+  background: #f8f9fa;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* NAVBAR */
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  nav {
+    padding: 0.8rem 1rem;
+    flex-wrap: wrap;
+  }
+  
+  nav .logo {
+    font-size: 1.4rem;
+  }
+  
+  nav ul {
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    width: 100%;
+    margin-top: 10px;
+    pointer-events: auto;
+    z-index: 1001;
+    position: relative;
+  }
+  
+  nav ul li a {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    pointer-events: auto;
+    z-index: 1001;
+    position: relative;
+  }
+}
+
+nav .logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #FF6B35;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+nav .logo span {
+  color: #F7931E;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+nav ul li a:hover {
+  color: #FF6B35;
+  transform: translateY(-2px);
+}
+
+nav ul li a::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #FF6B35;
+  transition: width 0.3s ease;
+}
+
+nav ul li a:hover::after {
+  width: 100%;
+}
+
+/* HERO STİLİ */
+.hero {
+  background: linear-gradient(rgba(0, 18, 72, 0.7), rgba(0, 18, 72, 0.7)), url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center/cover;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  position: relative;
+}
+
+.hero-content {
+  max-width: 800px;
+  padding: 0 2rem;
+  animation: fadeInUp 1s ease;
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.hero h1 span {
+  color: #FF6B35;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.hero p {
+  font-size: 1.3rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.btn {
+  background: linear-gradient(135deg, #FF6B35, #F7931E);
+  color: white;
+  padding: 1rem 2.5rem;
+  border: none;
+  border-radius: 50px;
+  text-decoration: none;
+  display: inline-block;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4);
+}
+
+/* HİZMETLER & PROJELER & ÇALIŞANLAR */
+.services, .projects, .employees {
+  padding: 6rem 2rem;
+  text-align: center;
+  background: white;
+}
+
+.services {
+  background: #f8f9fa;
+}
+
+.employees {
+  background: #f8f9fa;
+}
+
+.services h2, .projects h2, .employees h2 {
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  color: #2c3e50;
+  position: relative;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.services h2::after, .projects h2::after, .employees h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(135deg, #FF6B35, #F7931E);
+  border-radius: 2px;
+}
+
+.services-container, .projects-container, .employees-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.service-card {
+  background: white;
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  border: 1px solid #e9ecef;
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.service-text-display {
+  width: 120px;
+  height: 80px;
+  background: linear-gradient(135deg, #FF6B35, #F7931E);
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+}
+
+.service-text-display:empty {
+  display: none;
+}
+
+.service-text-content:empty {
+  display: none;
+}
+
+.service-card .service-text-display:has(.service-text-content:empty) {
+  display: none;
+}
+
+.service-text-content {
+  display: block;
+  line-height: 1.2;
+}
+
+.service-text {
+  width: 120px;
+  height: 80px;
+  background: linear-gradient(135deg, #FF6B35, #F7931E);
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+}
+
+.service-text:empty {
+  display: none;
+}
+
+.service-text:has(span:empty) {
+  display: none;
+}
+
+.service-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #333;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.service-card p {
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Resimli Hizmet Kartları */
+.service-image {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.service-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.service-card:hover .service-image img {
+  transform: scale(1.1);
+}
+
+.service-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.8), rgba(247, 147, 30, 0.8));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.service-card:hover .service-overlay {
+  opacity: 1;
+}
+
+.service-text-overlay {
+  font-size: 2rem;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.service-content {
+  text-align: center;
+}
+
+.project-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.project-image-container {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+}
+
+.project-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.project-card:hover .project-image-container img {
+  transform: scale(1.05);
+}
+
+.project-text-overlay {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 107, 53, 0.9);
+  padding: 8px 12px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+}
+
+.project-text-content {
+  color: white;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.project-info {
+  padding: 1.5rem;
+}
+
+.project-category {
+  background: #FF6B35;
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.project-card h3 {
+  font-size: 1.3rem;
+  margin: 1rem 0 0.5rem;
+  color: #333;
+}
+
+.project-card p {
+  color: #666;
+  line-height: 1.6;
+}
+
+/* ÇALIŞANLAR */
+.employee-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.employee-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.employee-image-container {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+}
+
+.employee-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.employee-card:hover .employee-image-container img {
+  transform: scale(1.05);
+}
+
+.employee-text-overlay {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background: rgba(255, 107, 53, 0.9);
+  padding: 8px 12px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+}
+
+.employee-text-content {
+  color: white;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.employee-info {
+  padding: 1.5rem;
+}
+
+.employee-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.employee-position {
+  background: #FF6B35;
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+.employee-experience {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+
+
+/* FOOTER */
+footer {
+  background: #001248;
+  color: white;
+  text-align: center;
+  padding: 2rem;
+  font-size: 1rem;
+}
+
+/* ANIMASYONLAR */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* RESPONSIVE TASARIM */
+@media (max-width: 768px) {
+  .hero {
+    padding-top: 120px;
+  }
+  
+  .hero h1 {
+    font-size: 2.2rem;
+    line-height: 1.2;
+  }
+  
+  .hero p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .btn {
+    padding: 0.8rem 2rem;
+    font-size: 0.9rem;
+  }
+  
+  .services, .projects, .employees {
+    padding: 3rem 1rem;
+  }
+  
+  .services h2, .projects h2, .employees h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .services-container, .projects-container, .employees-container {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .service-card, .project-card, .employee-card {
+    margin: 0 auto;
+    max-width: 350px;
+  }
+  
+  .service-text-display {
+    width: 100px;
+    height: 70px;
+    font-size: 1rem;
+  }
+  
+  .project-text-overlay, .employee-text-overlay {
+    font-size: 0.8rem;
+    padding: 6px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  nav {
+    padding: 0.5rem;
+  }
+  
+  nav .logo {
+    font-size: 1.2rem;
+  }
+  
+  nav ul li a {
+    font-size: 0.8rem;
+    padding: 6px 10px;
+    pointer-events: auto;
+    z-index: 1001;
+    position: relative;
+  }
+  
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+  
+  .services, .projects, .employees {
+    padding: 2rem 0.5rem;
+  }
+  
+  .services h2, .projects h2, .employees h2 {
+    font-size: 1.6rem;
+  }
+  
+  .service-card, .project-card, .employee-card {
+    max-width: 100%;
+  }
+}
