@@ -541,6 +541,98 @@ body {
   box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
 }
 
+/* LOGS SECTION */
+.logs-section {
+  padding: 2rem;
+}
+
+.logs-filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.logs-filters input,
+.logs-filters select {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.logs-list {
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.log-item {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.log-header {
+  background: #e9ecef;
+  padding: 0.75rem 1rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+}
+
+.log-action {
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.log-time {
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.log-user {
+  color: #495057;
+  font-weight: 600;
+}
+
+.log-ip {
+  color: #007bff;
+  font-weight: 500;
+}
+
+.log-details {
+  padding: 1rem;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.log-details p {
+  margin: 0.5rem 0;
+  color: #495057;
+}
+
+@media (max-width: 768px) {
+  .logs-filters {
+    flex-direction: column;
+  }
+  
+  .log-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .log-details {
+    padding: 0.75rem;
+  }
+}
+
 /* Önizleme Stilleri */
 .preview-section {
     background: #f1f3f4;

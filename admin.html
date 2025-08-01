@@ -26,6 +26,7 @@
         <button class="tab" onclick="showTab('employees')"><i class="fas fa-users"></i>Uzman Ailemiz</button>
         <button class="tab" onclick="showTab('references')"><i class="fas fa-handshake"></i> Referanslar</button>
         <button class="tab" onclick="showTab('admins')"><i class="fas fa-user-shield"></i> Admin Yönetimi</button>
+        <button class="tab" onclick="showTab('logs')"><i class="fas fa-history"></i> Aktivite Logları</button>
       </div>
 
       <!-- Hizmetler Tab -->
@@ -187,6 +188,32 @@
         <div class="items-section">
           <h3><i class="fas fa-list"></i> Mevcut Adminler</h3>
           <div id="admins-list" class="items-list"></div>
+        </div>
+      </div>
+
+      <!-- Aktivite Logları Tab -->
+      <div id="logs" class="tab-content">
+        <div class="logs-section">
+          <h2><i class="fas fa-history"></i> Admin Aktivite Logları</h2>
+          <div class="logs-filters">
+            <input type="date" id="log-date-filter" placeholder="Tarih Filtresi">
+            <select id="log-action-filter">
+              <option value="">Tüm Aktiviteler</option>
+              <option value="page_access">Sayfa Erişimi</option>
+              <option value="login_attempt">Giriş Denemesi</option>
+              <option value="login_success">Başarılı Giriş</option>
+              <option value="login_failed">Başarısız Giriş</option>
+              <option value="data_add">Veri Ekleme</option>
+              <option value="data_edit">Veri Düzenle</option>
+              <option value="data_delete">Veri Silme</option>
+              <option value="admin_add">Admin Ekleme</option>
+              <option value="admin_update">Admin Güncelleme</option>
+              <option value="admin_delete">Admin Silme</option>
+            </select>
+            <button class="btn" onclick="filterLogs()">Filtrele</button>
+            <button class="btn" onclick="loadLogs()">Yenile</button>
+          </div>
+          <div id="logs-list" class="logs-list"></div>
         </div>
       </div>
 

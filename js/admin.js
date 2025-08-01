@@ -1,4 +1,4 @@
-import { addService, getServices, addProject, getProjects, addEmployee, getEmployees, addReference, getReferences, deleteItem, checkAdminLogin, getAdmins, addAdmin, updateAdmin } from './firebase.js';
+import { addService, getServices, addProject, getProjects, addEmployee, getEmployees, addReference, getReferences, deleteItem, checkAdminLogin, getAdmins, addAdmin, updateAdmin, addAdminLog, getAdminLogs } from './firebase.js';
 
 // Hizmet ekleme
 window.addService = async function() {
@@ -529,6 +529,9 @@ window.saveEdit = async function(type, id) {
     
     const success = await updateAdmin(id, username, password);
     if (success) {
+      // Admin güncelleme işlemini logla
+      await logAdminAccess('admin_update', { updatedAdminId: id, newUsername: username });
+      
       alert('Admin başarıyla güncellendi!');
       closeEditModal();
       loadAdmins();
@@ -580,14 +583,25 @@ window.attemptLogin = async function() {
     return;
   }
   
+  // Giriş denemesini logla
+  await logAdminAccess('login_attempt', { username: username, success: false });
+  
   const isValid = await checkAdminLogin(username, password);
   
   if (isValid) {
+    // Başarılı girişi logla
+    sessionStorage.setItem('currentAdminUser', username);
+    setCookie('adminUser', username, 1);
+    await logAdminAccess('login_success', { username: username });
+    
     sessionStorage.setItem('adminLoggedIn', 'true');
+    
     document.getElementById('login-modal').remove();
     document.body.style.overflow = 'visible';
     loadAdminData();
   } else {
+    // Başarısız girişi logla
+    await logAdminAccess('login_failed', { username: username });
     alert('Geçersiz kullanıcı adı veya şifre!');
   }
 }
@@ -599,6 +613,152 @@ function loadAdminData() {
   loadEmployees();
   loadReferences();
   loadAdmins();
+  loadLogs();
+}
+
+// Logları yükleme
+window.loadLogs = async function() {
+  const logs = await getAdminLogs();
+  const container = document.getElementById('logs-list');
+  container.innerHTML = '';
+  
+  if (logs.length === 0) {
+    container.innerHTML = '<p>Henüz log kaydı bulunmuyor.</p>';
+    return;
+  }
+  
+  logs.forEach(log => {
+    const logDiv = document.createElement('div');
+    logDiv.className = 'log-item';
+    
+    const actionColor = getActionColor(log.action);
+    const detailsText = formatLogDetails(log.details);
+    
+    logDiv.innerHTML = `
+      <div class="log-header">
+        <span class="log-action" style="background: ${actionColor}">${getActionText(log.action)}</span>
+        <span class="log-time">${log.dateFormatted}</span>
+        <span class="log-user">👤 ${log.adminUser}</span>
+        <span class="log-ip">🌍 ${log.ipAddress}</span>
+      </div>
+      <div class="log-details">
+        <p><strong>Session:</strong> ${log.sessionId}</p>
+        <p><strong>Detaylar:</strong> ${detailsText}</p>
+        <p><strong>Tarayıcı:</strong> ${log.browserInfo?.userAgent?.substring(0, 100) || 'Bilinmiyor'}...</p>
+        <p><strong>Ekran:</strong> ${log.browserInfo?.screenResolution || 'Bilinmiyor'} | 
+           <strong>Dil:</strong> ${log.browserInfo?.language || 'Bilinmiyor'} | 
+           <strong>Platform:</strong> ${log.browserInfo?.platform || 'Bilinmiyor'}</p>
+      </div>
+    `;
+    
+    container.appendChild(logDiv);
+  });
+}
+
+function getActionColor(action) {
+  const colors = {
+    'page_access': '#17a2b8',
+    'login_success': '#28a745',
+    'login_failed': '#dc3545',
+    'login_attempt': '#ffc107',
+    'data_add': '#007bff',
+    'data_edit': '#fd7e14',
+    'data_delete': '#dc3545',
+    'admin_add': '#6f42c1',
+    'admin_update': '#20c997',
+    'admin_delete': '#e83e8c'
+  };
+  return colors[action] || '#6c757d';
+}
+
+function getActionText(action) {
+  const texts = {
+    'page_access': 'Sayfa Erişimi',
+    'login_success': 'Başarılı Giriş',
+    'login_failed': 'Başarısız Giriş',
+    'login_attempt': 'Giriş Denemesi',
+    'data_add': 'Veri Eklendi',
+    'data_edit': 'Veri Düzenlendi',
+    'data_delete': 'Veri Silindi',
+    'admin_add': 'Admin Eklendi',
+    'admin_update': 'Admin Güncellendi',
+    'admin_delete': 'Admin Silindi'
+  };
+  return texts[action] || action;
+}
+
+function formatLogDetails(details) {
+  if (!details || Object.keys(details).length === 0) return 'Detay yok';
+  
+  return Object.entries(details)
+    .map(([key, value]) => `${key}: ${value}`)
+    .join(', ');
+}
+
+// Log filtreleme
+window.filterLogs = async function() {
+  const dateFilter = document.getElementById('log-date-filter').value;
+  const actionFilter = document.getElementById('log-action-filter').value;
+  
+  const allLogs = await getAdminLogs();
+  let filteredLogs = allLogs;
+  
+  if (dateFilter) {
+    filteredLogs = filteredLogs.filter(log => {
+      const logDate = new Date(log.timestamp).toISOString().split('T')[0];
+      return logDate === dateFilter;
+    });
+  }
+  
+  if (actionFilter) {
+    filteredLogs = filteredLogs.filter(log => log.action === actionFilter);
+  }
+  
+  displayFilteredLogs(filteredLogs);
+}
+
+function displayFilteredLogs(logs) {
+  const container = document.getElementById('logs-list');
+  container.innerHTML = '';
+  
+  if (logs.length === 0) {
+    container.innerHTML = '<p>Filtre kriterlerine uygun log bulunamadı.</p>';
+    return;
+  }
+  
+  logs.forEach(log => {
+    const logDiv = document.createElement('div');
+    logDiv.className = 'log-item';
+    
+    const actionColor = getActionColor(log.action);
+    const detailsText = formatLogDetails(log.details);
+    
+    logDiv.innerHTML = `
+      <div class="log-header">
+        <span class="log-action" style="background: ${actionColor}">${getActionText(log.action)}</span>
+        <span class="log-time">${log.dateFormatted}</span>
+        <span class="log-user">👤 ${log.adminUser}</span>
+        <span class="log-ip">🌍 ${log.ipAddress}</span>
+      </div>
+      <div class="log-details">
+        <p><strong>Session:</strong> ${log.sessionId}</p>
+        <p><strong>Detaylar:</strong> ${detailsText}</p>
+        <p><strong>Tarayıcı:</strong> ${log.browserInfo?.userAgent?.substring(0, 100) || 'Bilinmiyor'}...</p>
+        <p><strong>Ekran:</strong> ${log.browserInfo?.screenResolution || 'Bilinmiyor'} | 
+           <strong>Dil:</strong> ${log.browserInfo?.language || 'Bilinmiyor'} | 
+           <strong>Platform:</strong> ${log.browserInfo?.platform || 'Bilinmiyor'}</p>
+      </div>
+    `;
+    
+    container.appendChild(logDiv);
+  });
+}
+
+// Tüm CRUD işlemlerini logla
+window.addService = async function() {
+  const title = document.getElementById('service-title').value;
+  await logAdminAccess('data_add', { type: 'service', title: title });
+  // Orijinal fonksiyon devam eder...
 }
 
 // Yeni admin ekleme
@@ -610,6 +770,8 @@ window.addNewAdmin = async function() {
     alert('Lütfen kullanıcı adı ve şifre girin!');
     return;
   }
+  
+  await logAdminAccess('admin_add', { newUsername: username });
   
   const success = await addAdmin(username, password);
   if (success) {
@@ -655,6 +817,9 @@ window.editAdmin = async function(id) {
 // Admin sil
 window.deleteAdmin = async function(id) {
   if (confirm('Bu admin kullanıcısını silmek istediğinizden emin misiniz?')) {
+    // Admin silme işlemini logla
+    await logAdminAccess('admin_delete', { deletedAdminId: id });
+    
     const success = await deleteItem('admin', id);
     if (success) {
       alert('Admin silindi!');
@@ -663,8 +828,76 @@ window.deleteAdmin = async function(id) {
   }
 }
 
+// Çerez ve log fonksiyonları
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+  return null;
+}
+
+function setCookie(name, value, days) {
+  const expires = new Date();
+  expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+  document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
+}
+
+function generateSessionId() {
+  return 'session_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+}
+
+function getBrowserInfo() {
+  return {
+    userAgent: navigator.userAgent,
+    language: navigator.language,
+    platform: navigator.platform,
+    cookieEnabled: navigator.cookieEnabled,
+    screenResolution: `${screen.width}x${screen.height}`,
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    referrer: document.referrer || 'direct'
+  };
+}
+
+async function getClientIP() {
+  try {
+    const response = await fetch('https://api.ipify.org?format=json');
+    const data = await response.json();
+    return data.ip;
+  } catch (error) {
+    return 'unknown';
+  }
+}
+
+async function logAdminAccess(action, details = {}) {
+  let sessionId = getCookie('adminSessionId');
+  if (!sessionId) {
+    sessionId = generateSessionId();
+    setCookie('adminSessionId', sessionId, 1);
+  }
+  
+  const currentUser = getCookie('adminUser') || sessionStorage.getItem('currentAdminUser') || 'unknown';
+  const clientIP = await getClientIP();
+  
+  const logData = {
+    sessionId: sessionId,
+    action: action,
+    details: details,
+    adminUser: currentUser,
+    ipAddress: clientIP,
+    browserInfo: getBrowserInfo(),
+    url: window.location.href,
+    timestamp: new Date().toISOString(),
+    dateFormatted: new Date().toLocaleString('tr-TR')
+  };
+  
+  await addAdminLog(logData);
+}
+
 // Sayfa yüklendiğinde giriş kontrolü yap
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+  // Sayfa erişimini logla
+  await logAdminAccess('page_access', { page: 'admin_panel' });
+  
   if (checkLogin()) {
     loadAdminData();
   }

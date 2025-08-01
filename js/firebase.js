@@ -281,3 +281,38 @@ export async function updateAdmin(id, username, password) {
     return false;
   }
 }
+
+// Admin çerez log ekleme
+export async function addAdminLog(logData) {
+  try {
+    await initializeFirebase();
+    
+    await addDoc(collection(db, "admincookie"), {
+      ...logData,
+      timestamp: new Date()
+    });
+    return true;
+  } catch (error) {
+    console.error("Log eklenirken hata:", error);
+    return false;
+  }
+}
+
+// Admin loglarını getirme
+export async function getAdminLogs() {
+  try {
+    await initializeFirebase();
+    
+    const querySnapshot = await getDocs(collection(db, "admincookie"));
+    const logs = [];
+    querySnapshot.forEach((doc) => {
+      logs.push({ id: doc.id, ...doc.data() });
+    });
+    
+    // Tarihe göre sırala (en yeni önce)
+    return logs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  } catch (error) {
+    console.error("Loglar getirilirken hata:", error);
+    return [];
+  }
+}
