@@ -1347,14 +1347,16 @@ footer {
 
 /* TYPING ANIMATION */
 .typing-text {
-  overflow: hidden;
-  white-space: nowrap;
-  animation: typing 3s steps(30) 1s both;
+  opacity: 0;
 }
 
-.typing-text::after {
-  content: '|';
-  animation: blink 1s infinite;
+.typing-text span {
+  color: white;
+}
+
+.typing-text span:nth-child(2) {
+  color: #FF6B35;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
 /* HOVER 3D TRANSFORMATIONS */
@@ -1413,23 +1415,7 @@ footer {
   }
 }
 
-@keyframes typing {
-  from {
-    width: 0;
-  }
-  to {
-    width: 100%;
-  }
-}
 
-@keyframes blink {
-  0%, 50% {
-    opacity: 1;
-  }
-  51%, 100% {
-    opacity: 0;
-  }
-}
 
 /* MOBILE OPTIMIZATIONS */
 @media (max-width: 768px) {
@@ -1446,11 +1432,6 @@ footer {
   }
   
   .typing-text {
-    animation: none;
     white-space: normal;
-  }
-  
-  .typing-text::after {
-    display: none;
   }
 }
