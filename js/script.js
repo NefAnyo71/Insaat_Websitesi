@@ -69,8 +69,8 @@ function renderServices(services) {
         
         // Başlangıçta görünmez yap
         serviceElement.style.opacity = '0';
-        serviceElement.style.transform = 'translateY(50px) scale(0.9)';
-        serviceElement.style.transition = 'all 0.6s ease';
+        serviceElement.style.transform = 'translateX(-100px) rotateY(-15deg)';
+        serviceElement.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
         
         if (service.image) {
             serviceElement.innerHTML = `
@@ -90,14 +90,16 @@ function renderServices(services) {
             `;
         } else {
             serviceElement.innerHTML = `
-                <div class="service-text-display">
-                    <span class="service-text-content">${service.text || ''}</span>
+                <div class="service-content-only">
+                    <div class="service-icon-placeholder">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>${service.title || ''}</h3>
+                    <p>${service.description || ''}</p>
+                    <button class="service-details-btn" onclick="openServiceModal('${service.id}', '${service.title}', '${service.details}', '${service.image}')">
+                        <i class="fas fa-info-circle"></i> Detayları Gör
+                    </button>
                 </div>
-                <h3>${service.title || ''}</h3>
-                <p>${service.description || ''}</p>
-                <button class="service-details-btn" onclick="openServiceModal('${service.id}', '${service.title}', '${service.details}', '${service.image}')">
-                    <i class="fas fa-info-circle"></i> Detayları Gör
-                </button>
             `;
         }
         
@@ -112,8 +114,8 @@ function renderServices(services) {
         // Sırayla animasyonlu göster
         setTimeout(() => {
             serviceElement.style.opacity = '1';
-            serviceElement.style.transform = 'translateY(0) scale(1)';
-        }, index * 200); // Her kart 200ms arayla
+            serviceElement.style.transform = 'translateX(0) rotateY(0)';
+        }, index * 150);
     });
 }
 
@@ -127,12 +129,19 @@ function renderProjects(projects) {
     projects.forEach((project, index) => {
         const projectElement = document.createElement('div');
         projectElement.className = 'project-card';
+        
+        // Başlangıçta görünmez yap
+        projectElement.style.opacity = '0';
+        projectElement.style.transform = 'translateY(80px) scale(0.8)';
+        projectElement.style.transition = 'all 0.7s cubic-bezier(0.4, 0, 0.2, 1)';
+        
         projectElement.innerHTML = `
             <div class="project-image-container">
                 <img src="${project.image || 'https://via.placeholder.com/400x250'}" alt="${project.title || ''}" onerror="this.src='https://via.placeholder.com/400x250/FF6B35/FFFFFF?text=Proje+Görseli'">
                 <div class="project-text-overlay">
                     <span class="project-text-content">${project.text || ''}</span>
                 </div>
+                <div class="project-gradient-overlay"></div>
             </div>
             <div class="project-info">
                 <span class="project-category">${project.category || ''}</span>
@@ -148,6 +157,12 @@ function renderProjects(projects) {
         }
         
         projectsContainer.appendChild(projectElement);
+        
+        // Sırayla animasyonlu göster
+        setTimeout(() => {
+            projectElement.style.opacity = '1';
+            projectElement.style.transform = 'translateY(0) scale(1)';
+        }, index * 180);
     });
 }
 
@@ -310,12 +325,19 @@ function renderEmployees(employees) {
     employees.forEach((employee, index) => {
         const employeeElement = document.createElement('div');
         employeeElement.className = 'employee-card';
+        
+        // Başlangıçta görünmez yap
+        employeeElement.style.opacity = '0';
+        employeeElement.style.transform = 'translateX(100px) rotateY(15deg)';
+        employeeElement.style.transition = 'all 0.9s cubic-bezier(0.4, 0, 0.2, 1)';
+        
         employeeElement.innerHTML = `
             <div class="employee-image-container">
                 <img src="${employee.image || 'https://via.placeholder.com/300x300'}" alt="${employee.name || ''}" onerror="this.src='https://via.placeholder.com/300x300/FF6B35/FFFFFF?text=Çalışan+Fotoğrafı'">
                 <div class="employee-text-overlay">
                     <span class="employee-text-content">${employee.text || ''}</span>
                 </div>
+                <div class="employee-shine"></div>
             </div>
             <div class="employee-info">
                 <h3>${employee.name || ''}</h3>
@@ -331,6 +353,12 @@ function renderEmployees(employees) {
         }
         
         employeesContainer.appendChild(employeeElement);
+        
+        // Sırayla animasyonlu göster
+        setTimeout(() => {
+            employeeElement.style.opacity = '1';
+            employeeElement.style.transform = 'translateX(0) rotateY(0)';
+        }, index * 160);
     });
 }
 
@@ -344,12 +372,19 @@ function renderReferences(references) {
     references.forEach((reference, index) => {
         const referenceElement = document.createElement('div');
         referenceElement.className = 'reference-card';
+        
+        // Başlangıçta görünmez yap
+        referenceElement.style.opacity = '0';
+        referenceElement.style.transform = 'translateY(-60px) scale(0.9)';
+        referenceElement.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+        
         referenceElement.innerHTML = `
             <div class="reference-image-container">
                 <img src="${reference.image || 'https://via.placeholder.com/300x200'}" alt="${reference.name || ''}" onerror="this.src='https://via.placeholder.com/300x200/FF6B35/FFFFFF?text=Logo'">
                 <div class="reference-text-overlay">
                     <span class="reference-text-content">${reference.text || ''}</span>
                 </div>
+                <div class="reference-glow"></div>
             </div>
             <div class="reference-info">
                 <h3>${reference.name || ''}</h3>
@@ -365,6 +400,12 @@ function renderReferences(references) {
         }
         
         referencesContainer.appendChild(referenceElement);
+        
+        // Sırayla animasyonlu göster
+        setTimeout(() => {
+            referenceElement.style.opacity = '1';
+            referenceElement.style.transform = 'translateY(0) scale(1)';
+        }, index * 140);
     });
 }
 
