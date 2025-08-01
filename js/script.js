@@ -380,44 +380,34 @@ function renderReferences(references) {
     
     references.forEach((reference, index) => {
         const referenceElement = document.createElement('div');
-        referenceElement.className = 'reference-card';
+        referenceElement.className = 'reference-item';
         
         // Başlangıçta görünmez yap
         referenceElement.style.opacity = '0';
-        referenceElement.style.transform = 'translateY(-60px) scale(0.9)';
-        referenceElement.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+        referenceElement.style.transform = 'rotateY(90deg) scale(0.8)';
+        referenceElement.style.transition = 'all 1s cubic-bezier(0.4, 0, 0.2, 1)';
         
         referenceElement.innerHTML = `
-            <div class="reference-image-container">
-                <img src="${reference.image || 'https://via.placeholder.com/300x200'}" alt="${reference.name || ''}" onerror="this.src='https://via.placeholder.com/300x200/FF6B35/FFFFFF?text=Logo'">
-                <div class="reference-text-overlay">
-                    <span class="reference-text-content">${reference.text || ''}</span>
+            <div class="reference-logo">
+                <img src="${reference.image || 'https://via.placeholder.com/120x120'}" alt="${reference.name || ''}" onerror="this.src='https://via.placeholder.com/120x120/FF6B35/FFFFFF?text=Logo'">
+                <div class="reference-overlay">
+                    <div class="reference-details">
+                        <h4>${reference.name || ''}</h4>
+                        <span class="reference-sector">${reference.sector || ''}</span>
+                        <p>${reference.description || ''}</p>
+                    </div>
                 </div>
-                <div class="reference-glow"></div>
-            </div>
-            <div class="reference-info">
-                <h3>${reference.name || ''}</h3>
-                <span class="reference-sector">${reference.sector || ''}</span>
-                <p>${reference.description || ''}</p>
+                <div class="reference-pulse"></div>
             </div>
         `;
-        
-        // Metin stilini uygula
-        const textElement = referenceElement.querySelector('.reference-text-content');
-        if (textElement && reference.textStyle) {
-            applyTextStyleToElement(textElement, reference.textStyle);
-        }
-        
-        // 3D hover efekti ekle
-        referenceElement.classList.add('hover-3d');
         
         referencesContainer.appendChild(referenceElement);
         
         // Sırayla animasyonlu göster
         setTimeout(() => {
             referenceElement.style.opacity = '1';
-            referenceElement.style.transform = 'translateY(0) scale(1)';
-        }, index * 140);
+            referenceElement.style.transform = 'rotateY(0deg) scale(1)';
+        }, index * 200);
     });
 }
 
