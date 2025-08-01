@@ -67,6 +67,11 @@ function renderServices(services) {
         const serviceElement = document.createElement('div');
         serviceElement.className = 'service-card';
         
+        // Başlangıçta görünmez yap
+        serviceElement.style.opacity = '0';
+        serviceElement.style.transform = 'translateY(50px) scale(0.9)';
+        serviceElement.style.transition = 'all 0.6s ease';
+        
         if (service.image) {
             serviceElement.innerHTML = `
                 <div class="service-image">
@@ -111,6 +116,12 @@ function renderServices(services) {
         }
         
         servicesContainer.appendChild(serviceElement);
+        
+        // Sırayla animasyonlu göster
+        setTimeout(() => {
+            serviceElement.style.opacity = '1';
+            serviceElement.style.transform = 'translateY(0) scale(1)';
+        }, index * 200); // Her kart 200ms arayla
     });
 }
 
