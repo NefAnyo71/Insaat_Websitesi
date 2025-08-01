@@ -282,6 +282,88 @@ export async function updateAdmin(id, username, password) {
   }
 }
 
+// Kullanıcı çerez tercihi kaydetme
+export async function saveCookieConsent(ipAddress, consent) {
+  try {
+    await initializeFirebase();
+    
+    await addDoc(collection(db, "cookieconsent"), {
+      ipAddress: ipAddress,
+      consent: consent,
+      timestamp: new Date(),
+      userAgent: navigator.userAgent
+    });
+    return true;
+  } catch (error) {
+    console.error("Çerez tercihi kaydedilirken hata:", error);
+    return false;
+  }
+}
+
+// Çerez tercihi kontrol etme
+export async function checkCookieConsent(ipAddress) {
+  try {
+    await initializeFirebase();
+    
+    const querySnapshot = await getDocs(collection(db, "cookieconsent"));
+    let hasConsent = null;
+    
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      if (data.ipAddress === ipAddress) {
+        hasConsent = data.consent;
+      }
+    });
+    
+    return hasConsent;
+  } catch (error) {
+    console.error("Çerez tercihi kontrol edilirken hata:", error);
+    return null;
+  }
+}
+
+// Kullanıcı aktivitesi kaydetme
+export async function saveUserActivity(activityData) {
+  try {
+    await initializeFirebase();
+    
+    await addDoc(collection(db, "useractivity"), {
+      ...activityData,
+      timestamp: new Date()
+    });
+    return true;
+  } catch (error) {
+    console.error("Kullanıcı aktivitesi kaydedilirken hata:", error);
+    return false;
+  }
+}
+
+// Kullanıcı istatistiklerini getirme
+export async function getUserStats() {
+  try {
+    await initializeFirebase();
+    
+    const activitySnapshot = await getDocs(collection(db, "useractivity"));
+    const consentSnapshot = await getDocs(collection(db, "cookieconsent"));
+    
+    const activities = [];
+    const consents = [];
+    
+    activitySnapshot.forEach((doc) => {
+      activities.push({ id: doc.id, ...doc.data() });
+    });
+    
+    consentSnapshot.forEach((doc) => {
+      consents.push({ id: doc.id, ...doc.data() });
+    });
+    
+    return { activities, consents };
+  } catch (error) {
+    console.error("Kullanıcı istatistikleri getirilirken hata:", error);
+    return { activities: [], consents: [] };
+  }
+}
+
 // Admin çerez log ekleme
 export async function addAdminLog(logData) {
   try {

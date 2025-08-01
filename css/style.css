@@ -1533,6 +1533,131 @@ footer {
   }
 }
 
+/* COOKIE CONSENT */
+.cookie-consent {
+  position: fixed;
+  bottom: -100px;
+  left: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #ffffff, #f8f9fa);
+  border: 2px solid #FF6B35;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  z-index: 10000;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.cookie-consent.show {
+  bottom: 20px;
+}
+
+.cookie-content {
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cookie-icon {
+  font-size: 2rem;
+  color: #FF6B35;
+  flex-shrink: 0;
+}
+
+.cookie-text h3 {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.cookie-text p {
+  margin: 0 0 1rem 0;
+  color: #666;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.cookie-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.cookie-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.cookie-btn.accept {
+  background: linear-gradient(135deg, #28a745, #20c997);
+  color: white;
+}
+
+.cookie-btn.accept:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+}
+
+.cookie-btn.decline {
+  background: #6c757d;
+  color: white;
+}
+
+.cookie-btn.decline:hover {
+  background: #5a6268;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .cookie-consent {
+    left: 10px;
+    right: 10px;
+    bottom: -120px;
+  }
+  
+  .cookie-consent.show {
+    bottom: 10px;
+  }
+  
+  .cookie-content {
+    padding: 1rem;
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .cookie-icon {
+    font-size: 1.5rem;
+  }
+  
+  .cookie-text h3 {
+    font-size: 1rem;
+  }
+  
+  .cookie-text p {
+    font-size: 0.8rem;
+  }
+  
+  .cookie-buttons {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .cookie-btn {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
 /* MOBILE OPTIMIZATIONS */
 @media (max-width: 768px) {
   .floating-shape {

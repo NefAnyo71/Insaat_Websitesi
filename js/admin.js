@@ -1,4 +1,4 @@
-import { addService, getServices, addProject, getProjects, addEmployee, getEmployees, addReference, getReferences, deleteItem, checkAdminLogin, getAdmins, addAdmin, updateAdmin, addAdminLog, getAdminLogs } from './firebase.js';
+import { addService, getServices, addProject, getProjects, addEmployee, getEmployees, addReference, getReferences, deleteItem, checkAdminLogin, getAdmins, addAdmin, updateAdmin, addAdminLog, getAdminLogs, getUserStats } from './firebase.js';
 
 // Hizmet ekleme
 window.addService = async function() {
@@ -614,6 +614,122 @@ function loadAdminData() {
   loadReferences();
   loadAdmins();
   loadLogs();
+  loadAnalytics();
+}
+
+// Kullanıcı analizlerini yükle
+window.loadAnalytics = async function() {
+  const { activities, consents } = await getUserStats();
+  
+  // Temel istatistikler
+  const uniqueIPs = new Set(activities.map(a => a.ipAddress)).size;
+  const totalClicks = activities.filter(a => a.activityType === 'click_activity').length;
+  
+  document.getElementById('total-visitors').textContent = uniqueIPs;
+  document.getElementById('total-clicks').textContent = totalClicks;
+  
+  // Bölüm analizi
+  const sectionStats = {};
+  const cardStats = {};
+  
+  activities.forEach(activity => {
+    if (activity.activityType === 'mouse_movement' && activity.data.movements) {
+      activity.data.movements.forEach(movement => {
+        if (movement.section) {
+          sectionStats[movement.section] = (sectionStats[movement.section] || 0) + 1;
+        }
+        
+        if (movement.cardType && movement.cardTitle) {
+          const cardKey = `${movement.cardType}: ${movement.cardTitle}`;
+          cardStats[cardKey] = (cardStats[cardKey] || 0) + 1;
+        }
+      });
+    }
+  });
+  
+  // En popüler bölüm
+  const mostViewedSection = Object.keys(sectionStats).reduce((a, b) => 
+    sectionStats[a] > sectionStats[b] ? a : b, 'Veri yok'
+  );
+  document.getElementById('most-viewed-section').textContent = mostViewedSection;
+  
+  // En popüler kart
+  const mostPopularCard = Object.keys(cardStats).reduce((a, b) => 
+    cardStats[a] > cardStats[b] ? a : b, 'Veri yok'
+  );
+  document.getElementById('most-popular-card').textContent = mostPopularCard.substring(0, 30) + '...';
+  
+  // Grafikleri çiz
+  drawSectionChart(sectionStats);
+  drawCardChart(cardStats);
+}
+
+function drawSectionChart(sectionStats) {
+  const container = document.getElementById('section-chart');
+  container.innerHTML = '';
+  
+  const total = Object.values(sectionStats).reduce((a, b) => a + b, 0);
+  
+  Object.entries(sectionStats).forEach(([section, count]) => {
+    const percentage = ((count / total) * 100).toFixed(1);
+    const barDiv = document.createElement('div');
+    barDiv.className = 'chart-bar';
+    barDiv.innerHTML = `
+      <div class="bar-label">${section}</div>
+      <div class="bar-container">
+        <div class="bar-fill" style="width: ${percentage}%"></div>
+        <span class="bar-value">${count} (${percentage}%)</span>
+      </div>
+    `;
+    container.appendChild(barDiv);
+  });
+}
+
+function drawCardChart(cardStats) {
+  const container = document.getElementById('card-chart');
+  container.innerHTML = '';
+  
+  const sortedCards = Object.entries(cardStats)
+    .sort(([,a], [,b]) => b - a)
+    .slice(0, 10); // Top 10
+  
+  const maxCount = Math.max(...sortedCards.map(([,count]) => count));
+  
+  sortedCards.forEach(([card, count]) => {
+    const percentage = ((count / maxCount) * 100).toFixed(1);
+    const barDiv = document.createElement('div');
+    barDiv.className = 'chart-bar';
+    barDiv.innerHTML = `
+      <div class="bar-label">${card.substring(0, 25)}...</div>
+      <div class="bar-container">
+        <div class="bar-fill" style="width: ${percentage}%"></div>
+        <span class="bar-value">${count}</span>
+      </div>
+    `;
+    container.appendChild(barDiv);
+  });
+}
+
+// Analiz raporu indirme
+window.exportAnalytics = async function() {
+  const { activities, consents } = await getUserStats();
+  
+  const report = {
+    generatedAt: new Date().toISOString(),
+    totalActivities: activities.length,
+    totalConsents: consents.length,
+    uniqueVisitors: new Set(activities.map(a => a.ipAddress)).size,
+    activities: activities,
+    consents: consents
+  };
+  
+  const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `user-analytics-${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
 // Logları yükleme

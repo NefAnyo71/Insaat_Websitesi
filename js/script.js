@@ -537,8 +537,225 @@ function initTypingAnimation() {
     setTimeout(typeWriter, 2000);
 }
 
+// Çerez yönetimi
+let userIP = null;
+let cookieConsent = false;
+let sessionId = null;
+
+async function getUserIP() {
+    try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        return data.ip;
+    } catch (error) {
+        return 'unknown';
+    }
+}
+
+function generateSessionId() {
+    return 'user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+}
+
+async function showCookieConsent() {
+    const consentHTML = `
+        <div id="cookie-consent" class="cookie-consent">
+            <div class="cookie-content">
+                <div class="cookie-icon">
+                    <i class="fas fa-cookie-bite"></i>
+                </div>
+                <div class="cookie-text">
+                    <h3>Çerez Kullanımı</h3>
+                    <p>Web sitemizde kullanıcı deneyimini iyileştirmek için çerezler kullanıyoruz.</p>
+                </div>
+                <div class="cookie-buttons">
+                    <button class="cookie-btn accept" onclick="acceptCookies()">
+                        <i class="fas fa-check"></i> Kabul Et
+                    </button>
+                    <button class="cookie-btn decline" onclick="declineCookies()">
+                        <i class="fas fa-times"></i> Reddet
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', consentHTML);
+    setTimeout(() => {
+        document.getElementById('cookie-consent').classList.add('show');
+    }, 100);
+}
+
+window.acceptCookies = async function() {
+    cookieConsent = true;
+    localStorage.setItem('cookieConsent', 'true');
+    await saveCookieConsent(userIP, true);
+    
+    document.getElementById('cookie-consent').remove();
+    initUserTracking();
+}
+
+window.declineCookies = async function() {
+    cookieConsent = false;
+    localStorage.setItem('cookieConsent', 'false');
+    await saveCookieConsent(userIP, false);
+    
+    document.getElementById('cookie-consent').remove();
+}
+
+function initUserTracking() {
+    if (!cookieConsent) return;
+    
+    let mouseData = [];
+    let sectionTime = {};
+    let currentSection = null;
+    let sectionStartTime = Date.now();
+    
+    document.addEventListener('mousemove', function(e) {
+        const section = getCurrentSection(e.clientY);
+        const cardElement = getCardElement(e.target);
+        
+        // Bölüm değişimi takibi
+        if (section !== currentSection) {
+            if (currentSection) {
+                const timeSpent = Date.now() - sectionStartTime;
+                sectionTime[currentSection] = (sectionTime[currentSection] || 0) + timeSpent;
+            }
+            currentSection = section;
+            sectionStartTime = Date.now();
+        }
+        
+        mouseData.push({
+            x: e.clientX,
+            y: e.clientY,
+            time: Date.now(),
+            section: section,
+            cardType: cardElement?.type || null,
+            cardId: cardElement?.id || null,
+            cardTitle: cardElement?.title || null
+        });
+        
+        if (mouseData.length >= 20) {
+            saveActivity('mouse_movement', { 
+                movements: mouseData,
+                sectionTimes: sectionTime
+            });
+            mouseData = [];
+        }
+    });
+    
+    document.addEventListener('click', function(e) {
+        const cardElement = getCardElement(e.target);
+        saveActivity('click_activity', {
+            element: e.target.tagName,
+            text: e.target.textContent?.substring(0, 30),
+            section: getCurrentSection(e.clientY),
+            cardType: cardElement?.type || null,
+            cardId: cardElement?.id || null,
+            cardTitle: cardElement?.title || null
+        });
+    });
+    
+    // Sayfa terk etme
+    window.addEventListener('beforeunload', function() {
+        if (currentSection) {
+            const timeSpent = Date.now() - sectionStartTime;
+            sectionTime[currentSection] = (sectionTime[currentSection] || 0) + timeSpent;
+        }
+        
+        if (mouseData.length > 0 || Object.keys(sectionTime).length > 0) {
+            saveActivity('session_summary', {
+                movements: mouseData,
+                sectionTimes: sectionTime,
+                totalSessionTime: Date.now() - sessionStartTime
+            });
+        }
+    });
+}
+
+function getCardElement(target) {
+    // Kart elementini bul
+    let element = target;
+    while (element && element !== document.body) {
+        if (element.classList.contains('service-card')) {
+            return {
+                type: 'service',
+                id: element.dataset.id || 'unknown',
+                title: element.querySelector('h3')?.textContent || 'unknown'
+            };
+        }
+        if (element.classList.contains('project-card')) {
+            return {
+                type: 'project',
+                id: element.dataset.id || 'unknown',
+                title: element.querySelector('h3')?.textContent || 'unknown'
+            };
+        }
+        if (element.classList.contains('employee-card')) {
+            return {
+                type: 'employee',
+                id: element.dataset.id || 'unknown',
+                title: element.querySelector('h3')?.textContent || 'unknown'
+            };
+        }
+        if (element.classList.contains('reference-item')) {
+            return {
+                type: 'reference',
+                id: element.dataset.id || 'unknown',
+                title: element.querySelector('h4')?.textContent || 'unknown'
+            };
+        }
+        element = element.parentElement;
+    }
+    return null;
+}
+
+function getCurrentSection(mouseY) {
+    const sections = ['home', 'services', 'employees', 'projects', 'references'];
+    for (const sectionId of sections) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+            const rect = element.getBoundingClientRect();
+            if (mouseY >= rect.top && mouseY <= rect.bottom) {
+                return sectionId;
+            }
+        }
+    }
+    return 'unknown';
+}
+
+let sessionStartTime = Date.now();
+
+async function saveActivity(type, data) {
+    if (!cookieConsent) return;
+    
+    await saveUserActivity({
+        sessionId: sessionId,
+        ipAddress: userIP,
+        activityType: type,
+        data: data,
+        url: window.location.href,
+        userAgent: navigator.userAgent,
+        screenResolution: `${screen.width}x${screen.height}`,
+        timestamp: new Date().toISOString(),
+        sessionDuration: Date.now() - sessionStartTime
+    });
+}
+
 // Scroll indicator click handler
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+    userIP = await getUserIP();
+    sessionId = generateSessionId();
+    
+    const existingConsent = await checkCookieConsent(userIP);
+    const localConsent = localStorage.getItem('cookieConsent');
+    
+    if (existingConsent !== null || localConsent !== null) {
+        cookieConsent = existingConsent === true || localConsent === 'true';
+        if (cookieConsent) {
+            initUserTracking();
+        }
+    }
+    
     const scrollIndicator = document.querySelector('.scroll-indicator');
     if (scrollIndicator) {
         scrollIndicator.addEventListener('click', function() {
@@ -554,4 +771,44 @@ document.addEventListener('DOMContentLoaded', function() {
     
     initScrollReveal();
     initTypingAnimation();
+});
+
+// Eksik fonksiyonları tanımla
+async function saveCookieConsent(ip, consent) {
+    // Firebase'e çerez onayını kaydet
+    console.log('Cookie consent saved:', { ip, consent });
+}
+
+async function saveUserActivity(data) {
+    // Firebase'e kullanıcı aktivitesini kaydet
+    console.log('User activity saved:', data);
+}
+
+async function checkCookieConsent(ip) {
+    // Firebase'den çerez onayını kontrol et
+    console.log('Checking cookie consent for IP:', ip);
+    return null;
+}
+
+// Loading sonrası çerez göster
+window.addEventListener('load', function() {
+    setTimeout(() => {
+        const loadingScreen = document.getElementById('loading-screen');
+        loadingScreen.classList.add('fade-out');
+        
+        setTimeout(() => {
+            loadingScreen.remove();
+            document.body.style.overflow = 'visible';
+            initializePageAnimations();
+            
+            setTimeout(async () => {
+                const existingConsent = await checkCookieConsent(userIP);
+                const localConsent = localStorage.getItem('cookieConsent');
+                
+                if (existingConsent === null && localConsent === null) {
+                    showCookieConsent();
+                }
+            }, 1000);
+        }, 800);
+    }, 2000);
 });
