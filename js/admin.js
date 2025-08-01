@@ -394,6 +394,87 @@ function openEditModal(type, data, id) {
         <button class="btn save-btn" onclick="saveEdit('service', '${id}')">Kaydet</button>
       </div>
     `;
+  } else if (type === 'project') {
+    modalContent = `
+      <h2><i class="fas fa-edit"></i> Proje Düzenle</h2>
+      <div class="edit-form">
+        <input type="text" id="edit-project-title" placeholder="Proje Adı" value="${data.title || ''}">
+        <input type="text" id="edit-project-text" placeholder="Kısa Metin" value="${data.text || ''}">
+        <select id="edit-project-text-style">
+          <option value="">Metin Stili Seçin</option>
+          <option value="bold" ${data.textStyle === 'bold' ? 'selected' : ''}>Kalın</option>
+          <option value="italic" ${data.textStyle === 'italic' ? 'selected' : ''}>Eğik</option>
+          <option value="uppercase" ${data.textStyle === 'uppercase' ? 'selected' : ''}>BÜYÜK HARF</option>
+          <option value="gradient" ${data.textStyle === 'gradient' ? 'selected' : ''}>Gradient</option>
+          <option value="shadow" ${data.textStyle === 'shadow' ? 'selected' : ''}>Gölgeli</option>
+          <option value="outline" ${data.textStyle === 'outline' ? 'selected' : ''}>Konturlu</option>
+          <option value="modern" ${data.textStyle === 'modern' ? 'selected' : ''}>Modern</option>
+        </select>
+        <select id="edit-project-category">
+          <option value="">Kategori Seçin</option>
+          <option value="Architecture" ${data.category === 'Architecture' ? 'selected' : ''}>Mimarlık</option>
+          <option value="Interior Design" ${data.category === 'Interior Design' ? 'selected' : ''}>İç Tasarım</option>
+          <option value="House & Exterior" ${data.category === 'House & Exterior' ? 'selected' : ''}>Ev & Dış Mekan</option>
+          <option value="Commercial" ${data.category === 'Commercial' ? 'selected' : ''}>Ticari</option>
+        </select>
+        <input type="url" id="edit-project-image" placeholder="Proje Resim URL" value="${data.image || ''}">
+        <textarea id="edit-project-desc" placeholder="Proje açıklaması...">${data.description || ''}</textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn cancel-btn" onclick="closeEditModal()">İptal</button>
+        <button class="btn save-btn" onclick="saveEdit('project', '${id}')">Kaydet</button>
+      </div>
+    `;
+  } else if (type === 'employee') {
+    modalContent = `
+      <h2><i class="fas fa-edit"></i> Çalışan Düzenle</h2>
+      <div class="edit-form">
+        <input type="text" id="edit-employee-name" placeholder="Çalışan Adı" value="${data.name || ''}">
+        <input type="text" id="edit-employee-text" placeholder="Kısa Metin" value="${data.text || ''}">
+        <select id="edit-employee-text-style">
+          <option value="">Metin Stili Seçin</option>
+          <option value="bold" ${data.textStyle === 'bold' ? 'selected' : ''}>Kalın</option>
+          <option value="italic" ${data.textStyle === 'italic' ? 'selected' : ''}>Eğik</option>
+          <option value="uppercase" ${data.textStyle === 'uppercase' ? 'selected' : ''}>BÜYÜK HARF</option>
+          <option value="gradient" ${data.textStyle === 'gradient' ? 'selected' : ''}>Gradient</option>
+          <option value="shadow" ${data.textStyle === 'shadow' ? 'selected' : ''}>Gölgeli</option>
+          <option value="outline" ${data.textStyle === 'outline' ? 'selected' : ''}>Konturlu</option>
+          <option value="modern" ${data.textStyle === 'modern' ? 'selected' : ''}>Modern</option>
+        </select>
+        <input type="text" id="edit-employee-position" placeholder="Pozisyon" value="${data.position || ''}">
+        <input type="number" id="edit-employee-experience" placeholder="Deneyim (yıl)" value="${data.experience || ''}">
+        <input type="url" id="edit-employee-image" placeholder="Çalışan Resim URL" value="${data.image || ''}">
+      </div>
+      <div class="modal-actions">
+        <button class="btn cancel-btn" onclick="closeEditModal()">İptal</button>
+        <button class="btn save-btn" onclick="saveEdit('employee', '${id}')">Kaydet</button>
+      </div>
+    `;
+  } else if (type === 'reference') {
+    modalContent = `
+      <h2><i class="fas fa-edit"></i> Referans Düzenle</h2>
+      <div class="edit-form">
+        <input type="text" id="edit-reference-name" placeholder="Şirket/Kişi Adı" value="${data.name || ''}">
+        <input type="text" id="edit-reference-text" placeholder="Kısa Metin" value="${data.text || ''}">
+        <select id="edit-reference-text-style">
+          <option value="">Metin Stili Seçin</option>
+          <option value="bold" ${data.textStyle === 'bold' ? 'selected' : ''}>Kalın</option>
+          <option value="italic" ${data.textStyle === 'italic' ? 'selected' : ''}>Eğik</option>
+          <option value="uppercase" ${data.textStyle === 'uppercase' ? 'selected' : ''}>BÜYÜK HARF</option>
+          <option value="gradient" ${data.textStyle === 'gradient' ? 'selected' : ''}>Gradient</option>
+          <option value="shadow" ${data.textStyle === 'shadow' ? 'selected' : ''}>Gölgeli</option>
+          <option value="outline" ${data.textStyle === 'outline' ? 'selected' : ''}>Konturlu</option>
+          <option value="modern" ${data.textStyle === 'modern' ? 'selected' : ''}>Modern</option>
+        </select>
+        <input type="text" id="edit-reference-sector" placeholder="Sektör" value="${data.sector || ''}">
+        <input type="url" id="edit-reference-image" placeholder="Logo/Resim URL" value="${data.image || ''}">
+        <textarea id="edit-reference-description" placeholder="Referans açıklaması...">${data.description || ''}</textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn cancel-btn" onclick="closeEditModal()">İptal</button>
+        <button class="btn save-btn" onclick="saveEdit('reference', '${id}')">Kaydet</button>
+      </div>
+    `;
   }
   
   const modalHTML = `
