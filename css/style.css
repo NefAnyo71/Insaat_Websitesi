@@ -239,6 +239,9 @@ nav ul li a:hover::after {
 .service-card {
   position: relative;
   overflow: hidden;
+  background: linear-gradient(145deg, #ffffff, #f8f9fa);
+  border: 1px solid rgba(255, 107, 53, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .service-card::before {
@@ -257,9 +260,26 @@ nav ul li a:hover::after {
   left: 100%;
 }
 
+.service-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #FF6B35, #F7931E, #FF6B35);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.service-card:hover::after {
+  transform: scaleX(1);
+}
+
 .service-card:hover {
-  transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  transform: translateY(-15px) scale(1.03);
+  box-shadow: 0 25px 50px rgba(255, 107, 53, 0.2);
+  border-color: rgba(255, 107, 53, 0.3);
 }
 
 .service-text-display {
@@ -386,16 +406,36 @@ nav ul li a:hover::after {
 }
 
 .project-card {
-  background: white;
-  border-radius: 15px;
+  background: linear-gradient(145deg, #ffffff, #f8f9fa);
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  border: 1px solid rgba(255, 107, 53, 0.05);
+}
+
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.05), rgba(247, 147, 30, 0.05));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.project-card:hover::before {
+  opacity: 1;
 }
 
 .project-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  transform: translateY(-20px) rotateY(5deg);
+  box-shadow: 0 30px 60px rgba(255, 107, 53, 0.15);
+  border-color: rgba(255, 107, 53, 0.2);
 }
 
 .project-image-container {
@@ -461,17 +501,38 @@ nav ul li a:hover::after {
 
 /* ÇALIŞANLAR */
 .employee-card {
-  background: white;
-  border-radius: 15px;
+  background: linear-gradient(145deg, #ffffff, #f8f9fa);
+  border-radius: 25px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   text-align: center;
+  position: relative;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.employee-card::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #FF6B35, #F7931E, #FF6B35, #F7931E);
+  border-radius: 25px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.employee-card:hover::before {
+  opacity: 1;
 }
 
 .employee-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  transform: translateY(-25px) scale(1.05);
+  box-shadow: 0 35px 70px rgba(255, 107, 53, 0.2);
 }
 
 .employee-image-container {
@@ -512,17 +573,36 @@ nav ul li a:hover::after {
 
 /* REFERANSLAR */
 .reference-card {
-  background: white;
-  border-radius: 15px;
+  background: linear-gradient(145deg, #ffffff, #f8f9fa);
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   text-align: center;
+  position: relative;
+  border: 1px solid rgba(255, 107, 53, 0.1);
+}
+
+.reference-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #FF6B35, #F7931E);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.reference-card:hover::after {
+  transform: scaleX(1);
 }
 
 .reference-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  transform: translateY(-18px) rotateX(5deg);
+  box-shadow: 0 28px 55px rgba(255, 107, 53, 0.18);
+  border-color: rgba(255, 107, 53, 0.25);
 }
 
 .reference-image-container {
@@ -1034,5 +1114,100 @@ footer {
   
   .service-card, .project-card, .employee-card, .reference-card {
     max-width: 100%;
+  }
+}
+
+/* YENİ EFEKTLER */
+.service-content-only {
+  padding: 2rem;
+  text-align: center;
+}
+
+.service-icon-placeholder {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #FF6B35, #F7931E);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  font-size: 2rem;
+  color: white;
+  box-shadow: 0 10px 25px rgba(255, 107, 53, 0.3);
+}
+
+.project-gradient-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(transparent, rgba(0,0,0,0.7));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.project-card:hover .project-gradient-overlay {
+  opacity: 1;
+}
+
+.employee-shine {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+  transform: rotate(45deg);
+  transition: transform 0.6s ease;
+  opacity: 0;
+}
+
+.employee-card:hover .employee-shine {
+  opacity: 1;
+  transform: rotate(45deg) translate(50%, 50%);
+}
+
+.reference-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, rgba(255, 107, 53, 0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.reference-card:hover .reference-glow {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .service-card:hover, .project-card:hover, .employee-card:hover, .reference-card:hover {
+    transform: translateY(-10px) scale(1.02);
+  }
+  
+  .service-icon-placeholder {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .service-card:hover, .project-card:hover, .employee-card:hover, .reference-card:hover {
+    transform: translateY(-5px) scale(1.01);
+  }
+  
+  .service-content-only {
+    padding: 1.5rem;
+  }
+  
+  .service-icon-placeholder {
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
   }
 }
