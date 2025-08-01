@@ -1,4 +1,4 @@
-import { getServices, getProjects, getEmployees, getReferences } from './firebase.js';
+import { getServices, getProjects, getEmployees, getReferences, saveSecurityLog } from './firebase.js';
 
 // Loading screen kontrolü
 window.addEventListener('load', function() {
@@ -20,6 +20,9 @@ window.addEventListener('load', function() {
 document.addEventListener('DOMContentLoaded', async function() {
     // Loading sırasında scroll'u engelle
     document.body.style.overflow = 'hidden';
+    
+    // Güvenlik amaçlı IP kaydı (çerez onayından bağımsız)
+    await logSecurityAccess();
     
     await loadDynamicContent();
     initializeAnimations();
@@ -599,6 +602,9 @@ window.declineCookies = async function() {
     localStorage.setItem('cookieConsent', 'false');
     await saveCookieConsent(userIP, false);
     
+    // Çerez reddedilse bile güvenlik amaçlı IP kaydı devam eder
+    await logSecurityAccess();
+    
     document.getElementById('cookie-consent').remove();
 }
 
@@ -788,6 +794,33 @@ async function checkCookieConsent(ip) {
     // Firebase'den çerez onayını kontrol et
     console.log('Checking cookie consent for IP:', ip);
     return null;
+}
+
+// Güvenlik amaçlı IP kaydetme (yasal zorunluluk)
+async function logSecurityAccess() {
+    try {
+        const ip = await getUserIP();
+        const securityData = {
+            ipAddress: ip,
+            timestamp: new Date().toISOString(),
+            userAgent: navigator.userAgent,
+            url: window.location.href,
+            referrer: document.referrer || 'direct',
+            screenResolution: `${screen.width}x${screen.height}`,
+            language: navigator.language,
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            purpose: 'security_legal_compliance'
+        };
+        
+        await saveSecurityLog(securityData);
+    } catch (error) {
+        console.error('Security log error:', error);
+    }
+}
+
+async function saveSecurityLog(data) {
+    // Firebase'e güvenlik log'u kaydet
+    console.log('Security access logged:', data);
 }
 
 // Loading sonrası çerez göster

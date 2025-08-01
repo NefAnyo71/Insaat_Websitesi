@@ -628,6 +628,17 @@ window.loadAnalytics = async function() {
   document.getElementById('total-visitors').textContent = uniqueIPs;
   document.getElementById('total-clicks').textContent = totalClicks;
   
+  // IP analizi
+  const ipStats = {};
+  activities.forEach(activity => {
+    const ip = activity.ipAddress;
+    if (ip && ip !== 'unknown') {
+      ipStats[ip] = (ipStats[ip] || 0) + 1;
+    }
+  });
+  
+  displayIPStats(ipStats);
+  
   // Bölüm analizi
   const sectionStats = {};
   const cardStats = {};
@@ -683,6 +694,51 @@ function drawSectionChart(sectionStats) {
     `;
     container.appendChild(barDiv);
   });
+}
+
+function displayIPStats(ipStats) {
+  const container = document.getElementById('ip-stats');
+  container.innerHTML = '';
+  
+  const sortedIPs = Object.entries(ipStats)
+    .sort(([,a], [,b]) => b - a)
+    .slice(0, 20); // Top 20 IP
+  
+  const totalIPs = Object.keys(ipStats).length;
+  const totalVisits = Object.values(ipStats).reduce((a, b) => a + b, 0);
+  
+  // Özet bilgi
+  const summaryDiv = document.createElement('div');
+  summaryDiv.className = 'ip-summary';
+  summaryDiv.innerHTML = `
+    <div class="ip-summary-item">
+      <strong>${totalIPs}</strong> farklı IP adresi
+    </div>
+    <div class="ip-summary-item">
+      <strong>${totalVisits}</strong> toplam ziyaret
+    </div>
+  `;
+  container.appendChild(summaryDiv);
+  
+  // IP listesi
+  const listDiv = document.createElement('div');
+  listDiv.className = 'ip-list';
+  
+  sortedIPs.forEach(([ip, count], index) => {
+    const ipDiv = document.createElement('div');
+    ipDiv.className = 'ip-item';
+    ipDiv.innerHTML = `
+      <div class="ip-rank">#${index + 1}</div>
+      <div class="ip-address">${ip}</div>
+      <div class="ip-count">${count} ziyaret</div>
+      <div class="ip-bar">
+        <div class="ip-bar-fill" style="width: ${(count / sortedIPs[0][1]) * 100}%"></div>
+      </div>
+    `;
+    listDiv.appendChild(ipDiv);
+  });
+  
+  container.appendChild(listDiv);
 }
 
 function drawCardChart(cardStats) {

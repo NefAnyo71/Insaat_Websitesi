@@ -398,3 +398,37 @@ export async function getAdminLogs() {
     return [];
   }
 }
+
+// Güvenlik log'u kaydetme (yasal zorunluluk)
+export async function saveSecurityLog(securityData) {
+  try {
+    await initializeFirebase();
+    
+    await addDoc(collection(db, "securitylogs"), {
+      ...securityData,
+      timestamp: new Date()
+    });
+    return true;
+  } catch (error) {
+    console.error("Güvenlik log'u kaydedilirken hata:", error);
+    return false;
+  }
+}
+
+// Güvenlik loglarını getirme
+export async function getSecurityLogs() {
+  try {
+    await initializeFirebase();
+    
+    const querySnapshot = await getDocs(collection(db, "securitylogs"));
+    const logs = [];
+    querySnapshot.forEach((doc) => {
+      logs.push({ id: doc.id, ...doc.data() });
+    });
+    
+    return logs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  } catch (error) {
+    console.error("Güvenlik logları getirilirken hata:", error);
+    return [];
+  }
+}
