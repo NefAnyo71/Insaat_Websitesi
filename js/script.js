@@ -78,7 +78,7 @@ function renderServices(services) {
         if (service.image) {
             serviceElement.innerHTML = `
                 <div class="service-image">
-                    <img src="${service.image}" alt="${service.title}" onerror="this.src='https://via.placeholder.com/400x200/FF6B35/FFFFFF?text=Resim%20Yuklenemedi'">
+                    <img src="${service.image}" alt="${service.title}" onerror="this.style.display='none'">
                     <div class="service-overlay">
                         <span class="service-text-overlay">${service.text || ''}</span>
                     </div>
@@ -143,7 +143,7 @@ function renderProjects(projects) {
         
         projectElement.innerHTML = `
             <div class="project-image-container">
-                <img src="${project.image || 'https://via.placeholder.com/400x250'}" alt="${project.title || ''}" onerror="this.src='https://via.placeholder.com/400x250/FF6B35/FFFFFF?text=Proje%20Gorseli'">
+                <img src="${project.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjRkY2QjM1Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5Qcm9qZSBHw7xyc2VsaTwvdGV4dD48L3N2Zz4='}" alt="${project.title || ''}" onerror="this.style.display='none'">
                 <div class="project-text-overlay">
                     <span class="project-text-content">${project.text || ''}</span>
                 </div>
@@ -342,7 +342,7 @@ function renderEmployees(employees) {
         
         employeeElement.innerHTML = `
             <div class="employee-image-container">
-                <img src="${employee.image || 'https://via.placeholder.com/300x300'}" alt="${employee.name || ''}" onerror="this.src='https://via.placeholder.com/300x300/FF6B35/FFFFFF?text=Calisan%20Fotografi'">
+                <img src="${employee.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjRkY2QjM1Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7Dh2FsxLHFn2FuPC90ZXh0Pjwvc3ZnPg=='}" alt="${employee.name || ''}" onerror="this.style.display='none'">
                 <div class="employee-text-overlay">
                     <span class="employee-text-content">${employee.text || ''}</span>
                 </div>
@@ -392,7 +392,7 @@ function renderReferences(references) {
         
         referenceElement.innerHTML = `
             <div class="reference-logo">
-                <img src="${reference.image || 'https://via.placeholder.com/120x120'}" alt="${reference.name || ''}" onerror="this.src='https://via.placeholder.com/120x120/FF6B35/FFFFFF?text=Logo'">
+                <img src="${reference.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjRkY2QjM1Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5Mb2dvPC90ZXh0Pjwvc3ZnPg=='}" alt="${reference.name || ''}" onerror="this.style.display='none'">
                 <div class="reference-overlay">
                     <div class="reference-details">
                         <h4>${reference.name || ''}</h4>
