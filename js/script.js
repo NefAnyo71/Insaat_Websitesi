@@ -1,7 +1,26 @@
 import { getServices, getProjects, getEmployees, getReferences } from './firebase.js';
 
+// Loading screen kontrolü
+window.addEventListener('load', function() {
+    setTimeout(() => {
+        const loadingScreen = document.getElementById('loading-screen');
+        loadingScreen.classList.add('fade-out');
+        
+        // Loading screen tamamen kaybolunca elementi kaldır
+        setTimeout(() => {
+            loadingScreen.remove();
+            // Ana içeriği animasyonlu göster
+            document.body.style.overflow = 'visible';
+            initializePageAnimations();
+        }, 800);
+    }, 2000); // 2 saniye loading göster
+});
+
 // Sayfa yüklendiğinde Firebase'den verileri çek
 document.addEventListener('DOMContentLoaded', async function() {
+    // Loading sırasında scroll'u engelle
+    document.body.style.overflow = 'hidden';
+    
     await loadDynamicContent();
     initializeAnimations();
 });
@@ -175,6 +194,26 @@ window.addEventListener('scroll', function() {
     }
 });
 
+// Sayfa yükleme sonrası animasyonlar
+function initializePageAnimations() {
+    // Hero section animasyonu
+    const hero = document.querySelector('.hero-content');
+    if (hero) {
+        hero.style.animation = 'fadeInUp 1s ease 0.3s both';
+    }
+    
+    // Navbar animasyonu
+    const nav = document.querySelector('nav');
+    if (nav) {
+        nav.style.animation = 'slideInFromLeft 0.8s ease 0.1s both';
+    }
+    
+    // Bölüm başlıkları animasyonu
+    document.querySelectorAll('section h2').forEach((title, index) => {
+        title.style.animation = `scaleIn 0.6s ease ${0.2 + index * 0.1}s both`;
+    });
+}
+
 // Animasyonları başlat
 function initializeAnimations() {
     // Intersection Observer for animations
@@ -188,16 +227,30 @@ function initializeAnimations() {
             if (entry.isIntersecting) {
                 entry.target.style.opacity = '1';
                 entry.target.style.transform = 'translateY(0)';
+                
+                // Kart animasyonlarını sırayla başlat
+                const cards = entry.target.parentElement.querySelectorAll('.service-card, .project-card, .employee-card, .reference-card');
+                cards.forEach((card, index) => {
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, index * 100);
+                });
             }
         });
     }, observerOptions);
 
     // Animate elements on scroll
-    document.querySelectorAll('.service-card, .project-card, .employee-card').forEach(el => {
+    document.querySelectorAll('.service-card, .project-card, .employee-card, .reference-card').forEach(el => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(30px)';
         el.style.transition = 'all 0.6s ease';
         observer.observe(el);
+    });
+    
+    // Container'ları da gözlemle
+    document.querySelectorAll('.services-container, .projects-container, .employees-container, .references-container').forEach(container => {
+        observer.observe(container);
     });
 }
 

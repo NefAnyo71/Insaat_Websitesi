@@ -29,6 +29,7 @@ nav {
   align-items: center;
   z-index: 1000;
   transition: all 0.3s ease;
+  opacity: 0;
 }
 
 @media (max-width: 768px) {
@@ -135,7 +136,7 @@ nav ul li a:hover::after {
 .hero-content {
   max-width: 800px;
   padding: 0 2rem;
-  animation: fadeInUp 1s ease;
+  opacity: 0;
 }
 
 .hero h1 {
@@ -201,6 +202,7 @@ nav ul li a:hover::after {
   position: relative;
   font-weight: 700;
   letter-spacing: 1px;
+  opacity: 0;
 }
 
 .services h2::after, .projects h2::after, .employees h2::after, .references h2::after {
@@ -603,7 +605,109 @@ footer {
   font-size: 1rem;
 }
 
+/* LOADING SCREEN */
+#loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+#loading-screen.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loading-content {
+  text-align: center;
+  color: white;
+}
+
+.loading-logo {
+  margin-bottom: 2rem;
+  animation: logoFloat 2s ease-in-out infinite;
+}
+
+.loading-logo i {
+  font-size: 4rem;
+  color: #FF6B35;
+  margin-bottom: 1rem;
+  display: block;
+  animation: iconRotate 3s linear infinite;
+}
+
+.loading-logo h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: white;
+}
+
+.loading-logo span {
+  color: #FF6B35;
+}
+
+.building-blocks {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+
+.block {
+  width: 12px;
+  height: 40px;
+  background: #FF6B35;
+  border-radius: 2px;
+  animation: buildingGrow 1.5s ease-in-out infinite;
+}
+
+.block1 { animation-delay: 0s; }
+.block2 { animation-delay: 0.2s; }
+.block3 { animation-delay: 0.4s; }
+.block4 { animation-delay: 0.6s; }
+
+.loading-text {
+  font-size: 1.2rem;
+  margin: 0;
+  opacity: 0.9;
+  animation: textPulse 2s ease-in-out infinite;
+}
+
 /* ANIMASYONLAR */
+@keyframes logoFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes iconRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes buildingGrow {
+  0%, 100% { 
+    height: 20px;
+    background: #FF6B35;
+  }
+  50% { 
+    height: 40px;
+    background: #F7931E;
+  }
+}
+
+@keyframes textPulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -612,6 +716,39 @@ footer {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
