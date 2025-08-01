@@ -1513,21 +1513,21 @@ footer {
 }
 
 .scroll-text {
-  font-size: 0.9rem;
-  margin-bottom: 10px;
+  font-size: 1.1rem;
+  margin-bottom: 12px;
   opacity: 0.8;
   font-weight: 500;
   letter-spacing: 1px;
 }
 
 .scroll-arrow {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   animation: arrowBounce 1.5s ease-in-out infinite;
 }
 
 .scroll-indicator:hover {
   opacity: 1;
-  transform: translateX(-50%) scale(1.1);
+  transform: translateX(-50%) scale(1.2);
 }
 
 @keyframes scrollBounce {
@@ -1552,7 +1552,7 @@ footer {
 
 @media (max-width: 768px) {
   .scroll-indicator {
-    bottom: 20px;
+    bottom: 80px;
   }
   
   .scroll-text {
