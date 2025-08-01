@@ -23,8 +23,8 @@
       <div class="tabs">
         <button class="tab active" onclick="showTab('services')"><i class="fas fa-cogs"></i> Hizmetler</button>
         <button class="tab" onclick="showTab('projects')"><i class="fas fa-building"></i> Projeler</button>
-        <button class="tab" onclick="showTab('employees')"><i class="fas fa-users"></i> Çalışanlar</button>
-        <button class="tab" onclick="showTab('blogs')"><i class="fas fa-blog"></i> Blog</button>
+        <button class="tab" onclick="showTab('employees')"><i class="fas fa-users"></i>Uzman Ailemiz</button>
+        <button class="tab" onclick="showTab('references')"><i class="fas fa-handshake"></i> Referanslar</button>
       </div>
 
       <!-- Hizmetler Tab -->
@@ -140,14 +140,14 @@
         </div>
       </div>
 
-      <!-- Blog Tab -->
-      <div id="blogs" class="tab-content">
+      <!-- Referanslar Tab -->
+      <div id="references" class="tab-content">
         <div class="form-section">
-          <h2><i class="fas fa-plus-circle"></i> Yeni Blog Yazısı Ekle</h2>
+          <h2><i class="fas fa-plus-circle"></i> Yeni Referans Ekle</h2>
           <div class="form-group">
-            <input type="text" id="blog-title" placeholder="Blog Başlığı">
-            <input type="text" id="blog-text" placeholder="Kısa Metin (Örn: YENİ)" maxlength="10">
-            <select id="blog-text-style">
+            <input type="text" id="reference-name" placeholder="Şirket/Kişi Adı">
+            <input type="text" id="reference-text" placeholder="Kısa Metin (Örn: MÜŞTERİ)" maxlength="10">
+            <select id="reference-text-style">
               <option value="">Metin Stili Seçin</option>
               <option value="bold">Kalın (Bold)</option>
               <option value="italic">Eğik (Italic)</option>
@@ -157,19 +157,21 @@
               <option value="outline">Konturlu</option>
               <option value="modern">Modern</option>
             </select>
-            <input type="text" id="blog-author" placeholder="Yazar Adı">
-            <input type="url" id="blog-image" placeholder="Blog Resim URL">
+            <input type="text" id="reference-sector" placeholder="Sektör">
+            <input type="url" id="reference-image" placeholder="Logo/Resim URL">
             <small style="color: #666; font-size: 0.8rem;">Resim yüklemek için: <a href="https://resimlink.com/" target="_blank" style="color: #FF6B35;">resimlink.com</a></small>
-            <textarea id="blog-content" placeholder="Blog içeriği..."></textarea>
+            <textarea id="reference-description" placeholder="Referans açıklaması..."></textarea>
           </div>
-          <button class="btn" onclick="addBlog()"><i class="fas fa-plus"></i> Blog Ekle</button>
+          <button class="btn" onclick="addReference()"><i class="fas fa-plus"></i> Referans Ekle</button>
         </div>
         
         <div class="items-section">
-          <h3><i class="fas fa-list"></i> Mevcut Blog Yazıları</h3>
-          <div id="blogs-list" class="items-list"></div>
+          <h3><i class="fas fa-list"></i> Mevcut Referanslar</h3>
+          <div id="references-list" class="items-list"></div>
         </div>
       </div>
+
+
     </div>
   </div>
 

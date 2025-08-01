@@ -154,41 +154,42 @@ export async function getEmployees() {
   }
 }
 
-// Blog ekleme
-export async function addBlog(title, text, textStyle, content, image, author) {
+
+
+// Referans ekleme
+export async function addReference(name, text, textStyle, sector, image, description) {
   try {
     await initializeFirebase();
     
-    await addDoc(collection(db, "blogs"), {
-      title: title,
+    await addDoc(collection(db, "references"), {
+      name: name,
       text: text,
       textStyle: textStyle,
-      content: content,
+      sector: sector,
       image: image,
-      author: author,
-      date: new Date().toLocaleDateString('tr-TR'),
+      description: description,
       createdAt: new Date()
     });
     return true;
   } catch (error) {
-    console.error("Blog eklenirken hata:", error);
+    console.error("Referans eklenirken hata:", error);
     return false;
   }
 }
 
-// Blogları getirme
-export async function getBlogs() {
+// Referansları getirme
+export async function getReferences() {
   try {
     await initializeFirebase();
     
-    const querySnapshot = await getDocs(collection(db, "blogs"));
-    const blogs = [];
+    const querySnapshot = await getDocs(collection(db, "references"));
+    const references = [];
     querySnapshot.forEach((doc) => {
-      blogs.push({ id: doc.id, ...doc.data() });
+      references.push({ id: doc.id, ...doc.data() });
     });
-    return blogs;
+    return references;
   } catch (error) {
-    console.error("Bloglar getirilirken hata:", error);
+    console.error("Referanslar getirilirken hata:", error);
     return [];
   }
 }

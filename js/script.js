@@ -1,4 +1,4 @@
-import { getServices, getProjects, getBlogs, getEmployees } from './firebase.js';
+import { getServices, getProjects, getEmployees, getReferences } from './firebase.js';
 
 // Sayfa yüklendiğinde Firebase'den verileri çek
 document.addEventListener('DOMContentLoaded', async function() {
@@ -25,6 +25,12 @@ async function loadDynamicContent() {
         const projects = await getProjects();
         if (projects.length > 0) {
             renderProjects(projects);
+        }
+
+        // Referansları yükle
+        const references = await getReferences();
+        if (references.length > 0) {
+            renderReferences(references);
         }
     } catch (error) {
         console.error('Veri yükleme hatası:', error);
@@ -263,5 +269,39 @@ function renderEmployees(employees) {
         }
         
         employeesContainer.appendChild(employeeElement);
+    });
+}
+
+// Referansları render et
+function renderReferences(references) {
+    const referencesContainer = document.getElementById('references-list');
+    if (!referencesContainer) return;
+
+    referencesContainer.innerHTML = '';
+    
+    references.forEach((reference, index) => {
+        const referenceElement = document.createElement('div');
+        referenceElement.className = 'reference-card';
+        referenceElement.innerHTML = `
+            <div class="reference-image-container">
+                <img src="${reference.image || 'https://via.placeholder.com/300x200'}" alt="${reference.name || ''}" onerror="this.src='https://via.placeholder.com/300x200/FF6B35/FFFFFF?text=Logo'">
+                <div class="reference-text-overlay">
+                    <span class="reference-text-content">${reference.text || ''}</span>
+                </div>
+            </div>
+            <div class="reference-info">
+                <h3>${reference.name || ''}</h3>
+                <span class="reference-sector">${reference.sector || ''}</span>
+                <p>${reference.description || ''}</p>
+            </div>
+        `;
+        
+        // Metin stilini uygula
+        const textElement = referenceElement.querySelector('.reference-text-content');
+        if (textElement && reference.textStyle) {
+            applyTextStyleToElement(textElement, reference.textStyle);
+        }
+        
+        referencesContainer.appendChild(referenceElement);
     });
 }

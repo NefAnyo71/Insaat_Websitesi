@@ -1,4 +1,4 @@
-import { addService, getServices, addProject, getProjects, addBlog, getBlogs, addEmployee, getEmployees, deleteItem } from './firebase.js';
+import { addService, getServices, addProject, getProjects, addEmployee, getEmployees, addReference, getReferences, deleteItem } from './firebase.js';
 
 // Hizmet ekleme
 window.addService = async function() {
@@ -138,34 +138,7 @@ window.addProject = async function() {
   }
 }
 
-// Blog ekleme
-window.addBlog = async function() {
-  const title = document.getElementById('blog-title').value;
-  const text = document.getElementById('blog-text').value;
-  const textStyle = document.getElementById('blog-text-style').value;
-  const content = document.getElementById('blog-content').value;
-  const image = document.getElementById('blog-image').value;
-  const author = document.getElementById('blog-author').value;
-  
-  if (!title || !text || !content || !image || !author) {
-    alert('Lütfen zorunlu alanları doldurun!');
-    return;
-  }
-  
-  const success = await addBlog(title, text, textStyle, content, image, author);
-  if (success) {
-    alert('Blog başarıyla eklendi!');
-    document.getElementById('blog-title').value = '';
-    document.getElementById('blog-text').value = '';
-    document.getElementById('blog-text-style').value = '';
-    document.getElementById('blog-content').value = '';
-    document.getElementById('blog-image').value = '';
-    document.getElementById('blog-author').value = '';
-    loadBlogs();
-  } else {
-    alert('Blog eklenirken hata oluştu!');
-  }
-}
+
 
 // Hizmetleri yükleme
 async function loadServices() {
@@ -208,26 +181,7 @@ async function loadProjects() {
   });
 }
 
-// Blogları yükleme
-async function loadBlogs() {
-  const blogs = await getBlogs();
-  const container = document.getElementById('blogs-list');
-  container.innerHTML = '';
-  
-  blogs.forEach(blog => {
-    const div = document.createElement('div');
-    div.className = 'item';
-    div.innerHTML = `
-      <h4>${blog.title || ''}</h4>
-      <p>Metin: ${blog.text || ''}</p>
-      <p>Yazar: ${blog.author || ''}</p>
-      <p>Tarih: ${blog.date || ''}</p>
-      <p>${(blog.content || '').substring(0, 100)}...</p>
-      <button onclick="deleteBlog('${blog.id}')">Sil</button>
-    `;
-    container.appendChild(div);
-  });
-}
+
 
 // Silme fonksiyonları
 window.deleteService = async function(id) {
@@ -250,15 +204,7 @@ window.deleteProject = async function(id) {
   }
 }
 
-window.deleteBlog = async function(id) {
-  if (confirm('Bu blogu silmek istediğinizden emin misiniz?')) {
-    const success = await deleteItem('blogs', id);
-    if (success) {
-      alert('Blog silindi!');
-      loadBlogs();
-    }
-  }
-}
+
 
 // Çalışan ekleme
 window.addEmployee = async function() {
@@ -321,10 +267,71 @@ window.deleteEmployee = async function(id) {
   }
 }
 
+// Referans ekleme
+window.addReference = async function() {
+  const name = document.getElementById('reference-name').value;
+  const text = document.getElementById('reference-text').value;
+  const textStyle = document.getElementById('reference-text-style').value;
+  const sector = document.getElementById('reference-sector').value;
+  const image = document.getElementById('reference-image').value;
+  const description = document.getElementById('reference-description').value;
+  
+  if (!name || !text || !sector || !image || !description) {
+    alert('Lütfen zorunlu alanları doldurun!');
+    return;
+  }
+  
+  const success = await addReference(name, text, textStyle, sector, image, description);
+  if (success) {
+    alert('Referans başarıyla eklendi!');
+    document.getElementById('reference-name').value = '';
+    document.getElementById('reference-text').value = '';
+    document.getElementById('reference-text-style').value = '';
+    document.getElementById('reference-sector').value = '';
+    document.getElementById('reference-image').value = '';
+    document.getElementById('reference-description').value = '';
+    loadReferences();
+  } else {
+    alert('Referans eklenirken hata oluştu!');
+  }
+}
+
+// Referansları yükleme
+async function loadReferences() {
+  const references = await getReferences();
+  const container = document.getElementById('references-list');
+  container.innerHTML = '';
+  
+  references.forEach(reference => {
+    const div = document.createElement('div');
+    div.className = 'item';
+    div.innerHTML = `
+      <h4>${reference.name || ''}</h4>
+      <p>Metin: ${reference.text || ''}</p>
+      <p>Sektör: ${reference.sector || ''}</p>
+      <p>${reference.description || ''}</p>
+      <img src="${reference.image || 'https://via.placeholder.com/100x60'}" style="width: 100px; height: 60px; object-fit: cover;">
+      <button onclick="deleteReference('${reference.id}')">Sil</button>
+    `;
+    container.appendChild(div);
+  });
+}
+
+// Referans silme
+window.deleteReference = async function(id) {
+  if (confirm('Bu referansı silmek istediğinizden emin misiniz?')) {
+    const success = await deleteItem('references', id);
+    if (success) {
+      alert('Referans silindi!');
+      loadReferences();
+    }
+  }
+}
+
 // Sayfa yüklendiğinde verileri getir
 document.addEventListener('DOMContentLoaded', function() {
   loadServices();
   loadProjects();
-  loadBlogs();
   loadEmployees();
+  loadReferences();
 });
