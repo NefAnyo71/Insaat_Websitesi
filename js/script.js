@@ -818,10 +818,7 @@ async function logSecurityAccess() {
     }
 }
 
-async function saveSecurityLog(data) {
-    // Firebase'e güvenlik log'u kaydet
-    console.log('Security access logged:', data);
-}
+
 
 // Loading sonrası çerez göster
 window.addEventListener('load', function() {
