@@ -812,26 +812,54 @@ function drawCardChart(cardStats) {
   });
 }
 
-// Analiz raporu indirme
+// Analiz raporu Excel olarak indirme
 window.exportAnalytics = async function() {
   const { activities, consents } = await getUserStats();
   
-  const report = {
-    generatedAt: new Date().toISOString(),
-    totalActivities: activities.length,
-    totalConsents: consents.length,
-    uniqueVisitors: new Set(activities.map(a => a.ipAddress)).size,
-    activities: activities,
-    consents: consents
-  };
+  // Bölüm analizi
+  const sectionStats = {};
+  const cardStats = {};
   
-  const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `user-analytics-${new Date().toISOString().split('T')[0]}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
+  activities.forEach(activity => {
+    if (activity.activityType === 'mouse_movement' && activity.data.movements) {
+      activity.data.movements.forEach(movement => {
+        if (movement.section) {
+          sectionStats[movement.section] = (sectionStats[movement.section] || 0) + 1;
+        }
+        
+        if (movement.cardType && movement.cardTitle) {
+          const cardKey = `${movement.cardType}: ${movement.cardTitle}`;
+          cardStats[cardKey] = (cardStats[cardKey] || 0) + 1;
+        }
+      });
+    }
+  });
+  
+  // Excel verisi hazırla
+  const workbook = XLSX.utils.book_new();
+  
+  // Bölüm analizi sayfası
+  const sectionData = [['Bölüm', 'Ziyaret Sayısı', 'Yüzde']];
+  const sectionTotal = Object.values(sectionStats).reduce((a, b) => a + b, 0);
+  Object.entries(sectionStats).forEach(([section, count]) => {
+    const percentage = ((count / sectionTotal) * 100).toFixed(1);
+    sectionData.push([section, count, `${percentage}%`]);
+  });
+  
+  const sectionSheet = XLSX.utils.aoa_to_sheet(sectionData);
+  XLSX.utils.book_append_sheet(workbook, sectionSheet, 'Bölüm Analizi');
+  
+  // Kart analizi sayfası
+  const cardData = [['Kart', 'Tıklama Sayısı']];
+  Object.entries(cardStats).forEach(([card, count]) => {
+    cardData.push([card, count]);
+  });
+  
+  const cardSheet = XLSX.utils.aoa_to_sheet(cardData);
+  XLSX.utils.book_append_sheet(workbook, cardSheet, 'Kart Analizi');
+  
+  // Excel dosyasını indir
+  XLSX.writeFile(workbook, `kullanici-analizi-${new Date().toISOString().split('T')[0]}.xlsx`);
 }
 
 // Logları yükleme
