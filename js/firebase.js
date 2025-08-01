@@ -207,3 +207,25 @@ export async function deleteItem(collectionName, id) {
     return false;
   }
 }
+
+// Admin giriş kontrolü - Firebase'den
+export async function checkAdminLogin(username, password) {
+  try {
+    await initializeFirebase();
+    
+    const querySnapshot = await getDocs(collection(db, "admin"));
+    let isValid = false;
+    
+    querySnapshot.forEach((doc) => {
+      const adminData = doc.data();
+      if (adminData.username === username && adminData.password === password) {
+        isValid = true;
+      }
+    });
+    
+    return isValid;
+  } catch (error) {
+    console.error('Giriş kontrol hatası:', error);
+    return false;
+  }
+}

@@ -1,4 +1,4 @@
-import { addService, getServices, addProject, getProjects, addEmployee, getEmployees, addReference, getReferences, deleteItem } from './firebase.js';
+import { addService, getServices, addProject, getProjects, addEmployee, getEmployees, addReference, getReferences, deleteItem, checkAdminLogin } from './firebase.js';
 
 // Hizmet ekleme
 window.addService = async function() {
@@ -510,10 +510,68 @@ window.saveEdit = async function(type, id) {
   closeEditModal();
 }
 
-// Sayfa yüklendiğinde verileri getir
-document.addEventListener('DOMContentLoaded', function() {
+// Admin giriş kontrolü
+function checkLogin() {
+  const isLoggedIn = sessionStorage.getItem('adminLoggedIn');
+  if (!isLoggedIn) {
+    showLoginModal();
+    return false;
+  }
+  return true;
+}
+
+// Login modal göster
+function showLoginModal() {
+  const loginHTML = `
+    <div id="login-modal" class="login-modal">
+      <div class="login-content">
+        <h2><i class="fas fa-lock"></i> Admin Girişi</h2>
+        <div class="login-form">
+          <input type="text" id="admin-username" placeholder="Kullanıcı Adı">
+          <input type="password" id="admin-password" placeholder="Şifre">
+          <button class="btn login-btn" onclick="attemptLogin()">Giriş Yap</button>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  document.body.insertAdjacentHTML('beforeend', loginHTML);
+  document.body.style.overflow = 'hidden';
+}
+
+// Giriş denemesi
+window.attemptLogin = async function() {
+  const username = document.getElementById('admin-username').value;
+  const password = document.getElementById('admin-password').value;
+  
+  if (!username || !password) {
+    alert('Lütfen kullanıcı adı ve şifre girin!');
+    return;
+  }
+  
+  const isValid = await checkAdminLogin(username, password);
+  
+  if (isValid) {
+    sessionStorage.setItem('adminLoggedIn', 'true');
+    document.getElementById('login-modal').remove();
+    document.body.style.overflow = 'visible';
+    loadAdminData();
+  } else {
+    alert('Geçersiz kullanıcı adı veya şifre!');
+  }
+}
+
+// Admin verilerini yükle
+function loadAdminData() {
   loadServices();
   loadProjects();
   loadEmployees();
   loadReferences();
+}
+
+// Sayfa yüklendiğinde giriş kontrolü yap
+document.addEventListener('DOMContentLoaded', function() {
+  if (checkLogin()) {
+    loadAdminData();
+  }
 });
