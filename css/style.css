@@ -1757,7 +1757,7 @@ footer {
 @media (max-width: 768px) {
   .social-media-buttons {
     right: 15px;
-    bottom: 120px;
+    bottom: 100px;
     gap: 8px;
   }
   
