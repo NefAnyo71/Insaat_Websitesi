@@ -1130,6 +1130,10 @@ footer {
     font-size: 1.8rem;
   }
   
+  .typing-text-2 {
+    font-size: 0.8rem !important;
+  }
+  
   .services, .projects, .employees, .references {
     padding: 2rem 0.5rem;
   }
