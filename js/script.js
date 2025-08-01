@@ -101,18 +101,10 @@ function renderServices(services) {
             `;
         }
         
-        // Metin stilini uygula
-        const textElement = serviceElement.querySelector('.service-text-overlay, .service-text-content');
+        // Metin stilini uygula (sadece resimli hizmetler için)
+        const textElement = serviceElement.querySelector('.service-text-overlay');
         if (textElement && service.textStyle && service.text) {
             applyTextStyleToElement(textElement, service.textStyle);
-        }
-        
-        // Boş metin varsa container'ı gizle
-        if (!service.text || service.text.trim() === '') {
-            const textDisplay = serviceElement.querySelector('.service-text-display');
-            if (textDisplay) {
-                textDisplay.style.display = 'none';
-            }
         }
         
         servicesContainer.appendChild(serviceElement);
