@@ -568,7 +568,7 @@ async function showCookieConsent() {
                 </div>
                 <div class="cookie-text">
                     <h3>Çerez Kullanımı</h3>
-                    <p>Web sitemizde kullanıcı deneyimini iyileştirmek için çerezler kullanıyoruz.</p>
+                    <p>Web sitemizde kullanıcı deneyimini iyileştirmek için çerezler kullanıyoruz. <a href="cerez-aydinlatma.html" target="_blank" style="color: #FF6B35; text-decoration: underline;">Detaylı bilgi</a></p>
                 </div>
                 <div class="cookie-buttons">
                     <button class="cookie-btn accept" onclick="acceptCookies()">

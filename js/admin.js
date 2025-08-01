@@ -761,7 +761,7 @@ function displayIPStats(ipStats) {
       <strong>${totalIPs}</strong> farklı IP adresi
     </div>
     <div class="ip-summary-item">
-      <strong>${totalVisits}</strong> toplam ziyaret
+      <strong>${totalVisits}</strong> toplam alınan çerez sayısı
     </div>
   `;
   container.appendChild(summaryDiv);
@@ -776,7 +776,7 @@ function displayIPStats(ipStats) {
     ipDiv.innerHTML = `
       <div class="ip-rank">#${index + 1}</div>
       <div class="ip-address">${ip}</div>
-      <div class="ip-count">${count} ziyaret</div>
+      <div class="ip-count">${count} çerez alındı</div>
       <div class="ip-bar">
         <div class="ip-bar-fill" style="width: ${(count / sortedIPs[0][1]) * 100}%"></div>
       </div>
