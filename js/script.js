@@ -249,65 +249,41 @@ function initializePageAnimations() {
 
 // Animasyonları başlat
 function initializeAnimations() {
-    // Section title typing observer
-    const titleObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && !entry.target.classList.contains('typing-active')) {
-                startSectionTitleTyping(entry.target);
-            }
-        });
-    }, { threshold: 0.5 });
+    // Intersection Observer for animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
 
-    // Card animation observer
-    const cardObserver = new IntersectionObserver((entries) => {
+    const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                animateCards(entry.target);
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+                
+                // Kart animasyonlarını sırayla başlat
+                const cards = entry.target.parentElement.querySelectorAll('.service-card, .project-card, .employee-card, .reference-card');
+                cards.forEach((card, index) => {
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, index * 100);
+                });
             }
         });
-    }, { threshold: 0.1 });
+    }, observerOptions);
 
-    // Observe section titles
-    document.querySelectorAll('.section-title-typing').forEach(title => {
-        titleObserver.observe(title);
+    // Animate elements on scroll
+    document.querySelectorAll('.service-card, .project-card, .employee-card, .reference-card').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'all 0.6s ease';
+        observer.observe(el);
     });
-
-    // Observe card containers
+    
+    // Container'ları da gözlemle
     document.querySelectorAll('.services-container, .projects-container, .employees-container, .references-container').forEach(container => {
-        cardObserver.observe(container);
-    });
-}
-
-// Section title typing animation
-function startSectionTitleTyping(element) {
-    const text = element.dataset.text;
-    element.textContent = '';
-    element.classList.add('typing-active');
-    
-    let i = 0;
-    const typeTitle = () => {
-        if (i < text.length) {
-            element.textContent += text.charAt(i);
-            i++;
-            setTimeout(typeTitle, 100);
-        } else {
-            setTimeout(() => {
-                element.classList.add('typing-complete');
-            }, 1000);
-        }
-    };
-    
-    typeTitle();
-}
-
-// Animate cards sequentially
-function animateCards(container) {
-    const cards = container.querySelectorAll('.service-card, .project-card, .employee-card, .reference-item');
-    cards.forEach((card, index) => {
-        card.classList.add('card-animate');
-        setTimeout(() => {
-            card.classList.add('show');
-        }, index * 150);
+        observer.observe(container);
     });
 }
 
@@ -541,8 +517,6 @@ function initScrollReveal() {
 // Typing Animation
 function initTypingAnimation() {
     const typingElement = document.querySelector('.typing-text');
-    const secondaryElement = document.querySelector('.typing-text-secondary');
-    
     if (!typingElement) return;
     
     const text = typingElement.dataset.text || typingElement.textContent;
@@ -558,32 +532,8 @@ function initTypingAnimation() {
             // Cursor blink efekti
             setTimeout(() => {
                 typingElement.classList.add('typing-complete');
-                // İkinci animasyonu başlat
-                startSecondaryTyping();
             }, 1000);
         }
-    };
-    
-    const startSecondaryTyping = () => {
-        if (!secondaryElement) return;
-        
-        const secondaryText = secondaryElement.dataset.text || secondaryElement.textContent;
-        secondaryElement.textContent = '';
-        secondaryElement.style.opacity = '1';
-        secondaryElement.style.visibility = 'visible';
-        
-        let j = 0;
-        const typeSecondary = () => {
-            if (j < secondaryText.length) {
-                secondaryElement.textContent += secondaryText.charAt(j);
-                j++;
-                setTimeout(typeSecondary, 50);
-            } else {
-                secondaryElement.classList.add('typing-complete');
-            }
-        };
-        
-        typeSecondary();
     };
     
     // 2 saniye bekle sonra başlat
