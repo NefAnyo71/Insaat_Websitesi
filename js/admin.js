@@ -353,13 +353,21 @@ window.editService = async function(id) {
     document.getElementById('service-details').value = service.details || '';
     document.getElementById('service-image').value = service.image || '';
     
+    // Hizmetler tab'ına geç
+    showTab('services');
+    
     // Form başlığını değiştir
-    document.querySelector('#services h2').innerHTML = '<i class="fas fa-edit"></i> Hizmet Düzenle';
+    const serviceHeader = document.querySelector('#services .form-section h2');
+    if (serviceHeader) {
+      serviceHeader.innerHTML = '<i class="fas fa-edit"></i> Hizmet Düzenle';
+    }
     
     // Buton metnini değiştir
     const addBtn = document.querySelector('#services .btn[onclick="addService()"]');
-    addBtn.innerHTML = '<i class="fas fa-save"></i> Güncelle';
-    addBtn.setAttribute('onclick', `updateService('${id}')`);
+    if (addBtn) {
+      addBtn.innerHTML = '<i class="fas fa-save"></i> Güncelle';
+      addBtn.setAttribute('onclick', `updateService('${id}')`);
+    }
   }
 }
 
@@ -374,10 +382,16 @@ window.editProject = async function(id) {
     document.getElementById('project-desc').value = project.description || '';
     document.getElementById('project-image').value = project.image || '';
     
-    document.querySelector('#projects h2').innerHTML = '<i class="fas fa-edit"></i> Proje Düzenle';
+    showTab('projects');
+    const projectHeader = document.querySelector('#projects .form-section h2');
+    if (projectHeader) {
+      projectHeader.innerHTML = '<i class="fas fa-edit"></i> Proje Düzenle';
+    }
     const addBtn = document.querySelector('#projects .btn[onclick="addProject()"]');
-    addBtn.innerHTML = '<i class="fas fa-save"></i> Güncelle';
-    addBtn.setAttribute('onclick', `updateProject('${id}')`);
+    if (addBtn) {
+      addBtn.innerHTML = '<i class="fas fa-save"></i> Güncelle';
+      addBtn.setAttribute('onclick', `updateProject('${id}')`);
+    }
   }
 }
 
@@ -392,10 +406,16 @@ window.editEmployee = async function(id) {
     document.getElementById('employee-experience').value = employee.experience || '';
     document.getElementById('employee-image').value = employee.image || '';
     
-    document.querySelector('#employees h2').innerHTML = '<i class="fas fa-edit"></i> Çalışan Düzenle';
+    showTab('employees');
+    const employeeHeader = document.querySelector('#employees .form-section h2');
+    if (employeeHeader) {
+      employeeHeader.innerHTML = '<i class="fas fa-edit"></i> Çalışan Düzenle';
+    }
     const addBtn = document.querySelector('#employees .btn[onclick="addEmployee()"]');
-    addBtn.innerHTML = '<i class="fas fa-save"></i> Güncelle';
-    addBtn.setAttribute('onclick', `updateEmployee('${id}')`);
+    if (addBtn) {
+      addBtn.innerHTML = '<i class="fas fa-save"></i> Güncelle';
+      addBtn.setAttribute('onclick', `updateEmployee('${id}')`);
+    }
   }
 }
 
@@ -410,10 +430,16 @@ window.editReference = async function(id) {
     document.getElementById('reference-image').value = reference.image || '';
     document.getElementById('reference-description').value = reference.description || '';
     
-    document.querySelector('#references h2').innerHTML = '<i class="fas fa-edit"></i> Referans Düzenle';
+    showTab('references');
+    const referenceHeader = document.querySelector('#references .form-section h2');
+    if (referenceHeader) {
+      referenceHeader.innerHTML = '<i class="fas fa-edit"></i> Referans Düzenle';
+    }
     const addBtn = document.querySelector('#references .btn[onclick="addReference()"]');
-    addBtn.innerHTML = '<i class="fas fa-save"></i> Güncelle';
-    addBtn.setAttribute('onclick', `updateReference('${id}')`);
+    if (addBtn) {
+      addBtn.innerHTML = '<i class="fas fa-save"></i> Güncelle';
+      addBtn.setAttribute('onclick', `updateReference('${id}')`);
+    }
   }
 }
 
