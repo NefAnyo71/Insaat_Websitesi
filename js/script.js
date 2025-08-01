@@ -517,6 +517,8 @@ function initScrollReveal() {
 // Typing Animation
 function initTypingAnimation() {
     const typingElement = document.querySelector('.typing-text');
+    const secondaryElement = document.querySelector('.typing-text-secondary');
+    
     if (!typingElement) return;
     
     const text = typingElement.dataset.text || typingElement.textContent;
@@ -532,8 +534,32 @@ function initTypingAnimation() {
             // Cursor blink efekti
             setTimeout(() => {
                 typingElement.classList.add('typing-complete');
+                // İkinci animasyonu başlat
+                startSecondaryTyping();
             }, 1000);
         }
+    };
+    
+    const startSecondaryTyping = () => {
+        if (!secondaryElement) return;
+        
+        const secondaryText = secondaryElement.dataset.text || secondaryElement.textContent;
+        secondaryElement.textContent = '';
+        secondaryElement.style.opacity = '1';
+        secondaryElement.style.visibility = 'visible';
+        
+        let j = 0;
+        const typeSecondary = () => {
+            if (j < secondaryText.length) {
+                secondaryElement.textContent += secondaryText.charAt(j);
+                j++;
+                setTimeout(typeSecondary, 50);
+            } else {
+                secondaryElement.classList.add('typing-complete');
+            }
+        };
+        
+        typeSecondary();
     };
     
     // 2 saniye bekle sonra başlat
@@ -716,17 +742,24 @@ function getCardElement(target) {
 }
 
 function getCurrentSection(mouseY) {
-    const sections = ['home', 'services', 'employees', 'projects', 'references'];
-    for (const sectionId of sections) {
-        const element = document.getElementById(sectionId);
+    const sections = [
+        { id: 'home', name: 'Anasayfa' },
+        { id: 'services', name: 'Hizmetler' },
+        { id: 'employees', name: 'Uzman Ailemiz' },
+        { id: 'projects', name: 'Projelerimiz' },
+        { id: 'references', name: 'Referanslarımız' }
+    ];
+    
+    for (const section of sections) {
+        const element = document.getElementById(section.id);
         if (element) {
             const rect = element.getBoundingClientRect();
             if (mouseY >= rect.top && mouseY <= rect.bottom) {
-                return sectionId;
+                return section.name;
             }
         }
     }
-    return 'unknown';
+    return 'Bilinmeyen Bölüm';
 }
 
 let sessionStartTime = Date.now();

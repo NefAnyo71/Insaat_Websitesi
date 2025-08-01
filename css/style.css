@@ -1394,6 +1394,22 @@ footer {
   animation: blink 1s infinite;
 }
 
+.typing-text-secondary {
+  opacity: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  visibility: hidden;
+}
+
+.typing-text-secondary::after {
+  content: '|';
+  animation: blink 1s infinite;
+}
+
+.typing-text-secondary.typing-complete::after {
+  display: none;
+}
+
 /* HOVER 3D TRANSFORMATIONS */
 .hover-3d {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

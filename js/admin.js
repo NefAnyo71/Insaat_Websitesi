@@ -659,9 +659,10 @@ window.loadAnalytics = async function() {
   });
   
   // En popüler bölüm
-  const mostViewedSection = Object.keys(sectionStats).reduce((a, b) => 
-    sectionStats[a] > sectionStats[b] ? a : b, 'Veri yok'
-  );
+  const mostViewedSection = Object.keys(sectionStats).length > 0 ? 
+    Object.keys(sectionStats).reduce((a, b) => 
+      sectionStats[a] > sectionStats[b] ? a : b
+    ) : 'Veri yok';
   document.getElementById('most-viewed-section').textContent = mostViewedSection;
   
   // En popüler kart
