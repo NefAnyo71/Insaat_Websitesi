@@ -1,4 +1,4 @@
-import { addService, getServices, addProject, getProjects, addEmployee, getEmployees, addReference, getReferences, deleteItem, checkAdminLogin, getAdmins, addAdmin } from './firebase.js';
+import { addService, getServices, addProject, getProjects, addEmployee, getEmployees, addReference, getReferences, deleteItem, checkAdminLogin, getAdmins, addAdmin, updateAdmin } from './firebase.js';
 
 // Hizmet ekleme
 window.addService = async function() {
@@ -518,8 +518,27 @@ window.closeEditModal = function() {
 
 // Düzenlemeleri kaydet
 window.saveEdit = async function(type, id) {
-  alert('Güncelleme fonksiyonu henüz eklenmedi!');
-  closeEditModal();
+  if (type === 'admin') {
+    const username = document.getElementById('edit-admin-username').value;
+    const password = document.getElementById('edit-admin-password').value;
+    
+    if (!username || !password) {
+      alert('Lütfen tüm alanları doldurun!');
+      return;
+    }
+    
+    const success = await updateAdmin(id, username, password);
+    if (success) {
+      alert('Admin başarıyla güncellendi!');
+      closeEditModal();
+      loadAdmins();
+    } else {
+      alert('Güncelleme sırasında hata oluştu!');
+    }
+  } else {
+    alert('Diğer güncelleme fonksiyonları henüz eklenmedi!');
+    closeEditModal();
+  }
 }
 
 // Admin giriş kontrolü
