@@ -547,8 +547,21 @@ function initTypingAnimation() {
     setTimeout(typeWriter, 2000);
 }
 
-// Initialize all animations
+// Scroll indicator click handler
 document.addEventListener('DOMContentLoaded', function() {
+    const scrollIndicator = document.querySelector('.scroll-indicator');
+    if (scrollIndicator) {
+        scrollIndicator.addEventListener('click', function() {
+            const servicesSection = document.querySelector('#services');
+            if (servicesSection) {
+                servicesSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    }
+    
     initScrollReveal();
     initTypingAnimation();
 });
