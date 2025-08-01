@@ -78,6 +78,9 @@ function renderServices(services) {
                 <div class="service-content">
                     <h3>${service.title || ''}</h3>
                     <p>${service.description || ''}</p>
+                    <button class="service-details-btn" onclick="openServiceModal('${service.id}', '${service.title}', '${service.details}', '${service.image}')">
+                        <i class="fas fa-info-circle"></i> Detayları Gör
+                    </button>
                 </div>
             `;
         } else {
@@ -87,6 +90,9 @@ function renderServices(services) {
                 </div>
                 <h3>${service.title || ''}</h3>
                 <p>${service.description || ''}</p>
+                <button class="service-details-btn" onclick="openServiceModal('${service.id}', '${service.title}', '${service.details}', '${service.image}')">
+                    <i class="fas fa-info-circle"></i> Detayları Gör
+                </button>
             `;
         }
         
@@ -358,3 +364,69 @@ function renderReferences(references) {
         referencesContainer.appendChild(referenceElement);
     });
 }
+
+// Hizmet detay modalı aç
+window.openServiceModal = function(id, title, details, image) {
+    // Modal HTML oluştur
+    const modalHTML = `
+        <div id="service-modal" class="service-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-cogs"></i> ${title}</h2>
+                    <button class="modal-close" onclick="closeServiceModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
+                    <div class="modal-text">
+                        <h3>Hizmet Detayları</h3>
+                        <p>${details}</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn modal-btn" onclick="closeServiceModal()">
+                        <i class="fas fa-check"></i> Tamam
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Modal'ı sayfaya ekle
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // Modal animasyonu
+    setTimeout(() => {
+        document.getElementById('service-modal').classList.add('show');
+    }, 10);
+    
+    // Scroll'u engelle
+    document.body.style.overflow = 'hidden';
+}
+
+// Hizmet detay modalını kapat
+window.closeServiceModal = function() {
+    const modal = document.getElementById('service-modal');
+    if (modal) {
+        modal.classList.remove('show');
+        setTimeout(() => {
+            modal.remove();
+            document.body.style.overflow = 'visible';
+        }, 300);
+    }
+}
+
+// Modal dışına tıklanınca kapat
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('service-modal')) {
+        closeServiceModal();
+    }
+});
+
+// ESC tuşuyla kapat
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeServiceModal();
+    }
+});

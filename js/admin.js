@@ -6,14 +6,15 @@ window.addService = async function() {
   const text = document.getElementById('service-text').value;
   const textStyle = document.getElementById('service-text-style').value;
   const description = document.getElementById('service-desc').value;
+  const details = document.getElementById('service-details').value;
   const image = document.getElementById('service-image').value;
   
-  if (!title || !text || !description) {
+  if (!title || !text || !description || !details) {
     alert('Lütfen zorunlu alanları doldurun!');
     return;
   }
   
-  const success = await addService(title, text, textStyle, description, image);
+  const success = await addService(title, text, textStyle, description, details, image);
   if (success) {
     alert('Hizmet başarıyla eklendi!');
     document.getElementById('service-title').value = '';
@@ -21,6 +22,7 @@ window.addService = async function() {
     document.getElementById('service-text-style').value = '';
     document.getElementById('service-image').value = '';
     document.getElementById('service-desc').value = '';
+    document.getElementById('service-details').value = '';
     document.getElementById('service-preview').style.display = 'none';
     loadServices();
   } else {
@@ -154,6 +156,7 @@ async function loadServices() {
       <p>Metin: ${service.text || ''}</p>
       <p>Stil: ${service.textStyle || 'Yok'}</p>
       <p>${service.description || ''}</p>
+      <p><strong>Detaylar:</strong> ${(service.details || '').substring(0, 100)}...</p>
       <button onclick="deleteService('${service.id}')">Sil</button>
     `;
     container.appendChild(div);

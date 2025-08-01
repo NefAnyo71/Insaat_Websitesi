@@ -37,7 +37,7 @@ async function initializeFirebase() {
 }
 
 // Hizmet ekleme
-export async function addService(title, text, textStyle, description, image = null) {
+export async function addService(title, text, textStyle, description, details, image = null) {
   try {
     await initializeFirebase();
     
@@ -46,6 +46,7 @@ export async function addService(title, text, textStyle, description, image = nu
       text: text,
       textStyle: textStyle,
       description: description,
+      details: details,
       createdAt: new Date()
     };
     
