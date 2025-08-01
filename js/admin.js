@@ -1,4 +1,4 @@
-import { addService, getServices, addProject, getProjects, addEmployee, getEmployees, addReference, getReferences, deleteItem, checkAdminLogin } from './firebase.js';
+import { addService, getServices, addProject, getProjects, addEmployee, getEmployees, addReference, getReferences, deleteItem, checkAdminLogin, getAdmins, addAdmin } from './firebase.js';
 
 // Hizmet ekleme
 window.addService = async function() {
@@ -475,6 +475,18 @@ function openEditModal(type, data, id) {
         <button class="btn save-btn" onclick="saveEdit('reference', '${id}')">Kaydet</button>
       </div>
     `;
+  } else if (type === 'admin') {
+    modalContent = `
+      <h2><i class="fas fa-edit"></i> Admin Düzenle</h2>
+      <div class="edit-form">
+        <input type="text" id="edit-admin-username" placeholder="Kullanıcı Adı" value="${data.username || ''}">
+        <input type="password" id="edit-admin-password" placeholder="Şifre" value="${data.password || ''}">
+      </div>
+      <div class="modal-actions">
+        <button class="btn cancel-btn" onclick="closeEditModal()">İptal</button>
+        <button class="btn save-btn" onclick="saveEdit('admin', '${id}')">Kaydet</button>
+      </div>
+    `;
   }
   
   const modalHTML = `
@@ -567,6 +579,69 @@ function loadAdminData() {
   loadProjects();
   loadEmployees();
   loadReferences();
+  loadAdmins();
+}
+
+// Yeni admin ekleme
+window.addNewAdmin = async function() {
+  const username = document.getElementById('admin-new-username').value;
+  const password = document.getElementById('admin-new-password').value;
+  
+  if (!username || !password) {
+    alert('Lütfen kullanıcı adı ve şifre girin!');
+    return;
+  }
+  
+  const success = await addAdmin(username, password);
+  if (success) {
+    alert('Admin başarıyla eklendi!');
+    document.getElementById('admin-new-username').value = '';
+    document.getElementById('admin-new-password').value = '';
+    loadAdmins();
+  } else {
+    alert('Admin eklenirken hata oluştu!');
+  }
+}
+
+// Adminleri yükleme
+async function loadAdmins() {
+  const admins = await getAdmins();
+  const container = document.getElementById('admins-list');
+  container.innerHTML = '';
+  
+  admins.forEach(admin => {
+    const div = document.createElement('div');
+    div.className = 'item';
+    div.innerHTML = `
+      <h4>${admin.username || ''}</h4>
+      <p>Şifre: ${'*'.repeat((admin.password || '').length)}</p>
+      <div class="item-actions">
+        <button class="edit-btn" onclick="editAdmin('${admin.id}')">Düzenle</button>
+        <button class="delete-btn" onclick="deleteAdmin('${admin.id}')">Sil</button>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+// Admin düzenle
+window.editAdmin = async function(id) {
+  const admins = await getAdmins();
+  const admin = admins.find(a => a.id === id);
+  if (admin) {
+    openEditModal('admin', admin, id);
+  }
+}
+
+// Admin sil
+window.deleteAdmin = async function(id) {
+  if (confirm('Bu admin kullanıcısını silmek istediğinizden emin misiniz?')) {
+    const success = await deleteItem('admin', id);
+    if (success) {
+      alert('Admin silindi!');
+      loadAdmins();
+    }
+  }
 }
 
 // Sayfa yüklendiğinde giriş kontrolü yap

@@ -229,3 +229,37 @@ export async function checkAdminLogin(username, password) {
     return false;
   }
 }
+
+// Admin kullanıcılarını getirme
+export async function getAdmins() {
+  try {
+    await initializeFirebase();
+    
+    const querySnapshot = await getDocs(collection(db, "admin"));
+    const admins = [];
+    querySnapshot.forEach((doc) => {
+      admins.push({ id: doc.id, ...doc.data() });
+    });
+    return admins;
+  } catch (error) {
+    console.error("Admin kullanıcılar getirilirken hata:", error);
+    return [];
+  }
+}
+
+// Admin ekleme
+export async function addAdmin(username, password) {
+  try {
+    await initializeFirebase();
+    
+    await addDoc(collection(db, "admin"), {
+      username: username,
+      password: password,
+      createdAt: new Date()
+    });
+    return true;
+  } catch (error) {
+    console.error("Admin eklenirken hata:", error);
+    return false;
+  }
+}

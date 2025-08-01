@@ -25,6 +25,7 @@
         <button class="tab" onclick="showTab('projects')"><i class="fas fa-building"></i> Projeler</button>
         <button class="tab" onclick="showTab('employees')"><i class="fas fa-users"></i>Uzman Ailemiz</button>
         <button class="tab" onclick="showTab('references')"><i class="fas fa-handshake"></i> Referanslar</button>
+        <button class="tab" onclick="showTab('admins')"><i class="fas fa-user-shield"></i> Admin Yönetimi</button>
       </div>
 
       <!-- Hizmetler Tab -->
@@ -169,6 +170,23 @@
         <div class="items-section">
           <h3><i class="fas fa-list"></i> Mevcut Referanslar</h3>
           <div id="references-list" class="items-list"></div>
+        </div>
+      </div>
+
+      <!-- Admin Yönetimi Tab -->
+      <div id="admins" class="tab-content">
+        <div class="form-section">
+          <h2><i class="fas fa-plus-circle"></i> Yeni Admin Ekle</h2>
+          <div class="form-group">
+            <input type="text" id="admin-new-username" placeholder="Kullanıcı Adı">
+            <input type="password" id="admin-new-password" placeholder="Şifre">
+          </div>
+          <button class="btn" onclick="addNewAdmin()"><i class="fas fa-plus"></i> Admin Ekle</button>
+        </div>
+        
+        <div class="items-section">
+          <h3><i class="fas fa-list"></i> Mevcut Adminler</h3>
+          <div id="admins-list" class="items-list"></div>
         </div>
       </div>
 
