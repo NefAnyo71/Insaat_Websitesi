@@ -1394,6 +1394,31 @@ footer {
   animation: blink 1s infinite;
 }
 
+/* EXPERIENCE TEXT TYPING ANIMATION */
+.typing-text-2 {
+  font-size: 1.3rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  animation: typing2 3s steps(50) 5s forwards;
+}
+
+.typing-text-2::after {
+  content: '|';
+  animation: blink 1s infinite 5s;
+}
+
+@keyframes typing2 {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
 /* HOVER 3D TRANSFORMATIONS */
 .hover-3d {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1679,5 +1704,14 @@ footer {
   
   .typing-text::after {
     display: none;
+  }
+  
+  .typing-text-2 {
+    font-size: 1rem;
+    animation: typing2 2.5s steps(50) 2.5s forwards;
+  }
+  
+  .typing-text-2::after {
+    animation: blink 1s infinite 2.5s;
   }
 }
