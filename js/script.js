@@ -78,7 +78,7 @@ function renderServices(services) {
         if (service.image) {
             serviceElement.innerHTML = `
                 <div class="service-image">
-                    <img src="${service.image}" alt="${service.title}" onerror="this.src='https://via.placeholder.com/400x200/FF6B35/FFFFFF?text=Resim+Yüklenemedi'">
+                    <img src="${service.image}" alt="${service.title}" onerror="this.src='https://via.placeholder.com/400x200/FF6B35/FFFFFF?text=Resim%20Yuklenemedi'">
                     <div class="service-overlay">
                         <span class="service-text-overlay">${service.text || ''}</span>
                     </div>
@@ -143,7 +143,7 @@ function renderProjects(projects) {
         
         projectElement.innerHTML = `
             <div class="project-image-container">
-                <img src="${project.image || 'https://via.placeholder.com/400x250'}" alt="${project.title || ''}" onerror="this.src='https://via.placeholder.com/400x250/FF6B35/FFFFFF?text=Proje+Görseli'">
+                <img src="${project.image || 'https://via.placeholder.com/400x250'}" alt="${project.title || ''}" onerror="this.src='https://via.placeholder.com/400x250/FF6B35/FFFFFF?text=Proje%20Gorseli'">
                 <div class="project-text-overlay">
                     <span class="project-text-content">${project.text || ''}</span>
                 </div>
@@ -342,7 +342,7 @@ function renderEmployees(employees) {
         
         employeeElement.innerHTML = `
             <div class="employee-image-container">
-                <img src="${employee.image || 'https://via.placeholder.com/300x300'}" alt="${employee.name || ''}" onerror="this.src='https://via.placeholder.com/300x300/FF6B35/FFFFFF?text=Çalışan+Fotoğrafı'">
+                <img src="${employee.image || 'https://via.placeholder.com/300x300'}" alt="${employee.name || ''}" onerror="this.src='https://via.placeholder.com/300x300/FF6B35/FFFFFF?text=Calisan%20Fotografi'">
                 <div class="employee-text-overlay">
                     <span class="employee-text-content">${employee.text || ''}</span>
                 </div>
