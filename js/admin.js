@@ -157,7 +157,10 @@ async function loadServices() {
       <p>Stil: ${service.textStyle || 'Yok'}</p>
       <p>${service.description || ''}</p>
       <p><strong>Detaylar:</strong> ${(service.details || '').substring(0, 100)}...</p>
-      <button onclick="deleteService('${service.id}')">Sil</button>
+      <div class="item-actions">
+        <button class="edit-btn" onclick="editService('${service.id}')">Düzenle</button>
+        <button class="delete-btn" onclick="deleteService('${service.id}')">Sil</button>
+      </div>
     `;
     container.appendChild(div);
   });
@@ -178,7 +181,10 @@ async function loadProjects() {
       <p>Kategori: ${project.category || ''}</p>
       <p>${project.description || ''}</p>
       <img src="${project.image || 'https://via.placeholder.com/100x60'}" style="width: 100px; height: 60px; object-fit: cover;">
-      <button onclick="deleteProject('${project.id}')">Sil</button>
+      <div class="item-actions">
+        <button class="edit-btn" onclick="editProject('${project.id}')">Düzenle</button>
+        <button class="delete-btn" onclick="deleteProject('${project.id}')">Sil</button>
+      </div>
     `;
     container.appendChild(div);
   });
@@ -253,7 +259,10 @@ async function loadEmployees() {
       <p>Pozisyon: ${employee.position || ''}</p>
       <p>Deneyim: ${employee.experience || 0} yıl</p>
       <img src="${employee.image || 'https://via.placeholder.com/100x100'}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;">
-      <button onclick="deleteEmployee('${employee.id}')">Sil</button>
+      <div class="item-actions">
+        <button class="edit-btn" onclick="editEmployee('${employee.id}')">Düzenle</button>
+        <button class="delete-btn" onclick="deleteEmployee('${employee.id}')">Sil</button>
+      </div>
     `;
     container.appendChild(div);
   });
@@ -314,7 +323,10 @@ async function loadReferences() {
       <p>Sektör: ${reference.sector || ''}</p>
       <p>${reference.description || ''}</p>
       <img src="${reference.image || 'https://via.placeholder.com/100x60'}" style="width: 100px; height: 60px; object-fit: cover;">
-      <button onclick="deleteReference('${reference.id}')">Sil</button>
+      <div class="item-actions">
+        <button class="edit-btn" onclick="editReference('${reference.id}')">Düzenle</button>
+        <button class="delete-btn" onclick="deleteReference('${reference.id}')">Sil</button>
+      </div>
     `;
     container.appendChild(div);
   });
@@ -328,6 +340,80 @@ window.deleteReference = async function(id) {
       alert('Referans silindi!');
       loadReferences();
     }
+  }
+}
+
+// Edit fonksiyonları
+window.editService = async function(id) {
+  const services = await getServices();
+  const service = services.find(s => s.id === id);
+  if (service) {
+    document.getElementById('service-title').value = service.title || '';
+    document.getElementById('service-desc').value = service.description || '';
+    document.getElementById('service-details').value = service.details || '';
+    document.getElementById('service-image').value = service.image || '';
+    
+    // Form başlığını değiştir
+    document.querySelector('#services h2').innerHTML = '<i class="fas fa-edit"></i> Hizmet Düzenle';
+    
+    // Buton metnini değiştir
+    const addBtn = document.querySelector('#services .btn[onclick="addService()"]');
+    addBtn.innerHTML = '<i class="fas fa-save"></i> Güncelle';
+    addBtn.setAttribute('onclick', `updateService('${id}')`);
+  }
+}
+
+window.editProject = async function(id) {
+  const projects = await getProjects();
+  const project = projects.find(p => p.id === id);
+  if (project) {
+    document.getElementById('project-title').value = project.title || '';
+    document.getElementById('project-text').value = project.text || '';
+    document.getElementById('project-text-style').value = project.textStyle || '';
+    document.getElementById('project-category').value = project.category || '';
+    document.getElementById('project-desc').value = project.description || '';
+    document.getElementById('project-image').value = project.image || '';
+    
+    document.querySelector('#projects h2').innerHTML = '<i class="fas fa-edit"></i> Proje Düzenle';
+    const addBtn = document.querySelector('#projects .btn[onclick="addProject()"]');
+    addBtn.innerHTML = '<i class="fas fa-save"></i> Güncelle';
+    addBtn.setAttribute('onclick', `updateProject('${id}')`);
+  }
+}
+
+window.editEmployee = async function(id) {
+  const employees = await getEmployees();
+  const employee = employees.find(e => e.id === id);
+  if (employee) {
+    document.getElementById('employee-name').value = employee.name || '';
+    document.getElementById('employee-text').value = employee.text || '';
+    document.getElementById('employee-text-style').value = employee.textStyle || '';
+    document.getElementById('employee-position').value = employee.position || '';
+    document.getElementById('employee-experience').value = employee.experience || '';
+    document.getElementById('employee-image').value = employee.image || '';
+    
+    document.querySelector('#employees h2').innerHTML = '<i class="fas fa-edit"></i> Çalışan Düzenle';
+    const addBtn = document.querySelector('#employees .btn[onclick="addEmployee()"]');
+    addBtn.innerHTML = '<i class="fas fa-save"></i> Güncelle';
+    addBtn.setAttribute('onclick', `updateEmployee('${id}')`);
+  }
+}
+
+window.editReference = async function(id) {
+  const references = await getReferences();
+  const reference = references.find(r => r.id === id);
+  if (reference) {
+    document.getElementById('reference-name').value = reference.name || '';
+    document.getElementById('reference-text').value = reference.text || '';
+    document.getElementById('reference-text-style').value = reference.textStyle || '';
+    document.getElementById('reference-sector').value = reference.sector || '';
+    document.getElementById('reference-image').value = reference.image || '';
+    document.getElementById('reference-description').value = reference.description || '';
+    
+    document.querySelector('#references h2').innerHTML = '<i class="fas fa-edit"></i> Referans Düzenle';
+    const addBtn = document.querySelector('#references .btn[onclick="addReference()"]');
+    addBtn.innerHTML = '<i class="fas fa-save"></i> Güncelle';
+    addBtn.setAttribute('onclick', `updateReference('${id}')`);
   }
 }
 
