@@ -109,6 +109,9 @@ function renderServices(services) {
             applyTextStyleToElement(textElement, service.textStyle);
         }
         
+        // 3D hover efekti ekle
+        serviceElement.classList.add('hover-3d');
+        
         servicesContainer.appendChild(serviceElement);
         
         // Sırayla animasyonlu göster
@@ -155,6 +158,9 @@ function renderProjects(projects) {
         if (textElement && project.textStyle) {
             applyTextStyleToElement(textElement, project.textStyle);
         }
+        
+        // 3D hover efekti ekle
+        projectElement.classList.add('hover-3d');
         
         projectsContainer.appendChild(projectElement);
         
@@ -352,6 +358,9 @@ function renderEmployees(employees) {
             applyTextStyleToElement(textElement, employee.textStyle);
         }
         
+        // 3D hover efekti ekle
+        employeeElement.classList.add('hover-3d');
+        
         employeesContainer.appendChild(employeeElement);
         
         // Sırayla animasyonlu göster
@@ -398,6 +407,9 @@ function renderReferences(references) {
         if (textElement && reference.textStyle) {
             applyTextStyleToElement(textElement, reference.textStyle);
         }
+        
+        // 3D hover efekti ekle
+        referenceElement.classList.add('hover-3d');
         
         referencesContainer.appendChild(referenceElement);
         
@@ -473,4 +485,70 @@ document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closeServiceModal();
     }
+});
+
+// Scroll Reveal Animation
+function initScrollReveal() {
+    const scrollElements = document.querySelectorAll('.scroll-reveal');
+    
+    const elementInView = (el, dividend = 1) => {
+        const elementTop = el.getBoundingClientRect().top;
+        return (
+            elementTop <= (window.innerHeight || document.documentElement.clientHeight) / dividend
+        );
+    };
+    
+    const displayScrollElement = (element) => {
+        const delay = element.dataset.delay || 0;
+        setTimeout(() => {
+            element.classList.add('revealed');
+        }, delay);
+    };
+    
+    const hideScrollElement = (element) => {
+        element.classList.remove('revealed');
+    };
+    
+    const handleScrollAnimation = () => {
+        scrollElements.forEach((el) => {
+            if (elementInView(el, 1.25)) {
+                displayScrollElement(el);
+            }
+        });
+    };
+    
+    window.addEventListener('scroll', handleScrollAnimation);
+    handleScrollAnimation(); // Initial check
+}
+
+// Typing Animation
+function initTypingAnimation() {
+    const typingElement = document.querySelector('.typing-text');
+    if (!typingElement) return;
+    
+    const text = typingElement.dataset.text || typingElement.textContent;
+    typingElement.textContent = '';
+    
+    let i = 0;
+    const typeWriter = () => {
+        if (i < text.length) {
+            typingElement.textContent += text.charAt(i);
+            i++;
+            setTimeout(typeWriter, 100);
+        } else {
+            // Cursor blink efekti
+            setTimeout(() => {
+                typingElement.classList.add('typing-complete');
+            }, 1000);
+        }
+    };
+    
+    // 2 saniye bekle sonra başlat
+    setTimeout(typeWriter, 2000);
+}
+
+// Initialize all animations
+document.addEventListener('DOMContentLoaded', function() {
+    initScrollReveal();
+    initTypingAnimation();
 });

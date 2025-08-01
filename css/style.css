@@ -358,7 +358,7 @@ nav ul li a:hover::after {
   width: 100%;
   height: 200px;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: 15px 15px 0 0;
   margin-bottom: 1rem;
 }
 
@@ -368,7 +368,6 @@ nav ul li a:hover::after {
   object-fit: cover;
   object-position: center;
   transition: transform 0.3s ease;
-  border-radius: 10px;
 }
 
 .service-card:hover .service-image img {
@@ -441,8 +440,9 @@ nav ul li a:hover::after {
 .project-image-container {
   position: relative;
   width: 100%;
-  height: 250px;
+  height: 220px;
   overflow: hidden;
+  border-radius: 20px 20px 0 0;
 }
 
 .project-image-container img {
@@ -451,7 +451,6 @@ nav ul li a:hover::after {
   object-fit: cover;
   object-position: center;
   transition: transform 0.3s ease;
-  border-radius: 15px 15px 0 0;
 }
 
 .project-card:hover .project-image-container img {
@@ -538,8 +537,9 @@ nav ul li a:hover::after {
 .employee-image-container {
   position: relative;
   width: 100%;
-  height: 300px;
+  height: 280px;
   overflow: hidden;
+  border-radius: 25px 25px 0 0;
 }
 
 .employee-image-container img {
@@ -548,7 +548,6 @@ nav ul li a:hover::after {
   object-fit: cover;
   object-position: center;
   transition: transform 0.3s ease;
-  border-radius: 15px 15px 0 0;
 }
 
 .employee-card:hover .employee-image-container img {
@@ -608,18 +607,22 @@ nav ul li a:hover::after {
 .reference-image-container {
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 180px;
   overflow: hidden;
+  border-radius: 20px 20px 0 0;
+  background: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
 }
 
 .reference-image-container img {
-  width: 100%;
-  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
   object-position: center;
   transition: transform 0.3s ease;
-  background: #f8f9fa;
-  padding: 20px;
 }
 
 .reference-card:hover .reference-image-container img {
@@ -1185,6 +1188,23 @@ footer {
 }
 
 @media (max-width: 768px) {
+  .service-image {
+    height: 180px;
+  }
+  
+  .project-image-container {
+    height: 200px;
+  }
+  
+  .employee-image-container {
+    height: 250px;
+  }
+  
+  .reference-image-container {
+    height: 150px;
+    padding: 10px;
+  }
+  
   .service-card:hover, .project-card:hover, .employee-card:hover, .reference-card:hover {
     transform: translateY(-10px) scale(1.02);
   }
@@ -1197,6 +1217,23 @@ footer {
 }
 
 @media (max-width: 480px) {
+  .service-image {
+    height: 160px;
+  }
+  
+  .project-image-container {
+    height: 180px;
+  }
+  
+  .employee-image-container {
+    height: 220px;
+  }
+  
+  .reference-image-container {
+    height: 130px;
+    padding: 8px;
+  }
+  
   .service-card:hover, .project-card:hover, .employee-card:hover, .reference-card:hover {
     transform: translateY(-5px) scale(1.01);
   }
@@ -1209,5 +1246,211 @@ footer {
     width: 50px;
     height: 50px;
     font-size: 1.2rem;
+  }
+}
+
+/* FLOATING ELEMENTS */
+.floating-shapes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.floating-shape {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 107, 53, 0.1);
+  animation: float 6s ease-in-out infinite;
+}
+
+.shape1 {
+  width: 80px;
+  height: 80px;
+  top: 20%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.shape2 {
+  width: 120px;
+  height: 120px;
+  top: 60%;
+  right: 15%;
+  animation-delay: 2s;
+}
+
+.shape3 {
+  width: 60px;
+  height: 60px;
+  top: 80%;
+  left: 20%;
+  animation-delay: 4s;
+}
+
+.shape4 {
+  width: 100px;
+  height: 100px;
+  top: 30%;
+  right: 30%;
+  animation-delay: 1s;
+}
+
+/* MORPHING SHAPES */
+.morphing-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.morph-shape {
+  position: absolute;
+  background: linear-gradient(45deg, rgba(255, 107, 53, 0.05), rgba(247, 147, 30, 0.05));
+  border-radius: 50%;
+  animation: morph 8s ease-in-out infinite;
+}
+
+.morph1 {
+  width: 300px;
+  height: 300px;
+  top: -150px;
+  left: -150px;
+  animation-delay: 0s;
+}
+
+.morph2 {
+  width: 400px;
+  height: 400px;
+  bottom: -200px;
+  right: -200px;
+  animation-delay: 4s;
+}
+
+/* SCROLL REVEAL */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* TYPING ANIMATION */
+.typing-text {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing 3s steps(30) 1s both;
+}
+
+.typing-text::after {
+  content: '|';
+  animation: blink 1s infinite;
+}
+
+/* HOVER 3D TRANSFORMATIONS */
+.hover-3d {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.hover-3d:hover {
+  transform: perspective(1000px) rotateX(10deg) rotateY(-10deg) translateZ(20px);
+  box-shadow: 0 20px 40px rgba(255, 107, 53, 0.3);
+}
+
+.service-card.hover-3d:hover {
+  transform: perspective(1000px) rotateX(5deg) rotateY(5deg) translateZ(30px);
+}
+
+.project-card.hover-3d:hover {
+  transform: perspective(1000px) rotateX(-5deg) rotateY(10deg) translateZ(25px);
+}
+
+.employee-card.hover-3d:hover {
+  transform: perspective(1000px) rotateX(10deg) rotateY(-5deg) translateZ(35px);
+}
+
+.reference-card.hover-3d:hover {
+  transform: perspective(1000px) rotateX(-10deg) rotateY(-10deg) translateZ(20px);
+}
+
+/* ANIMATIONS */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(180deg);
+  }
+}
+
+@keyframes morph {
+  0%, 100% {
+    border-radius: 50%;
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    border-radius: 30% 70% 70% 30%;
+    transform: scale(1.1) rotate(90deg);
+  }
+  50% {
+    border-radius: 70% 30% 30% 70%;
+    transform: scale(0.9) rotate(180deg);
+  }
+  75% {
+    border-radius: 40% 60% 60% 40%;
+    transform: scale(1.05) rotate(270deg);
+  }
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+/* MOBILE OPTIMIZATIONS */
+@media (max-width: 768px) {
+  .floating-shape {
+    display: none;
+  }
+  
+  .morph-shape {
+    opacity: 0.3;
+  }
+  
+  .hover-3d:hover {
+    transform: translateY(-5px) scale(1.02);
+  }
+  
+  .typing-text {
+    animation: none;
+    white-space: normal;
+  }
+  
+  .typing-text::after {
+    display: none;
   }
 }

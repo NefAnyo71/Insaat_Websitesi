@@ -348,26 +348,7 @@ window.editService = async function(id) {
   const services = await getServices();
   const service = services.find(s => s.id === id);
   if (service) {
-    document.getElementById('service-title').value = service.title || '';
-    document.getElementById('service-desc').value = service.description || '';
-    document.getElementById('service-details').value = service.details || '';
-    document.getElementById('service-image').value = service.image || '';
-    
-    // Hizmetler tab'ına geç
-    showTab('services');
-    
-    // Form başlığını değiştir
-    const serviceHeader = document.querySelector('#services .form-section h2');
-    if (serviceHeader) {
-      serviceHeader.innerHTML = '<i class="fas fa-edit"></i> Hizmet Düzenle';
-    }
-    
-    // Buton metnini değiştir
-    const addBtn = document.querySelector('#services .btn[onclick="addService()"]');
-    if (addBtn) {
-      addBtn.innerHTML = '<i class="fas fa-save"></i> Güncelle';
-      addBtn.setAttribute('onclick', `updateService('${id}')`);
-    }
+    openEditModal('service', service, id);
   }
 }
 
@@ -375,23 +356,7 @@ window.editProject = async function(id) {
   const projects = await getProjects();
   const project = projects.find(p => p.id === id);
   if (project) {
-    document.getElementById('project-title').value = project.title || '';
-    document.getElementById('project-text').value = project.text || '';
-    document.getElementById('project-text-style').value = project.textStyle || '';
-    document.getElementById('project-category').value = project.category || '';
-    document.getElementById('project-desc').value = project.description || '';
-    document.getElementById('project-image').value = project.image || '';
-    
-    showTab('projects');
-    const projectHeader = document.querySelector('#projects .form-section h2');
-    if (projectHeader) {
-      projectHeader.innerHTML = '<i class="fas fa-edit"></i> Proje Düzenle';
-    }
-    const addBtn = document.querySelector('#projects .btn[onclick="addProject()"]');
-    if (addBtn) {
-      addBtn.innerHTML = '<i class="fas fa-save"></i> Güncelle';
-      addBtn.setAttribute('onclick', `updateProject('${id}')`);
-    }
+    openEditModal('project', project, id);
   }
 }
 
@@ -399,23 +364,7 @@ window.editEmployee = async function(id) {
   const employees = await getEmployees();
   const employee = employees.find(e => e.id === id);
   if (employee) {
-    document.getElementById('employee-name').value = employee.name || '';
-    document.getElementById('employee-text').value = employee.text || '';
-    document.getElementById('employee-text-style').value = employee.textStyle || '';
-    document.getElementById('employee-position').value = employee.position || '';
-    document.getElementById('employee-experience').value = employee.experience || '';
-    document.getElementById('employee-image').value = employee.image || '';
-    
-    showTab('employees');
-    const employeeHeader = document.querySelector('#employees .form-section h2');
-    if (employeeHeader) {
-      employeeHeader.innerHTML = '<i class="fas fa-edit"></i> Çalışan Düzenle';
-    }
-    const addBtn = document.querySelector('#employees .btn[onclick="addEmployee()"]');
-    if (addBtn) {
-      addBtn.innerHTML = '<i class="fas fa-save"></i> Güncelle';
-      addBtn.setAttribute('onclick', `updateEmployee('${id}')`);
-    }
+    openEditModal('employee', employee, id);
   }
 }
 
@@ -423,24 +372,61 @@ window.editReference = async function(id) {
   const references = await getReferences();
   const reference = references.find(r => r.id === id);
   if (reference) {
-    document.getElementById('reference-name').value = reference.name || '';
-    document.getElementById('reference-text').value = reference.text || '';
-    document.getElementById('reference-text-style').value = reference.textStyle || '';
-    document.getElementById('reference-sector').value = reference.sector || '';
-    document.getElementById('reference-image').value = reference.image || '';
-    document.getElementById('reference-description').value = reference.description || '';
-    
-    showTab('references');
-    const referenceHeader = document.querySelector('#references .form-section h2');
-    if (referenceHeader) {
-      referenceHeader.innerHTML = '<i class="fas fa-edit"></i> Referans Düzenle';
-    }
-    const addBtn = document.querySelector('#references .btn[onclick="addReference()"]');
-    if (addBtn) {
-      addBtn.innerHTML = '<i class="fas fa-save"></i> Güncelle';
-      addBtn.setAttribute('onclick', `updateReference('${id}')`);
-    }
+    openEditModal('reference', reference, id);
   }
+}
+
+// Edit modal aç
+function openEditModal(type, data, id) {
+  let modalContent = '';
+  
+  if (type === 'service') {
+    modalContent = `
+      <h2><i class="fas fa-edit"></i> Hizmet Düzenle</h2>
+      <div class="edit-form">
+        <input type="text" id="edit-service-title" placeholder="Hizmet Adı" value="${data.title || ''}">
+        <textarea id="edit-service-desc" placeholder="Hizmet açıklaması...">${data.description || ''}</textarea>
+        <textarea id="edit-service-details" placeholder="Detaylı hizmet bilgileri...">${data.details || ''}</textarea>
+        <input type="url" id="edit-service-image" placeholder="Hizmet Resim URL" value="${data.image || ''}">
+      </div>
+      <div class="modal-actions">
+        <button class="btn cancel-btn" onclick="closeEditModal()">İptal</button>
+        <button class="btn save-btn" onclick="saveEdit('service', '${id}')">Kaydet</button>
+      </div>
+    `;
+  }
+  
+  const modalHTML = `
+    <div id="edit-modal" class="edit-modal">
+      <div class="edit-modal-content">
+        ${modalContent}
+      </div>
+    </div>
+  `;
+  
+  document.body.insertAdjacentHTML('beforeend', modalHTML);
+  setTimeout(() => {
+    document.getElementById('edit-modal').classList.add('show');
+  }, 10);
+  document.body.style.overflow = 'hidden';
+}
+
+// Edit modal kapat
+window.closeEditModal = function() {
+  const modal = document.getElementById('edit-modal');
+  if (modal) {
+    modal.classList.remove('show');
+    setTimeout(() => {
+      modal.remove();
+      document.body.style.overflow = 'visible';
+    }, 300);
+  }
+}
+
+// Düzenlemeleri kaydet
+window.saveEdit = async function(type, id) {
+  alert('Güncelleme fonksiyonu henüz eklenmedi!');
+  closeEditModal();
 }
 
 // Sayfa yüklendiğinde verileri getir
