@@ -619,25 +619,57 @@ function loadAdminData() {
 
 // Kullanıcı analizlerini yükle
 window.loadAnalytics = async function() {
-  const { activities, consents } = await getUserStats();
+  try {
+    const { activities, consents } = await getUserStats();
+    
+    // Temel istatistikler
+    const uniqueIPs = new Set(activities.map(a => a.ipAddress)).size;
+    const totalClicks = activities.filter(a => a.activityType === 'click_activity').length;
+    const totalSessions = new Set(activities.map(a => a.sessionId)).size;
+    
+    // Güvenlik loglarını da al
+    const { getSecurityLogs } = await import('./firebase.js');
+    const securityLogs = await getSecurityLogs();
+    const totalSecurityVisits = securityLogs.length;
+    
+    // DOM elementlerini güncelle
+    const totalVisitorsEl = document.getElementById('total-visitors');
+    const totalClicksEl = document.getElementById('total-clicks');
+    const totalSessionsEl = document.getElementById('total-sessions');
+    
+    if (totalVisitorsEl) totalVisitorsEl.textContent = Math.max(uniqueIPs, totalSecurityVisits);
+    if (totalClicksEl) totalClicksEl.textContent = totalClicks;
+    if (totalSessionsEl) totalSessionsEl.textContent = totalSessions;
+    
+    console.log('Analytics loaded:', {
+      uniqueIPs,
+      totalClicks,
+      totalSessions,
+      totalSecurityVisits,
+      activitiesCount: activities.length,
+      consentsCount: consents.length
+    });
   
-  // Temel istatistikler
-  const uniqueIPs = new Set(activities.map(a => a.ipAddress)).size;
-  const totalClicks = activities.filter(a => a.activityType === 'click_activity').length;
-  
-  document.getElementById('total-visitors').textContent = uniqueIPs;
-  document.getElementById('total-clicks').textContent = totalClicks;
-  
-  // IP analizi
-  const ipStats = {};
-  activities.forEach(activity => {
-    const ip = activity.ipAddress;
-    if (ip && ip !== 'unknown') {
-      ipStats[ip] = (ipStats[ip] || 0) + 1;
-    }
-  });
-  
-  displayIPStats(ipStats);
+    // IP analizi - hem aktivite hem güvenlik loglarından
+    const ipStats = {};
+    
+    // Aktivite loglarından IP'leri al
+    activities.forEach(activity => {
+      const ip = activity.ipAddress;
+      if (ip && ip !== 'unknown') {
+        ipStats[ip] = (ipStats[ip] || 0) + 1;
+      }
+    });
+    
+    // Güvenlik loglarından da IP'leri al
+    securityLogs.forEach(log => {
+      const ip = log.ipAddress;
+      if (ip && ip !== 'unknown') {
+        ipStats[ip] = (ipStats[ip] || 0) + 1;
+      }
+    });
+    
+    displayIPStats(ipStats);
   
   // Bölüm analizi
   const sectionStats = {};
@@ -671,9 +703,22 @@ window.loadAnalytics = async function() {
   );
   document.getElementById('most-popular-card').textContent = mostPopularCard.substring(0, 30) + '...';
   
-  // Grafikleri çiz
-  drawSectionChart(sectionStats);
-  drawCardChart(cardStats);
+    // Grafikleri çiz
+    drawSectionChart(sectionStats);
+    drawCardChart(cardStats);
+    
+  } catch (error) {
+    console.error('Analytics loading error:', error);
+    
+    // Hata durumunda varsayılan değerler
+    const totalVisitorsEl = document.getElementById('total-visitors');
+    const totalClicksEl = document.getElementById('total-clicks');
+    const totalSessionsEl = document.getElementById('total-sessions');
+    
+    if (totalVisitorsEl) totalVisitorsEl.textContent = '0';
+    if (totalClicksEl) totalClicksEl.textContent = '0';
+    if (totalSessionsEl) totalSessionsEl.textContent = '0';
+  }
 }
 
 function drawSectionChart(sectionStats) {

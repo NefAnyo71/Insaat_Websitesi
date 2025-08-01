@@ -786,21 +786,37 @@ document.addEventListener('DOMContentLoaded', async function() {
     initTypingAnimation();
 });
 
-// Eksik fonksiyonları tanımla
+// Firebase fonksiyonlarını kullan
 async function saveCookieConsent(ip, consent) {
-    // Firebase'e çerez onayını kaydet
-    console.log('Cookie consent saved:', { ip, consent });
+    try {
+        const { saveCookieConsent: fbSaveCookieConsent } = await import('./firebase.js');
+        await fbSaveCookieConsent(ip, consent);
+        console.log('Cookie consent saved:', { ip, consent });
+    } catch (error) {
+        console.error('Cookie consent save error:', error);
+    }
 }
 
 async function saveUserActivity(data) {
-    // Firebase'e kullanıcı aktivitesini kaydet
-    console.log('User activity saved:', data);
+    try {
+        const { saveUserActivity: fbSaveUserActivity } = await import('./firebase.js');
+        await fbSaveUserActivity(data);
+        console.log('User activity saved:', data);
+    } catch (error) {
+        console.error('User activity save error:', error);
+    }
 }
 
 async function checkCookieConsent(ip) {
-    // Firebase'den çerez onayını kontrol et
-    console.log('Checking cookie consent for IP:', ip);
-    return null;
+    try {
+        const { checkCookieConsent: fbCheckCookieConsent } = await import('./firebase.js');
+        const result = await fbCheckCookieConsent(ip);
+        console.log('Cookie consent checked for IP:', ip, 'Result:', result);
+        return result;
+    } catch (error) {
+        console.error('Cookie consent check error:', error);
+        return null;
+    }
 }
 
 // Güvenlik amaçlı IP kaydetme (yasal zorunluluk)
@@ -838,11 +854,27 @@ window.addEventListener('load', function() {
             document.body.style.overflow = 'visible';
             initializePageAnimations();
             
+            // Çerez onayını kontrol et ve göster
             setTimeout(async () => {
-                const existingConsent = await checkCookieConsent(userIP);
-                const localConsent = localStorage.getItem('cookieConsent');
-                
-                if (existingConsent === null && localConsent === null) {
+                try {
+                    const existingConsent = await checkCookieConsent(userIP);
+                    const localConsent = localStorage.getItem('cookieConsent');
+                    
+                    console.log('Cookie consent check:', { existingConsent, localConsent, userIP });
+                    
+                    if (existingConsent === null && localConsent === null) {
+                        console.log('Showing cookie consent modal');
+                        showCookieConsent();
+                    } else {
+                        console.log('Cookie consent already exists, not showing modal');
+                        if (existingConsent === true || localConsent === 'true') {
+                            cookieConsent = true;
+                            initUserTracking();
+                        }
+                    }
+                } catch (error) {
+                    console.error('Cookie consent check error:', error);
+                    // Hata durumunda da çerez onayını göster
                     showCookieConsent();
                 }
             }, 1000);
