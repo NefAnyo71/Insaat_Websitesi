@@ -263,3 +263,21 @@ export async function addAdmin(username, password) {
     return false;
   }
 }
+
+// Admin güncelleme
+export async function updateAdmin(id, username, password) {
+  try {
+    await initializeFirebase();
+    
+    const adminRef = doc(db, "admin", id);
+    await updateDoc(adminRef, {
+      username: username,
+      password: password,
+      updatedAt: new Date()
+    });
+    return true;
+  } catch (error) {
+    console.error("Admin güncellenirken hata:", error);
+    return false;
+  }
+}
