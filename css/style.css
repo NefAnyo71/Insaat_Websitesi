@@ -1408,7 +1408,7 @@ footer {
 .typing-text-2 {
   font-size: 1.3rem;
   margin-bottom: 2rem;
-  opacity: 0.9;
+  opacity: 0;
   overflow: hidden;
   white-space: nowrap;
   width: 0;
@@ -1514,6 +1514,8 @@ footer {
   cursor: pointer;
   animation: scrollBounce 2s ease-in-out infinite;
   z-index: 10;
+  opacity: 0;
+  animation: scrollAppear 1s ease-out 8.5s forwards, scrollBounce 2s ease-in-out 9.5s infinite;
 }
 
 .scroll-text {
@@ -1554,9 +1556,21 @@ footer {
   }
 }
 
+@keyframes scrollAppear {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
 @media (max-width: 768px) {
   .scroll-indicator {
     bottom: 80px;
+    animation: scrollAppear 1s ease-out 7s forwards, scrollBounce 2s ease-in-out 8s infinite;
   }
   
   .scroll-text {
@@ -1797,10 +1811,10 @@ footer {
   
   .typing-text-2 {
     font-size: 0.9rem;
-    animation: typing2 2.5s steps(50) 2.5s forwards;
+    animation: typing2 2.5s steps(50) 4s forwards;
   }
   
   .typing-text-2::after {
-    animation: blink 1s infinite 2.5s;
+    animation: blink 1s infinite 4s;
   }
 }
