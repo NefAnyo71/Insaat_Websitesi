@@ -1391,7 +1391,13 @@ footer {
 
 .typing-text::after {
   content: '|';
-  animation: blink 1s infinite;
+  animation: blink 1s infinite, fadeOutCursor 0.5s ease-out 5s forwards;
+}
+
+@keyframes fadeOutCursor {
+  to {
+    opacity: 0;
+  }
 }
 
 /* EXPERIENCE TEXT TYPING ANIMATION */
