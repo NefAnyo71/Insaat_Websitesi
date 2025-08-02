@@ -805,7 +805,7 @@ function initMouseFollowCards() {
         const container = card.querySelector('.reference-container');
         
         if (isMobile) {
-            // Mobil için toggle dönme animasyonu
+            // Mobil için otomatik geri dönme animasyonu
             card.addEventListener('click', (e) => {
                 e.preventDefault();
                 container.style.transition = 'all 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
@@ -813,9 +813,12 @@ function initMouseFollowCards() {
                 if (!card.dataset.rotated) {
                     container.style.transform = 'rotateY(15deg) rotateX(8deg) scale(1.05)';
                     card.dataset.rotated = 'true';
-                } else {
-                    container.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-                    card.dataset.rotated = '';
+                    
+                    // 15 saniye sonra otomatik geri dön
+                    setTimeout(() => {
+                        container.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+                        card.dataset.rotated = '';
+                    }, 15000);
                 }
             });
         } else {
@@ -847,7 +850,7 @@ function initMouseFollowCards() {
         const container = card.querySelector('.employee-container');
         
         if (isMobile) {
-            // Mobil için toggle dönme animasyonu
+            // Mobil için otomatik geri dönme animasyonu
             card.addEventListener('click', (e) => {
                 e.preventDefault();
                 container.style.transition = 'all 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
@@ -855,9 +858,12 @@ function initMouseFollowCards() {
                 if (!card.dataset.rotated) {
                     container.style.transform = 'rotateY(-15deg) rotateX(-8deg) scale(1.05)';
                     card.dataset.rotated = 'true';
-                } else {
-                    container.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-                    card.dataset.rotated = '';
+                    
+                    // 15 saniye sonra otomatik geri dön
+                    setTimeout(() => {
+                        container.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+                        card.dataset.rotated = '';
+                    }, 15000);
                 }
             });
         } else {
