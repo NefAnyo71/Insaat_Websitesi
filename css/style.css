@@ -804,41 +804,61 @@ nav ul li a:hover::after {
   background: linear-gradient(135deg, rgba(0, 18, 72, 0.4), rgba(0, 86, 179, 0.5), rgba(0, 18, 72, 0.6));
 }
 
-.reference-tooltip {
+.reference-back {
   position: absolute;
-  bottom: -60px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background: linear-gradient(135deg, #001248, #0056b3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 1.5rem;
   color: white;
-  padding: 1rem 1.5rem;
-  border-radius: 15px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  white-space: nowrap;
+  text-align: center;
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
   opacity: 0;
-  pointer-events: none;
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-  box-shadow: 0 10px 30px rgba(0, 18, 72, 0.3);
-  z-index: 10;
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.reference-tooltip::before {
-  content: '';
-  position: absolute;
-  top: -8px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-bottom: 8px solid #001248;
-}
-
-.reference-item:hover .reference-tooltip {
+.reference-item:hover .reference-back {
   opacity: 1;
-  transform: translateX(-50%) translateY(-10px);
+  transform: rotateY(0deg);
+}
+
+.reference-item:hover .reference-logo-main {
+  transform: translate(-50%, -50%) rotateY(-180deg);
+  opacity: 0;
+}
+
+.reference-back-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.reference-back-sector {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  backdrop-filter: blur(10px);
+}
+
+.reference-back-description {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  opacity: 0.9;
+  max-height: 80px;
+  overflow: hidden;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
 
 .reference-logo-small {
@@ -1116,10 +1136,17 @@ nav ul li a:hover::after {
     transition: all 0.2s ease;
   }
   
-  .reference-tooltip {
-    font-size: 0.8rem;
-    padding: 0.8rem 1.2rem;
-    bottom: -50px;
+  .reference-back {
+    padding: 1rem;
+  }
+  
+  .reference-back-title {
+    font-size: 0.9rem;
+  }
+  
+  .reference-back-description {
+    font-size: 0.7rem;
+    max-height: 60px;
   }
 }
 

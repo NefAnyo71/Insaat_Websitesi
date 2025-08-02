@@ -397,8 +397,10 @@ function renderReferences(references) {
                 <div class="reference-logo-main">
                     <img src="${reference.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDAxMjQ4Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5Mb2dvPC90ZXh0Pjwvc3ZnPg=='}" alt="${reference.name || ''}">
                 </div>
-                <div class="reference-tooltip">
-                    ${reference.name || 'Referans Şirketi'} - ${reference.sector || 'Genel'}
+                <div class="reference-back">
+                    <div class="reference-back-title">${reference.name || 'Referans Şirketi'}</div>
+                    <div class="reference-back-sector">${reference.sector || 'Genel'}</div>
+                    <div class="reference-back-description">${reference.description || 'Bu referansımız ile uzun yıllardır başarılı projeler gerçekleştirmekteyiz. Kaliteli hizmet anlayışımızla müşteri memnuniyetini ön planda tutuyoruz.'}</div>
                 </div>
             </div>
         `;
