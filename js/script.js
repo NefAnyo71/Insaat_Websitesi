@@ -387,22 +387,24 @@ function renderReferences(references) {
         
         // Başlangıçta görünmez yap
         referenceElement.style.opacity = '0';
-        referenceElement.style.transform = 'translateY(50px) scale(0.9)';
-        referenceElement.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+        referenceElement.style.transform = 'translateY(80px) rotateX(20deg) scale(0.8)';
+        referenceElement.style.transition = 'all 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
+        
+        // Görsel URL'si varsa kullan, yoksa varsayılan
+        const imageUrl = reference.image || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=300&fit=crop&crop=entropy&auto=format';
         
         referenceElement.innerHTML = `
-            <div class="reference-card">
-                <div class="reference-front">
-                    <div class="reference-logo">
-                        <img src="${reference.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzAwMTI0OCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+TG9nbzwvdGV4dD48L3N2Zz4='}" alt="${reference.name || ''}">
+            <div class="reference-container">
+                <div class="reference-glow"></div>
+                <div class="reference-image" style="background-image: url('${imageUrl}')"></div>
+                <div class="reference-overlay"></div>
+                <div class="reference-content">
+                    <div class="reference-logo-small">
+                        <img src="${reference.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzAwMTI0OCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+TG9nbzwvdGV4dD48L3N2Zz4='}" alt="${reference.name || ''}">
                     </div>
-                    <div class="reference-name">${reference.name || ''}</div>
-                    <div class="reference-sector">${reference.sector || ''}</div>
-                </div>
-                <div class="reference-back">
-                    <h4>${reference.name || ''}</h4>
-                    <div class="sector-tag">${reference.sector || ''}</div>
-                    <div class="reference-description">${reference.description || 'Bu referansımız hakkında detaylı bilgi yakında eklenecektir.'}</div>
+                    <div class="reference-title">${reference.name || 'Referans Şirketi'}</div>
+                    <div class="reference-sector-tag">${reference.sector || 'Genel'}</div>
+                    <div class="reference-description">${reference.description || 'Bu referansımız ile uzun yıllardır başarılı projeler gerçekleştirmekteyiz. Kaliteli hizmet anlayışımızla müşteri memnuniyetini ön planda tutuyoruz.'}</div>
                 </div>
             </div>
         `;
@@ -412,8 +414,8 @@ function renderReferences(references) {
         // Sırayla animasyonlu göster
         setTimeout(() => {
             referenceElement.style.opacity = '1';
-            referenceElement.style.transform = 'translateY(0) scale(1)';
-        }, index * 150);
+            referenceElement.style.transform = 'translateY(0) rotateX(0deg) scale(1)';
+        }, index * 200);
     });
 }
 
