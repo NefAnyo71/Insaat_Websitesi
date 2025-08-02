@@ -102,63 +102,47 @@ function renderServices(services) {
         
         const serviceIcon = getServiceIcon(service.title, service.category);
         
-        if (service.image) {
-            serviceElement.innerHTML = `
-                <div class="service-number" style="background: linear-gradient(135deg, ${categoryColor}, ${categoryColor}aa)">${serviceNumber}</div>
-                <div class="service-image-container">
-                    <img src="${service.image}" alt="${service.title}" onerror="this.parentElement.style.display='none'">
-                    <div class="service-image-overlay">
-                        <div class="service-image-icon" style="background: linear-gradient(135deg, ${categoryColor}, ${categoryColor}dd)">
+        serviceElement.innerHTML = `
+            <div class="service-card-container">
+                <div class="service-header" style="background: linear-gradient(135deg, ${categoryColor}, ${categoryColor}dd)">
+                    <div class="service-icon-main">
+                        ${service.image ? `
+                            <div style="width: 80px; height: 80px; border-radius: 50%; background-image: url('${service.image}'); background-size: cover; background-position: center;"></div>
+                        ` : `
                             <i class="${serviceIcon}"></i>
-                        </div>
-                        <span class="service-image-text">${service.text || service.title}</span>
+                        `}
                     </div>
                 </div>
-                <div class="service-content">
-                    ${service.category ? `<span class="service-category" style="background: ${categoryColor}22; color: ${categoryColor}">${service.category}</span>` : ''}
-                    <h3>${service.title || ''}</h3>
-                    <p>${service.description || ''}</p>
-                    <div class="service-features">
-                        ${service.features ? service.features.split(',').map(f => `<span class="feature-tag">${f.trim()}</span>`).join('') : ''}
+                
+                <div class="service-body">
+                    <div class="service-number-badge">${serviceNumber}</div>
+                    
+                    ${service.category ? `<span class="service-category-pill" style="background: ${categoryColor}22; color: ${categoryColor}; border-color: ${categoryColor}33">${service.category}</span>` : ''}
+                    
+                    <h3 class="service-title">${service.title || ''}</h3>
+                    
+                    <p class="service-description">${(service.description || '').substring(0, 100)}${service.description && service.description.length > 100 ? '...' : ''}</p>
+                    
+                    <div class="service-features-mini">
+                        ${service.features ? service.features.split(',').slice(0, 3).map(f => `<span class="feature-mini">${f.trim()}</span>`).join('') : ''}
                     </div>
-                    <button class="service-details-btn" style="background: linear-gradient(135deg, ${categoryColor}, ${categoryColor}dd)" onclick="openServiceModal('${service.id}', '${service.title}', '${service.details}', '${service.image}')">
-                        <i class="fas fa-info-circle"></i> Detayları Gör
+                    
+                    <button class="service-action-btn" style="background: linear-gradient(135deg, ${categoryColor}, ${categoryColor}dd)">
+                        <i class="fas fa-expand-alt"></i> Detayları Gör
                     </button>
+                    
+                    <div class="service-expanded-content">
+                        <p style="font-size: 0.85rem; color: #666; margin-bottom: 1rem;">${service.description || ''}</p>
+                        <div class="service-features">
+                            ${service.features ? service.features.split(',').map(f => `<span class="feature-tag" style="background: ${categoryColor}22; color: ${categoryColor}; border-color: ${categoryColor}33">${f.trim()}</span>`).join('') : ''}
+                        </div>
+                        <button class="service-details-btn" style="background: linear-gradient(135deg, ${categoryColor}, ${categoryColor}dd); margin-top: 1rem;" onclick="openServiceModal('${service.id}', '${service.title}', '${service.details}', '${service.image}'); logServiceInteraction('${service.id}', 'modal_open')">
+                            <i class="fas fa-info-circle"></i> Detaylı Bilgi
+                        </button>
+                    </div>
                 </div>
-            `;
-        } else if (service.text) {
-            serviceElement.innerHTML = `
-                <div class="service-number" style="background: linear-gradient(135deg, ${categoryColor}, ${categoryColor}aa)">${serviceNumber}</div>
-                <div class="service-text-display" style="background: linear-gradient(135deg, ${categoryColor}, ${categoryColor}dd)">
-                    <span class="service-text-content">${service.text}</span>
-                </div>
-                ${service.category ? `<span class="service-category" style="background: ${categoryColor}22; color: ${categoryColor}">${service.category}</span>` : ''}
-                <h3>${service.title || ''}</h3>
-                <p>${service.description || ''}</p>
-                <div class="service-features">
-                    ${service.features ? service.features.split(',').map(f => `<span class="feature-tag">${f.trim()}</span>`).join('') : ''}
-                </div>
-                <button class="service-details-btn" style="background: linear-gradient(135deg, ${categoryColor}, ${categoryColor}dd)" onclick="openServiceModal('${service.id}', '${service.title}', '${service.details}', '${service.image}')">
-                    <i class="fas fa-info-circle"></i> Detayları Gör
-                </button>
-            `;
-        } else {
-            serviceElement.innerHTML = `
-                <div class="service-number" style="background: linear-gradient(135deg, ${categoryColor}, ${categoryColor}aa)">${serviceNumber}</div>
-                <div class="service-icon" style="background: linear-gradient(135deg, ${categoryColor}, ${categoryColor}dd)">
-                    <i class="${serviceIcon}"></i>
-                </div>
-                ${service.category ? `<span class="service-category" style="background: ${categoryColor}22; color: ${categoryColor}">${service.category}</span>` : ''}
-                <h3>${service.title || ''}</h3>
-                <p>${service.description || ''}</p>
-                <div class="service-features">
-                    ${service.features ? service.features.split(',').map(f => `<span class="feature-tag">${f.trim()}</span>`).join('') : ''}
-                </div>
-                <button class="service-details-btn" style="background: linear-gradient(135deg, ${categoryColor}, ${categoryColor}dd)" onclick="openServiceModal('${service.id}', '${service.title}', '${service.details}', '${service.image}')">
-                    <i class="fas fa-info-circle"></i> Detayları Gör
-                </button>
-            `;
-        }
+            </div>
+        `;
         
         // Metin stilini uygula (sadece resimli hizmetler için)
         const textElement = serviceElement.querySelector('.service-text-overlay');
@@ -169,15 +153,20 @@ function renderServices(services) {
         // 3D hover efekti ekle
         serviceElement.classList.add('hover-3d');
         
-        serviceElement.addEventListener('click', function() {
-            this.classList.toggle('flipped');
+        const actionBtn = serviceElement.querySelector('.service-action-btn');
+        actionBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            serviceElement.classList.toggle('expanded');
+            const isExpanded = serviceElement.classList.contains('expanded');
+            this.innerHTML = isExpanded ? '<i class="fas fa-compress-alt"></i> Kapat' : '<i class="fas fa-expand-alt"></i> Detayları Gör';
+            
             if (typeof logServiceInteraction === 'function') {
-                logServiceInteraction(service.id, this.classList.contains('flipped') ? 'card_flip_open' : 'card_flip_close');
+                logServiceInteraction(service.id, isExpanded ? 'card_expand' : 'card_collapse');
             }
         });
         
         serviceElement.addEventListener('mouseenter', function() {
-            if (!this.classList.contains('flipped') && typeof logServiceInteraction === 'function') {
+            if (typeof logServiceInteraction === 'function') {
                 logServiceInteraction(service.id, 'card_hover');
             }
         });
