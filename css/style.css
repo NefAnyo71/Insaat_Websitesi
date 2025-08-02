@@ -585,9 +585,8 @@ nav ul li a:hover::after {
   box-shadow: 0 25px 80px rgba(0, 18, 72, 0.2);
 }
 
-.employee-card:hover .employee-container {
-  transform: rotateY(20deg) rotateX(-8deg) scale(1.08);
-  box-shadow: 0 40px 120px rgba(0, 18, 72, 0.35);
+.employee-card .employee-container {
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .employee-image {
@@ -722,9 +721,8 @@ nav ul li a:hover::after {
   box-shadow: 0 25px 80px rgba(0, 18, 72, 0.2);
 }
 
-.reference-item:hover .reference-container {
-  transform: rotateY(-20deg) rotateX(8deg) scale(1.08);
-  box-shadow: 0 40px 120px rgba(0, 18, 72, 0.35);
+.reference-item .reference-container {
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .reference-image {

@@ -365,6 +365,9 @@ function renderEmployees(employees) {
         setTimeout(() => {
             employeeElement.style.opacity = '1';
             employeeElement.style.transform = 'translateY(0) rotateX(0deg) rotateY(0deg) scale(1)';
+            
+            // Mouse takip animasyonunu başlat
+            initMouseFollowCards();
         }, index * 300);
     });
 }
@@ -410,6 +413,9 @@ function renderReferences(references) {
         setTimeout(() => {
             referenceElement.style.opacity = '1';
             referenceElement.style.transform = 'translateY(0) rotateX(0deg) rotateY(0deg) scale(1)';
+            
+            // Mouse takip animasyonunu başlat
+            initMouseFollowCards();
         }, index * 300);
     });
 }
@@ -786,8 +792,62 @@ document.addEventListener('DOMContentLoaded', async function() {
     initTypingAnimation();
     setTimeout(() => {
         animateSVGPaths();
+        initMouseFollowCards();
     }, 1000);
 });
+
+// Mouse takip eden kart animasyonları
+function initMouseFollowCards() {
+    // Referans kartları
+    document.querySelectorAll('.reference-item').forEach(card => {
+        const container = card.querySelector('.reference-container');
+        
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = (y - centerY) / 10;
+            const rotateY = (centerX - x) / 10;
+            
+            container.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.08)`;
+            container.style.boxShadow = '0 40px 120px rgba(0, 18, 72, 0.35)';
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            container.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+            container.style.boxShadow = '0 25px 80px rgba(0, 18, 72, 0.2)';
+        });
+    });
+    
+    // Çalışan kartları
+    document.querySelectorAll('.employee-card').forEach(card => {
+        const container = card.querySelector('.employee-container');
+        
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = (centerY - y) / 10;
+            const rotateY = (x - centerX) / 10;
+            
+            container.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.08)`;
+            container.style.boxShadow = '0 40px 120px rgba(0, 18, 72, 0.35)';
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            container.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+            container.style.boxShadow = '0 25px 80px rgba(0, 18, 72, 0.2)';
+        });
+    });
+}
 
 // SVG Path animasyonları
 function animateSVGPaths() {
