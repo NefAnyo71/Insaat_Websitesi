@@ -547,23 +547,35 @@ window.saveEdit = async function(type, id) {
 // Admin giriş kontrolü
 function checkLogin() {
   const isLoggedIn = sessionStorage.getItem('adminLoggedIn');
-  if (!isLoggedIn) {
-    showLoginModal();
-    return false;
-  }
-  return true;
+  return isLoggedIn === 'true';
 }
 
 // Login modal göster
 function showLoginModal() {
   const loginHTML = `
     <div id="login-modal" class="login-modal">
+      <div class="login-backdrop"></div>
       <div class="login-content">
-        <h2><i class="fas fa-lock"></i> Admin Girişi</h2>
+        <div class="login-header">
+          <i class="fas fa-shield-alt"></i>
+          <h2>Güvenli Giriş</h2>
+          <p>Yönetici paneline erişim için kimlik doğrulaması gereklidir</p>
+        </div>
         <div class="login-form">
-          <input type="text" id="admin-username" placeholder="Kullanıcı Adı">
-          <input type="password" id="admin-password" placeholder="Şifre">
-          <button class="btn login-btn" onclick="attemptLogin()">Giriş Yap</button>
+          <div class="input-group">
+            <i class="fas fa-user"></i>
+            <input type="text" id="admin-username" placeholder="Kullanıcı Adı" required>
+          </div>
+          <div class="input-group">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="admin-password" placeholder="Şifre" required>
+          </div>
+          <button class="btn login-btn" onclick="attemptLogin()">
+            <i class="fas fa-sign-in-alt"></i> Giriş Yap
+          </button>
+        </div>
+        <div class="login-footer">
+          <small><i class="fas fa-info-circle"></i> Bu alan sadece yetkili personel içindir</small>
         </div>
       </div>
     </div>
@@ -571,6 +583,13 @@ function showLoginModal() {
   
   document.body.insertAdjacentHTML('beforeend', loginHTML);
   document.body.style.overflow = 'hidden';
+  
+  // Enter tuşuyla giriş
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && document.getElementById('login-modal')) {
+      attemptLogin();
+    }
+  });
 }
 
 // Giriş denemesi
@@ -598,6 +617,13 @@ window.attemptLogin = async function() {
     
     document.getElementById('login-modal').remove();
     document.body.style.overflow = 'visible';
+    
+    // Admin panelini göster
+    const adminContent = document.querySelector('.admin-content');
+    if (adminContent) {
+      adminContent.style.display = 'block';
+    }
+    
     loadAdminData();
   } else {
     // Başarısız girişi logla
@@ -1144,7 +1170,14 @@ document.addEventListener('DOMContentLoaded', async function() {
   // Sayfa erişimini logla
   await logAdminAccess('page_access', { page: 'admin_panel' });
   
-  if (checkLogin()) {
-    loadAdminData();
+  // Hemen giriş modalını göster
+  showLoginModal();
+});
+
+// Sayfa yüklendiğinde admin panelini gizle
+document.addEventListener('DOMContentLoaded', function() {
+  const adminContent = document.querySelector('.admin-content');
+  if (adminContent) {
+    adminContent.style.display = 'none';
   }
 });
