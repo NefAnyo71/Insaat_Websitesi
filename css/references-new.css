@@ -1,0 +1,146 @@
+/* REFERANSLAR - YENİ MODERN TASARIM */
+.reference-item {
+  width: 280px;
+  height: 180px;
+  margin: 1.5rem;
+  cursor: pointer;
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  background: linear-gradient(145deg, #ffffff, #f8f9fa);
+  box-shadow: 0 10px 30px rgba(0, 18, 72, 0.1);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid rgba(0, 18, 72, 0.05);
+}
+
+.reference-item:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 25px 50px rgba(0, 18, 72, 0.2);
+  border-color: rgba(0, 18, 72, 0.2);
+}
+
+.reference-header {
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 1px solid rgba(0, 18, 72, 0.1);
+}
+
+.reference-logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  box-shadow: 0 4px 15px rgba(0, 18, 72, 0.1);
+  border: 2px solid rgba(0, 18, 72, 0.05);
+  transition: all 0.3s ease;
+}
+
+.reference-item:hover .reference-logo {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 8px 25px rgba(0, 18, 72, 0.2);
+}
+
+.reference-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.reference-info {
+  flex: 1;
+}
+
+.reference-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 0.3rem;
+  transition: color 0.3s ease;
+}
+
+.reference-item:hover .reference-name {
+  color: #001248;
+}
+
+.reference-sector {
+  background: linear-gradient(135deg, #001248, #0056b3);
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.reference-content {
+  padding: 0 1.5rem 1.5rem;
+}
+
+.reference-description {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #666;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reference-item:hover .reference-description {
+  opacity: 1;
+  max-height: 100px;
+  margin-top: 1rem;
+}
+
+.reference-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, rgba(0, 18, 72, 0.05), rgba(0, 86, 179, 0.05));
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.reference-item:hover .reference-glow {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .reference-item {
+    width: 100%;
+    max-width: 320px;
+    height: 160px;
+    margin: 1rem auto;
+  }
+  
+  .reference-header {
+    padding: 1rem;
+  }
+  
+  .reference-logo {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .reference-name {
+    font-size: 1rem;
+  }
+  
+  .reference-content {
+    padding: 0 1rem 1rem;
+  }
+  
+  .reference-description {
+    font-size: 0.8rem;
+  }
+}

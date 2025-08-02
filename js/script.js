@@ -392,16 +392,18 @@ function renderReferences(references) {
         const imageUrl = reference.image || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=300&fit=crop&crop=entropy&auto=format';
         
         referenceElement.innerHTML = `
-            <div class="reference-container">
-                <div class="reference-ring"></div>
-                <div class="reference-logo-main">
-                    <img src="${reference.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDAxMjQ4Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5Mb2dvPC90ZXh0Pjwvc3ZnPg=='}" alt="${reference.name || ''}">
+            <div class="reference-glow"></div>
+            <div class="reference-header">
+                <div class="reference-logo">
+                    <img src="${reference.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzAwMTI0OCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+TG9nbzwvdGV4dD48L3N2Zz4='}" alt="${reference.name || ''}">
                 </div>
-                <div class="reference-back">
-                    <div class="reference-back-title">${reference.name || 'Referans Şirketi'}</div>
-                    <div class="reference-back-sector">${reference.sector || 'Genel'}</div>
-                    <div class="reference-back-description">${reference.description || 'Bu referansımız ile uzun yıllardır başarılı projeler gerçekleştirmekteyiz. Kaliteli hizmet anlayışımızla müşteri memnuniyetini ön planda tutuyoruz.'}</div>
+                <div class="reference-info">
+                    <div class="reference-name">${reference.name || 'Referans Şirketi'}</div>
+                    <div class="reference-sector">${reference.sector || 'Genel'}</div>
                 </div>
+            </div>
+            <div class="reference-content">
+                <div class="reference-description">${reference.description || 'Bu referansımız ile uzun yıllardır başarılı projeler gerçekleştirmekteyiz. Kaliteli hizmet anlayışımızla müşteri memnuniyetini ön planda tutuyoruz.'}</div>
             </div>
         `;
         
@@ -411,12 +413,6 @@ function renderReferences(references) {
         setTimeout(() => {
             referenceElement.style.opacity = '1';
             referenceElement.style.transform = 'translateY(0) rotateX(0deg) rotateY(0deg) scale(1)';
-            
-            // Mouse takip animasyonunu başlat
-            initMouseFollowCards();
-            
-            // Referans hover sistemini başlat
-            initReferenceHoverSystem();
         }, index * 300);
     });
 }
@@ -794,54 +790,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     setTimeout(() => {
         animateSVGPaths();
         initMouseFollowCards();
-        initReferenceHoverSystem();
     }, 1000);
-});
-
-// Referans kartları için özel hover sistemi
-function initReferenceHoverSystem() {
-    const referenceItems = document.querySelectorAll('.reference-item');
-    
-    referenceItems.forEach(item => {
-        // Mouse enter - büyüt ve diğerlerini küçült
-        item.addEventListener('mouseenter', () => {
-            item.classList.add('active');
-            
-            referenceItems.forEach(otherItem => {
-                if (otherItem !== item) {
-                    otherItem.classList.add('shrink');
-                }
-            });
-        });
-        
-        // Mouse leave - hepsini normale döndür
-        item.addEventListener('mouseleave', () => {
-            referenceItems.forEach(allItem => {
-                allItem.classList.remove('active', 'shrink');
-            });
-        });
-        
-        // Click - toggle büyütme
-        item.addEventListener('click', (e) => {
-            e.preventDefault();
-            
-            if (item.classList.contains('active')) {
-                // Zaten aktifse hepsini normale döndür
-                referenceItems.forEach(allItem => {
-                    allItem.classList.remove('active', 'shrink');
-                });
-            } else {
-                // Aktif değilse bu kartı büyüt, diğerlerini küçült
-                item.classList.add('active');
-                referenceItems.forEach(otherItem => {
-                    if (otherItem !== item) {
-                        otherItem.classList.add('shrink');
-                    }
-                });
-            }
-        });
-    });
-}
 });
 
 // Mouse takip eden kart animasyonları
