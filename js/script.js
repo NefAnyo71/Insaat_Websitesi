@@ -337,40 +337,35 @@ function renderEmployees(employees) {
         
         // Başlangıçta görünmez yap
         employeeElement.style.opacity = '0';
-        employeeElement.style.transform = 'translateX(100px) rotateY(15deg)';
-        employeeElement.style.transition = 'all 0.9s cubic-bezier(0.4, 0, 0.2, 1)';
+        employeeElement.style.transform = 'translateY(120px) rotateX(30deg) rotateY(-15deg) scale(0.7)';
+        employeeElement.style.transition = 'all 1.5s cubic-bezier(0.23, 1, 0.32, 1)';
+        
+        // Görsel URL'si varsa kullan, yoksa varsayılan
+        const imageUrl = employee.image || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=350&fit=crop&crop=face&auto=format';
         
         employeeElement.innerHTML = `
-            <div class="employee-image-container">
-                <img src="${employee.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjRkY2QjM1Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7Dh2FsxLHFn2FuPC90ZXh0Pjwvc3ZnPg=='}" alt="${employee.name || ''}" onerror="this.style.display='none'">
-                <div class="employee-text-overlay">
-                    <span class="employee-text-content">${employee.text || ''}</span>
+            <div class="employee-container">
+                <div class="employee-glow"></div>
+                <div class="employee-image" style="background-image: url('${imageUrl}')"></div>
+                <div class="employee-overlay"></div>
+                <div class="employee-content">
+                    <div class="employee-avatar">
+                        <img src="${employee.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzAwMTI0OCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+VXptYW48L3RleHQ+PC9zdmc+'}" alt="${employee.name || ''}">
+                    </div>
+                    <div class="employee-name">${employee.name || 'Uzman Çalışan'}</div>
+                    <div class="employee-position-tag">${employee.position || 'Uzman'}</div>
+                    <div class="employee-experience">${employee.experience || 5} yıl deneyimle projelerinizde kaliteli hizmet sunmaktayız. Müşteri memnuniyeti odaklı çalışma anlayışımızla sektörde öncü konumdayız.</div>
                 </div>
-                <div class="employee-shine"></div>
-            </div>
-            <div class="employee-info">
-                <h3>${employee.name || ''}</h3>
-                <span class="employee-position">${employee.position || ''}</span>
-                <p class="employee-experience">${employee.experience || 0} yıl deneyim</p>
             </div>
         `;
-        
-        // Metin stilini uygula
-        const textElement = employeeElement.querySelector('.employee-text-content');
-        if (textElement && employee.textStyle) {
-            applyTextStyleToElement(textElement, employee.textStyle);
-        }
-        
-        // 3D hover efekti ekle
-        employeeElement.classList.add('hover-3d');
         
         employeesContainer.appendChild(employeeElement);
         
         // Sırayla animasyonlu göster
         setTimeout(() => {
             employeeElement.style.opacity = '1';
-            employeeElement.style.transform = 'translateX(0) rotateY(0)';
-        }, index * 160);
+            employeeElement.style.transform = 'translateY(0) rotateX(0deg) rotateY(0deg) scale(1)';
+        }, index * 300);
     });
 }
 

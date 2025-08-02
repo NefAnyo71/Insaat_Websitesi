@@ -564,76 +564,141 @@ nav ul li a:hover::after {
   line-height: 1.6;
 }
 
-/* ÇALIŞANLAR */
+/* ÇALIŞANLAR - PREMIUM TASARIM */
 .employee-card {
-  background: linear-gradient(145deg, #ffffff, #f8f9fa);
-  border-radius: 25px;
-  overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.06);
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  text-align: center;
+  width: 400px;
+  height: 350px;
+  margin: 2rem;
+  perspective: 1500px;
+  cursor: pointer;
   position: relative;
-  border: 2px solid transparent;
-  background-clip: padding-box;
 }
 
-.employee-card::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(45deg, #FF6B35, #F7931E, #FF6B35, #F7931E);
-  border-radius: 25px;
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.employee-card:hover::before {
-  opacity: 1;
-}
-
-.employee-card:hover {
-  transform: translateY(-25px) scale(1.05);
-  box-shadow: 0 35px 70px rgba(255, 107, 53, 0.2);
-}
-
-.employee-image-container {
-  position: relative;
+.employee-container {
   width: 100%;
-  height: 280px;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: all 1s cubic-bezier(0.23, 1, 0.32, 1);
+  border-radius: 30px;
   overflow: hidden;
-  border-radius: 25px 25px 0 0;
+  box-shadow: 0 25px 80px rgba(0, 18, 72, 0.2);
 }
 
-.employee-image-container img {
+.employee-card:hover .employee-container {
+  transform: rotateY(20deg) rotateX(-8deg) scale(1.08);
+  box-shadow: 0 40px 120px rgba(0, 18, 72, 0.35);
+}
+
+.employee-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: all 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+  filter: brightness(1) contrast(1.1) saturate(1.1);
+}
+
+.employee-card:hover .employee-image {
+  transform: scale(1.15) rotate(3deg);
+  filter: brightness(0.6) contrast(1.3) saturate(1.2);
+}
+
+.employee-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, rgba(0, 18, 72, 0.2), rgba(0, 86, 179, 0.3), rgba(0, 18, 72, 0.4));
+  opacity: 0;
+  transition: all 1s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.employee-card:hover .employee-overlay {
+  opacity: 1;
+  background: linear-gradient(45deg, rgba(0, 18, 72, 0.4), rgba(0, 86, 179, 0.5), rgba(0, 18, 72, 0.6));
+}
+
+.employee-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2.5rem;
+  background: linear-gradient(transparent, rgba(0, 18, 72, 0.95), rgba(0, 18, 72, 0.98));
+  color: white;
+  transform: translateY(120%) rotateX(-15deg);
+  transition: all 1s cubic-bezier(0.23, 1, 0.32, 1);
+  backdrop-filter: blur(20px);
+  text-align: center;
+}
+
+.employee-card:hover .employee-content {
+  transform: translateY(0) rotateX(0deg);
+}
+
+.employee-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 1rem;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.employee-avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
-  transition: transform 0.3s ease;
 }
 
-.employee-card:hover .employee-image-container img {
-  transform: scale(1.05);
+.employee-name {
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
-.employee-text-overlay {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  background: rgba(255, 107, 53, 0.9);
-  padding: 8px 12px;
+.employee-position-tag {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.4rem 1rem;
   border-radius: 20px;
-  backdrop-filter: blur(10px);
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.employee-text-content {
-  color: white;
-  font-weight: bold;
+.employee-experience {
   font-size: 0.9rem;
+  line-height: 1.6;
+  opacity: 0.95;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.employee-glow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(0, 86, 179, 0.1) 0%, transparent 70%);
+  opacity: 0;
+  transition: all 1s ease;
+  animation: rotate 25s linear infinite reverse;
+}
+
+.employee-card:hover .employee-glow {
+  opacity: 1;
 }
 
 /* REFERANSLAR - PREMIUM TASARIM */
@@ -954,30 +1019,25 @@ nav ul li a:hover::after {
   }
 }
 
-.employee-info {
-  padding: 1.5rem;
-}
-
-.employee-card h3 {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-  color: #333;
-}
-
-.employee-position {
-  background: #FF6B35;
-  color: white;
-  padding: 0.3rem 0.8rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  display: inline-block;
-  margin-bottom: 1rem;
-}
-
-.employee-experience {
-  color: #666;
-  font-size: 0.9rem;
+@media (max-width: 768px) {
+  .employee-card {
+    width: 350px;
+    height: 300px;
+    margin: 1.5rem;
+  }
+  
+  .employee-content {
+    padding: 1.5rem;
+  }
+  
+  .employee-name {
+    font-size: 1.2rem;
+  }
+  
+  .employee-avatar {
+    width: 50px;
+    height: 50px;
+  }
 }
 
 
