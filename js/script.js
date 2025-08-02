@@ -1,4 +1,4 @@
-import { getServices, getProjects, getEmployees, getReferences, saveSecurityLog } from './firebase.js';
+import { getServices, getProjects, getEmployees, getReferences, saveSecurityLog, getSiteName } from './firebase.js';
 
 // Loading screen kontrolü
 window.addEventListener('load', function() {
@@ -31,6 +31,10 @@ document.addEventListener('DOMContentLoaded', async function() {
 // Firebase'den dinamik içerikleri yükle
 async function loadDynamicContent() {
     try {
+        // Site adını yükle
+        const siteName = await getSiteName();
+        updateSiteName(siteName);
+
         // Hizmetleri yükle
         const services = await getServices();
         if (services.length > 0) {
@@ -59,6 +63,34 @@ async function loadDynamicContent() {
     } catch (error) {
         console.error('Veri yükleme hatası:', error);
     }
+}
+
+// Site adını güncelle
+function updateSiteName(siteName) {
+    // Navbar'daki logo
+    const logoElement = document.querySelector('.logo');
+    if (logoElement) {
+        const parts = siteName.split(' ');
+        if (parts.length >= 2) {
+            logoElement.innerHTML = `${parts[0]}<span>${parts.slice(1).join(' ')}</span>`;
+        } else {
+            logoElement.innerHTML = `${siteName}<span></span>`;
+        }
+    }
+    
+    // Loading screen'deki logo
+    const loadingLogo = document.querySelector('.loading-logo h2');
+    if (loadingLogo) {
+        const parts = siteName.split(' ');
+        if (parts.length >= 2) {
+            loadingLogo.innerHTML = `${parts[0]}<span>${parts.slice(1).join(' ')}</span>`;
+        } else {
+            loadingLogo.innerHTML = `${siteName}<span></span>`;
+        }
+    }
+    
+    // Title
+    document.title = siteName;
 }
 
 // Hizmetleri render et
@@ -126,18 +158,18 @@ function renderServices(services) {
                         ${service.features ? service.features.split(',').slice(0, 4).map((f, i) => `<span class="feature-mini" style="--i: ${i}">${f.trim()}</span>`).join('') : ''}
                     </div>
                     
-                    <button class="service-action-btn">
-                        <i class="fas fa-rocket"></i> KEŞFET
+                    <button class="service-action-btn" onclick="toggleServiceDetails(this)">
+                        <i class="fas fa-chevron-down"></i> DETAYLAR
                     </button>
                     
                     <div class="service-expanded-content">
-                        <p style="font-size: 0.9rem; color: rgba(255,255,255,0.9); margin-bottom: 1.5rem; line-height: 1.6;">${service.description || ''}</p>
-                        <div class="service-features">
-                            ${service.features ? service.features.split(',').map(f => `<span class="feature-tag" style="background: rgba(0,255,255,0.2); color: #00ffff; border: 1px solid rgba(0,255,255,0.5); padding: 0.4rem 0.8rem; border-radius: 15px; font-size: 0.8rem; margin: 0.2rem;">${f.trim()}</span>`).join('') : ''}
+                        <div class="service-details-wrapper">
+                            <h4 style="color: #FF6B35; margin-bottom: 1rem; font-size: 1.1rem;">Detaylar:</h4>
+                            <p style="font-size: 0.9rem; color: #666; margin-bottom: 1.5rem; line-height: 1.6;">${service.details || service.description || 'Bu hizmet hakkında detaylı bilgi için bizimle iletişime geçin.'}</p>
+                            <div class="service-features">
+                                ${service.features ? service.features.split(',').map(f => `<span class="feature-tag" style="background: rgba(255, 107, 53, 0.1); color: #FF6B35; border: 1px solid rgba(255, 107, 53, 0.3); padding: 0.3rem 0.6rem; border-radius: 12px; font-size: 0.75rem; margin: 0.2rem; display: inline-block;">${f.trim()}</span>`).join('') : ''}
+                            </div>
                         </div>
-                        <button class="service-details-btn" style="background: linear-gradient(45deg, #ff006e, #8338ec); border: none; color: white; padding: 0.8rem 1.5rem; border-radius: 25px; margin-top: 1.5rem; cursor: pointer; font-weight: 600; text-transform: uppercase;" onclick="openServiceModal('${service.id}', '${service.title}', '${service.details}', '${service.image}'); logServiceInteraction('${service.id}', 'modal_open')">
-                            <i class="fas fa-info-circle"></i> DETAYLI BİLGİ
-                        </button>
                     </div>
                 </div>
             </div>
@@ -152,15 +184,10 @@ function renderServices(services) {
         // 3D hover efekti ekle
         serviceElement.classList.add('hover-3d');
         
-        const actionBtn = serviceElement.querySelector('.service-action-btn');
-        actionBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            serviceElement.classList.toggle('expanded');
-            const isExpanded = serviceElement.classList.contains('expanded');
-            this.innerHTML = isExpanded ? '<i class="fas fa-compress-alt"></i> Kapat' : '<i class="fas fa-expand-alt"></i> Detayları Gör';
-            
-            if (typeof logServiceInteraction === 'function') {
-                logServiceInteraction(service.id, isExpanded ? 'card_expand' : 'card_collapse');
+        // Kart tıklama eventi
+        serviceElement.addEventListener('click', function(e) {
+            if (!e.target.closest('.service-action-btn')) {
+                toggleServiceDetails(this.querySelector('.service-action-btn'));
             }
         });
         
@@ -1083,6 +1110,42 @@ window.logServiceInteraction = async function(serviceId, action) {
         });
     } catch (error) {
         console.log('Service interaction logged:', { serviceId, action });
+    }
+};
+
+// Hizmet detaylarını aç/kapat
+window.toggleServiceDetails = function(button) {
+    const serviceCard = button.closest('.service-card');
+    const expandedContent = serviceCard.querySelector('.service-expanded-content');
+    const cardContainer = serviceCard.querySelector('.service-card-container');
+    const isExpanded = serviceCard.classList.contains('expanded');
+    
+    if (!isExpanded) {
+        // Açılıyor
+        serviceCard.classList.add('expanded');
+        cardContainer.style.transform = 'rotateY(180deg)';
+        
+        setTimeout(() => {
+            expandedContent.style.display = 'block';
+            expandedContent.style.opacity = '1';
+            expandedContent.style.transform = 'rotateY(0deg)';
+            cardContainer.style.transform = 'rotateY(0deg)';
+        }, 300);
+        
+        button.innerHTML = '<i class="fas fa-chevron-up"></i> KAPAT';
+    } else {
+        // Kapanıyor
+        cardContainer.style.transform = 'rotateY(-180deg)';
+        expandedContent.style.opacity = '0';
+        expandedContent.style.transform = 'rotateY(180deg)';
+        
+        setTimeout(() => {
+            serviceCard.classList.remove('expanded');
+            expandedContent.style.display = 'none';
+            cardContainer.style.transform = 'rotateY(0deg)';
+        }, 300);
+        
+        button.innerHTML = '<i class="fas fa-chevron-down"></i> DETAYLAR';
     }
 };
 

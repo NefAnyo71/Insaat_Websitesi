@@ -1,4 +1,4 @@
-import { addService, getServices, addProject, getProjects, addEmployee, getEmployees, addReference, getReferences, deleteItem, checkAdminLogin, getAdmins, addAdmin, updateAdmin, addAdminLog, getAdminLogs, getUserStats } from './firebase.js';
+import { addService, getServices, addProject, getProjects, addEmployee, getEmployees, addReference, getReferences, deleteItem, checkAdminLogin, getAdmins, addAdmin, updateAdmin, addAdminLog, getAdminLogs, getUserStats, getSiteName, setSiteName } from './firebase.js';
 
 // Hizmet ekleme
 window.addService = async function() {
@@ -665,6 +665,44 @@ function loadAdminData() {
   loadAdmins();
   loadLogs();
   loadAnalytics();
+  loadCurrentSiteName();
+}
+
+// Site adını yükle
+window.loadCurrentSiteName = async function() {
+  try {
+    const siteName = await getSiteName();
+    document.getElementById('current-site-name').textContent = siteName;
+    document.getElementById('site-name-input').value = siteName;
+  } catch (error) {
+    console.error('Site adı yüklenirken hata:', error);
+    document.getElementById('current-site-name').textContent = 'Yükleme hatası';
+  }
+}
+
+// Site adını güncelle
+window.updateSiteName = async function() {
+  const newSiteName = document.getElementById('site-name-input').value.trim();
+  
+  if (!newSiteName) {
+    alert('Lütfen site adını girin!');
+    return;
+  }
+  
+  try {
+    await logAdminAccess('data_edit', { type: 'sitename', newName: newSiteName });
+    
+    const success = await setSiteName(newSiteName);
+    if (success) {
+      alert('Site adı başarıyla güncellendi!');
+      document.getElementById('current-site-name').textContent = newSiteName;
+    } else {
+      alert('Site adı güncellenirken hata oluştu!');
+    }
+  } catch (error) {
+    console.error('Site adı güncelleme hatası:', error);
+    alert('Site adı güncellenirken hata oluştu!');
+  }
 }
 
 // İletişim ekleme

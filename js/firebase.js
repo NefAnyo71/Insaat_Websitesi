@@ -484,3 +484,39 @@ export async function updateContact(id, data) {
     return false;
   }
 }
+
+// Site adı ekleme/güncelleme
+export async function setSiteName(siteName) {
+  try {
+    await initializeFirebase();
+    
+    await addDoc(collection(db, "sitename"), {
+      name: siteName,
+      createdAt: new Date()
+    });
+    return true;
+  } catch (error) {
+    console.error("Site adı kaydedilirken hata:", error);
+    return false;
+  }
+}
+
+// Site adını getirme
+export async function getSiteName() {
+  try {
+    await initializeFirebase();
+    
+    const querySnapshot = await getDocs(collection(db, "sitename"));
+    let siteName = "İnşaat WebSitesi"; // Varsayılan
+    
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      siteName = data.name;
+    });
+    
+    return siteName;
+  } catch (error) {
+    console.error("Site adı getirilirken hata:", error);
+    return "İnşaat WebSitesi";
+  }
+}
