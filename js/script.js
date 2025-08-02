@@ -169,6 +169,19 @@ function renderServices(services) {
         // 3D hover efekti ekle
         serviceElement.classList.add('hover-3d');
         
+        serviceElement.addEventListener('click', function() {
+            this.classList.toggle('flipped');
+            if (typeof logServiceInteraction === 'function') {
+                logServiceInteraction(service.id, this.classList.contains('flipped') ? 'card_flip_open' : 'card_flip_close');
+            }
+        });
+        
+        serviceElement.addEventListener('mouseenter', function() {
+            if (!this.classList.contains('flipped') && typeof logServiceInteraction === 'function') {
+                logServiceInteraction(service.id, 'card_hover');
+            }
+        });
+        
         servicesContainer.appendChild(serviceElement);
         
         // Sırayla animasyonlu göster
@@ -1069,6 +1082,21 @@ async function logSecurityAccess() {
 }
 
 
+
+// Çerez etkileşim verisi kaydetme fonksiyonu
+window.logServiceInteraction = async function(serviceId, action) {
+    if (!cookieConsent) return;
+    
+    try {
+        await saveActivity('service_interaction', {
+            serviceId: serviceId,
+            action: action,
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.log('Service interaction logged:', { serviceId, action });
+    }
+};
 
 // Loading sonrası çerez göster
 window.addEventListener('load', function() {
