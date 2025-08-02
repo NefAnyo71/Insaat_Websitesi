@@ -387,8 +387,8 @@ function renderReferences(references) {
         
         // Başlangıçta görünmez yap
         referenceElement.style.opacity = '0';
-        referenceElement.style.transform = 'translateY(80px) rotateX(20deg) scale(0.8)';
-        referenceElement.style.transition = 'all 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
+        referenceElement.style.transform = 'translateY(120px) rotateX(30deg) rotateY(15deg) scale(0.7)';
+        referenceElement.style.transition = 'all 1.5s cubic-bezier(0.23, 1, 0.32, 1)';
         
         // Görsel URL'si varsa kullan, yoksa varsayılan
         const imageUrl = reference.image || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=300&fit=crop&crop=entropy&auto=format';
@@ -414,8 +414,8 @@ function renderReferences(references) {
         // Sırayla animasyonlu göster
         setTimeout(() => {
             referenceElement.style.opacity = '1';
-            referenceElement.style.transform = 'translateY(0) rotateX(0deg) scale(1)';
-        }, index * 200);
+            referenceElement.style.transform = 'translateY(0) rotateX(0deg) rotateY(0deg) scale(1)';
+        }, index * 300);
     });
 }
 
