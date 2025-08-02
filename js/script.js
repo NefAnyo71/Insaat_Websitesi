@@ -798,54 +798,86 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 // Mouse takip eden kart animasyonları
 function initMouseFollowCards() {
+    const isMobile = window.innerWidth <= 768;
+    
     // Referans kartları
     document.querySelectorAll('.reference-item').forEach(card => {
         const container = card.querySelector('.reference-container');
         
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+        if (isMobile) {
+            // Mobil için touch eventleri
+            card.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                container.style.transform = 'rotateX(5deg) rotateY(5deg) scale(1.05)';
+                container.style.boxShadow = '0 30px 80px rgba(0, 18, 72, 0.3)';
+            });
             
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
+            card.addEventListener('touchend', () => {
+                container.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+                container.style.boxShadow = '0 25px 80px rgba(0, 18, 72, 0.2)';
+            });
+        } else {
+            // Desktop için mouse eventleri
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (centerY - y) / 10;
+                const rotateY = (x - centerX) / 10;
+                
+                container.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.08)`;
+                container.style.boxShadow = '0 40px 120px rgba(0, 18, 72, 0.35)';
+            });
             
-            const rotateX = (y - centerY) / 10;
-            const rotateY = (centerX - x) / 10;
-            
-            container.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.08)`;
-            container.style.boxShadow = '0 40px 120px rgba(0, 18, 72, 0.35)';
-        });
-        
-        card.addEventListener('mouseleave', () => {
-            container.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-            container.style.boxShadow = '0 25px 80px rgba(0, 18, 72, 0.2)';
-        });
+            card.addEventListener('mouseleave', () => {
+                container.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+                container.style.boxShadow = '0 25px 80px rgba(0, 18, 72, 0.2)';
+            });
+        }
     });
     
     // Çalışan kartları
     document.querySelectorAll('.employee-card').forEach(card => {
         const container = card.querySelector('.employee-container');
         
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+        if (isMobile) {
+            // Mobil için touch eventleri
+            card.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                container.style.transform = 'rotateX(-5deg) rotateY(-5deg) scale(1.05)';
+                container.style.boxShadow = '0 30px 80px rgba(0, 18, 72, 0.3)';
+            });
             
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
+            card.addEventListener('touchend', () => {
+                container.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+                container.style.boxShadow = '0 25px 80px rgba(0, 18, 72, 0.2)';
+            });
+        } else {
+            // Desktop için mouse eventleri
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (centerY - y) / 10;
+                const rotateY = (x - centerX) / 10;
+                
+                container.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.08)`;
+                container.style.boxShadow = '0 40px 120px rgba(0, 18, 72, 0.35)';
+            });
             
-            const rotateX = (centerY - y) / 10;
-            const rotateY = (x - centerX) / 10;
-            
-            container.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.08)`;
-            container.style.boxShadow = '0 40px 120px rgba(0, 18, 72, 0.35)';
-        });
-        
-        card.addEventListener('mouseleave', () => {
-            container.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-            container.style.boxShadow = '0 25px 80px rgba(0, 18, 72, 0.2)';
-        });
+            card.addEventListener('mouseleave', () => {
+                container.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+                container.style.boxShadow = '0 25px 80px rgba(0, 18, 72, 0.2)';
+            });
+        }
     });
 }
 

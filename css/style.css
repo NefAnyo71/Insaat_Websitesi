@@ -1024,6 +1024,10 @@ nav ul li a:hover::after {
     margin: 1.5rem;
   }
   
+  .employee-container {
+    transition: all 0.2s ease;
+  }
+  
   .employee-content {
     padding: 1.5rem;
   }
@@ -1035,6 +1039,16 @@ nav ul li a:hover::after {
   .employee-avatar {
     width: 50px;
     height: 50px;
+  }
+  
+  .reference-item {
+    width: 350px;
+    height: 300px;
+    margin: 1.5rem;
+  }
+  
+  .reference-container {
+    transition: all 0.2s ease;
   }
 }
 
