@@ -805,18 +805,17 @@ function initMouseFollowCards() {
         const container = card.querySelector('.reference-container');
         
         if (isMobile) {
-            let isRotated = false;
             // Mobil için toggle dönme animasyonu
             card.addEventListener('click', (e) => {
                 e.preventDefault();
                 container.style.transition = 'all 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
                 
-                if (!isRotated) {
+                if (!card.dataset.rotated) {
                     container.style.transform = 'rotateY(15deg) rotateX(8deg) scale(1.05)';
-                    isRotated = true;
+                    card.dataset.rotated = 'true';
                 } else {
                     container.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-                    isRotated = false;
+                    card.dataset.rotated = '';
                 }
             });
         } else {
@@ -848,18 +847,17 @@ function initMouseFollowCards() {
         const container = card.querySelector('.employee-container');
         
         if (isMobile) {
-            let isRotated = false;
             // Mobil için toggle dönme animasyonu
             card.addEventListener('click', (e) => {
                 e.preventDefault();
                 container.style.transition = 'all 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
                 
-                if (!isRotated) {
+                if (!card.dataset.rotated) {
                     container.style.transform = 'rotateY(-15deg) rotateX(-8deg) scale(1.05)';
-                    isRotated = true;
+                    card.dataset.rotated = 'true';
                 } else {
                     container.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-                    isRotated = false;
+                    card.dataset.rotated = '';
                 }
             });
         } else {
