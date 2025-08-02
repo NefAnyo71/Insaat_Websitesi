@@ -2255,59 +2255,72 @@ footer {
   }
   
   .service-card {
-    min-height: 280px;
-    padding: 2rem 1.5rem;
-    margin: 0 auto;
-    max-width: 350px;
+    width: 280px;
+    height: 350px;
+    margin: 1rem auto;
   }
   
-  .service-card .service-icon {
-    width: 60px;
-    height: 60px;
-    font-size: 1.5rem;
+  .service-header {
+    height: 150px;
   }
   
-  .service-text-display {
+  .service-icon-main {
     width: 80px;
     height: 80px;
-    font-size: 0.9rem;
-    padding: 10px;
+    font-size: 2rem;
   }
   
-  .service-image-container {
-    height: 160px;
+  .service-body {
+    padding: 1.5rem;
+    min-height: 200px;
   }
   
-  .service-image-icon {
-    width: 50px;
-    height: 50px;
+  .service-number-badge {
+    width: 25px;
+    height: 25px;
+    font-size: 0.8rem;
+    top: -12px;
+    right: 15px;
+  }
+  
+  .service-title {
     font-size: 1.2rem;
+    margin: 0.8rem 0 0.4rem;
   }
   
-  .service-card h3 {
-    font-size: 1.3rem;
-  }
-  
-  .service-card p {
-    font-size: 0.9rem;
-  }
-  
-  .service-features {
-    gap: 0.3rem;
-  }
-  
-  .feature-tag {
+  .service-category-pill {
     font-size: 0.7rem;
-    padding: 0.2rem 0.5rem;
+    padding: 0.2rem 0.8rem;
+    margin-bottom: 0.8rem;
   }
   
-  .service-category {
-    font-size: 0.7rem;
-    padding: 0.2rem 0.6rem;
+  .service-description {
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
   }
   
-  .service-card:hover {
-    transform: translateY(-10px) scale(1.02);
+  .service-features-mini {
+    gap: 0.2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .feature-mini {
+    font-size: 0.6rem;
+    padding: 0.1rem 0.4rem;
+  }
+  
+  .service-action-btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.8rem;
+  }
+  
+  .service-card.expanded {
+    width: 300px;
+    height: 400px;
+  }
+  
+  .service-card:hover .service-card-container {
+    transform: translateY(-10px) rotateX(2deg);
   }
   
   .services-footer {
@@ -2372,8 +2385,73 @@ footer {
 }
 
 @media (max-width: 480px) {
-  .service-image {
-    height: 160px;
+  .service-card {
+    width: 260px;
+    height: 320px;
+    margin: 0.8rem auto;
+  }
+  
+  .service-header {
+    height: 130px;
+  }
+  
+  .service-icon-main {
+    width: 70px;
+    height: 70px;
+    font-size: 1.8rem;
+  }
+  
+  .service-body {
+    padding: 1.2rem;
+    min-height: 190px;
+  }
+  
+  .service-number-badge {
+    width: 22px;
+    height: 22px;
+    font-size: 0.7rem;
+    top: -10px;
+    right: 12px;
+  }
+  
+  .service-title {
+    font-size: 1.1rem;
+    margin: 0.6rem 0 0.3rem;
+  }
+  
+  .service-category-pill {
+    font-size: 0.65rem;
+    padding: 0.15rem 0.6rem;
+    margin-bottom: 0.6rem;
+  }
+  
+  .service-description {
+    font-size: 0.75rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .service-features-mini {
+    gap: 0.15rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .feature-mini {
+    font-size: 0.55rem;
+    padding: 0.1rem 0.3rem;
+  }
+  
+  .service-action-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+  }
+  
+  .service-card.expanded {
+    width: 280px;
+    height: 370px;
+  }
+  
+  .service-card:hover .service-card-container {
+    transform: translateY(-8px) rotateX(1deg);
   }
   
   .project-image-container {
@@ -2404,7 +2482,7 @@ footer {
     font-size: 0.7rem;
   }
   
-  .service-card:hover, .project-card:hover, .employee-card:hover, .reference-card:hover {
+  .project-card:hover, .employee-card:hover, .reference-card:hover {
     transform: translateY(-5px) scale(1.01);
   }
   
