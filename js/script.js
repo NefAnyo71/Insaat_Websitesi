@@ -105,14 +105,12 @@ function renderServices(services) {
         serviceElement.innerHTML = `
             <div class="service-card-container">
                 <div class="service-hologram"></div>
-                <div class="service-header">
-                    <div class="service-icon-main">
-                        ${service.image ? `
-                            <div style="width: 90px; height: 90px; border-radius: 50%; background-image: url('${service.image}'); background-size: cover; background-position: center; border: 2px solid rgba(255,255,255,0.5);"></div>
-                        ` : `
+                <div class="service-header" ${service.image ? `style="background-image: url('${service.image}')"` : `style="background: linear-gradient(135deg, #667eea, #764ba2)"`}>
+                    ${service.image ? `<img src="${service.image}" alt="${service.title}" style="width: 100%; height: 100%; object-fit: cover;">` : `
+                        <div class="service-icon-main">
                             <i class="${serviceIcon}"></i>
-                        `}
-                    </div>
+                        </div>
+                    `}
                 </div>
                 
                 <div class="service-body">
