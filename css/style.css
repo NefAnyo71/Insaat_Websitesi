@@ -301,7 +301,7 @@ nav ul li a:hover::after {
 .service-image-container {
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 300px;
   border-radius: 15px;
   overflow: hidden;
   margin-bottom: 1.5rem;
@@ -673,7 +673,7 @@ nav ul li a:hover::after {
 
 .service-header {
   position: relative;
-  height: 200px;
+  height: 280px;
   background: linear-gradient(135deg, #667eea, #764ba2);
   display: flex;
   align-items: center;
@@ -698,14 +698,14 @@ nav ul li a:hover::after {
 }
 
 .service-icon-main {
-  width: 100px;
-  height: 100px;
+  width: 140px;
+  height: 140px;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.5rem;
+  font-size: 3.5rem;
   color: white;
   backdrop-filter: blur(10px);
   border: 2px solid rgba(255, 255, 255, 0.3);
@@ -956,15 +956,15 @@ nav ul li a:hover::after {
 }
 
 .service-card .service-icon {
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   background: linear-gradient(135deg, #FF6B35, #F7931E);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 1.5rem;
-  font-size: 2rem;
+  font-size: 3rem;
   color: white;
   box-shadow: 0 10px 25px rgba(255, 107, 53, 0.3);
   position: relative;
@@ -1007,8 +1007,8 @@ nav ul li a:hover::after {
 }
 
 .service-text-display {
-  width: 100px;
-  height: 100px;
+  width: 140px;
+  height: 140px;
   background: linear-gradient(135deg, #FF6B35, #F7931E);
   border-radius: 50%;
   display: flex;
@@ -1016,10 +1016,10 @@ nav ul li a:hover::after {
   justify-content: center;
   margin: 0 auto 1.5rem;
   color: white;
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   font-weight: bold;
   text-align: center;
-  padding: 15px;
+  padding: 20px;
   box-shadow: 0 10px 25px rgba(255, 107, 53, 0.3);
   position: relative;
   z-index: 2;
@@ -1061,8 +1061,8 @@ nav ul li a:hover::after {
 }
 
 .service-text {
-  width: 100px;
-  height: 100px;
+  width: 140px;
+  height: 140px;
   background: linear-gradient(135deg, #FF6B35, #F7931E);
   border-radius: 50%;
   display: flex;
@@ -1070,10 +1070,10 @@ nav ul li a:hover::after {
   justify-content: center;
   margin: 0 auto 1.5rem;
   color: white;
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   font-weight: bold;
   text-align: center;
-  padding: 15px;
+  padding: 20px;
   box-shadow: 0 10px 25px rgba(255, 107, 53, 0.3);
   position: relative;
   z-index: 2;
@@ -1181,7 +1181,7 @@ nav ul li a:hover::after {
 .service-image {
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 300px;
   overflow: hidden;
   border-radius: 15px 15px 0 0;
   margin-bottom: 1rem;
@@ -1265,7 +1265,7 @@ nav ul li a:hover::after {
 .project-image-container {
   position: relative;
   width: 100%;
-  height: 220px;
+  height: 350px;
   overflow: hidden;
   border-radius: 20px 20px 0 0;
 }
@@ -1325,8 +1325,8 @@ nav ul li a:hover::after {
 
 /* ÇALIŞANLAR - PREMIUM TASARIM */
 .employee-card {
-  width: 400px;
-  height: 350px;
+  width: 450px;
+  height: 400px;
   margin: 2rem;
   perspective: 1500px;
   cursor: pointer;
@@ -1401,8 +1401,8 @@ nav ul li a:hover::after {
 }
 
 .employee-avatar {
-  width: 60px;
-  height: 60px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   overflow: hidden;
   margin: 0 auto 1rem;
@@ -1461,8 +1461,8 @@ nav ul li a:hover::after {
 
 /* REFERANSLAR - YUVARLAK TASARIM */
 .reference-item {
-  width: 200px;
-  height: 200px;
+  width: 280px;
+  height: 280px;
   margin: 1.5rem;
   perspective: 1000px;
   cursor: pointer;
@@ -1520,8 +1520,8 @@ nav ul li a:hover::after {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 80%;
-  height: 80%;
+  width: 90%;
+  height: 90%;
   transform: translate(-50%, -50%);
   border-radius: 50%;
   overflow: hidden;
@@ -1529,7 +1529,7 @@ nav ul li a:hover::after {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 15px;
+  padding: 20px;
   box-shadow: inset 0 0 20px rgba(0, 18, 72, 0.1);
   transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
 }
@@ -1621,8 +1621,8 @@ nav ul li a:hover::after {
 }
 
 .reference-logo-small {
-  width: 50px;
-  height: 50px;
+  width: 80px;
+  height: 80px;
   border-radius: 12px;
   overflow: hidden;
   margin-bottom: 1rem;
@@ -1791,7 +1791,7 @@ nav ul li a:hover::after {
 
 .modal-image {
   width: 100%;
-  height: 200px;
+  height: 350px;
   object-fit: cover;
   border-radius: 10px;
   margin-bottom: 1.5rem;
@@ -2108,9 +2108,9 @@ footer {
   }
   
   .service-text-display {
-    width: 100px;
-    height: 70px;
-    font-size: 1rem;
+    width: 120px;
+    height: 120px;
+    font-size: 1.2rem;
   }
   
   .project-text-overlay, .employee-text-overlay {
@@ -2288,13 +2288,13 @@ footer {
   }
   
   .service-header {
-    height: 150px;
+    height: 220px;
   }
   
   .service-icon-main {
-    width: 80px;
-    height: 80px;
-    font-size: 2rem;
+    width: 110px;
+    height: 110px;
+    font-size: 2.8rem;
   }
   
   .service-body {
@@ -2360,15 +2360,15 @@ footer {
   }
   
   .service-image {
-    height: 180px;
+    height: 280px;
   }
   
   .project-image-container {
-    height: 200px;
+    height: 320px;
   }
   
   .employee-image-container {
-    height: 250px;
+    height: 350px;
   }
   
   .references-container {
@@ -2405,9 +2405,9 @@ footer {
   }
   
   .service-icon-placeholder {
-    width: 60px;
-    height: 60px;
-    font-size: 1.5rem;
+    width: 100px;
+    height: 100px;
+    font-size: 2.2rem;
   }
 }
 
@@ -2482,11 +2482,11 @@ footer {
   }
   
   .project-image-container {
-    height: 180px;
+    height: 280px;
   }
   
   .employee-image-container {
-    height: 220px;
+    height: 320px;
   }
   
   .reference-logo {
@@ -2518,9 +2518,9 @@ footer {
   }
   
   .service-icon-placeholder {
-    width: 50px;
-    height: 50px;
-    font-size: 1.2rem;
+    width: 80px;
+    height: 80px;
+    font-size: 1.8rem;
   }
 }
 
