@@ -715,15 +715,17 @@ nav ul li a:hover::after {
   height: 100%;
   position: relative;
   transform-style: preserve-3d;
-  transition: all 1s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
   border-radius: 50%;
   overflow: hidden;
   box-shadow: 0 15px 40px rgba(0, 18, 72, 0.2);
   border: 4px solid rgba(0, 18, 72, 0.1);
 }
 
-.reference-item .reference-container {
-  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+.reference-item:hover .reference-container {
+  transform: scale(1.8);
+  z-index: 100;
+  box-shadow: 0 30px 80px rgba(0, 18, 72, 0.4);
 }
 
 .reference-ring {
@@ -780,10 +782,7 @@ nav ul li a:hover::after {
   transition: all 0.8s ease;
 }
 
-.reference-item:hover .reference-container {
-  transform: scale(1.3);
-  z-index: 10;
-}
+
 
 .reference-item:hover .reference-logo-main img {
   transform: scale(1.1);
