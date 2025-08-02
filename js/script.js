@@ -805,16 +805,15 @@ function initMouseFollowCards() {
         const container = card.querySelector('.reference-container');
         
         if (isMobile) {
-            // Mobil için touch eventleri
-            card.addEventListener('touchstart', (e) => {
+            // Mobil için otomatik dönme animasyonu
+            card.addEventListener('click', (e) => {
                 e.preventDefault();
-                container.style.transform = 'rotateX(5deg) rotateY(5deg) scale(1.05)';
-                container.style.boxShadow = '0 30px 80px rgba(0, 18, 72, 0.3)';
-            });
-            
-            card.addEventListener('touchend', () => {
-                container.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-                container.style.boxShadow = '0 25px 80px rgba(0, 18, 72, 0.2)';
+                container.style.transform = 'rotateY(360deg) scale(1.1)';
+                container.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                
+                setTimeout(() => {
+                    container.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+                }, 800);
             });
         } else {
             // Desktop için mouse eventleri
@@ -845,16 +844,15 @@ function initMouseFollowCards() {
         const container = card.querySelector('.employee-container');
         
         if (isMobile) {
-            // Mobil için touch eventleri
-            card.addEventListener('touchstart', (e) => {
+            // Mobil için otomatik dönme animasyonu
+            card.addEventListener('click', (e) => {
                 e.preventDefault();
-                container.style.transform = 'rotateX(-5deg) rotateY(-5deg) scale(1.05)';
-                container.style.boxShadow = '0 30px 80px rgba(0, 18, 72, 0.3)';
-            });
-            
-            card.addEventListener('touchend', () => {
-                container.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-                container.style.boxShadow = '0 25px 80px rgba(0, 18, 72, 0.2)';
+                container.style.transform = 'rotateY(-360deg) scale(1.1)';
+                container.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                
+                setTimeout(() => {
+                    container.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+                }, 800);
             });
         } else {
             // Desktop için mouse eventleri
