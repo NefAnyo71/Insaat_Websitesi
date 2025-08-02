@@ -538,6 +538,29 @@ window.saveEdit = async function(type, id) {
     } else {
       alert('Güncelleme sırasında hata oluştu!');
     }
+  } else if (type === 'reference') {
+    const name = document.getElementById('edit-reference-name').value;
+    const text = document.getElementById('edit-reference-text').value;
+    const textStyle = document.getElementById('edit-reference-text-style').value;
+    const sector = document.getElementById('edit-reference-sector').value;
+    const image = document.getElementById('edit-reference-image').value;
+    const description = document.getElementById('edit-reference-description').value;
+    
+    if (!name || !sector || !description) {
+      alert('Lütfen zorunlu alanları doldurun!');
+      return;
+    }
+    
+    try {
+      const { updateReference } = await import('./firebase.js');
+      await updateReference(id, { name, text, textStyle, sector, image, description });
+      alert('Referans başarıyla güncellendi!');
+      closeEditModal();
+      loadReferences();
+    } catch (error) {
+      console.error('Referans güncelleme hatası:', error);
+      alert('Referans güncellenirken hata oluştu!');
+    }
   } else {
     alert('Diğer güncelleme fonksiyonları henüz eklenmedi!');
     closeEditModal();
