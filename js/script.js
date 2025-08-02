@@ -78,47 +78,83 @@ function renderServices(services) {
         serviceElement.style.transition = 'all 1.2s cubic-bezier(0.23, 1, 0.32, 1)';
         serviceElement.style.filter = 'blur(10px)';
         
-        // Hizmet numarası ekle
+        // Hizmet numarası ve kategori rengi
         const serviceNumber = String(index + 1).padStart(2, '0');
+        const categoryColors = ['#FF6B35', '#F7931E', '#0056b3', '#28a745', '#dc3545', '#6f42c1'];
+        const categoryColor = categoryColors[index % categoryColors.length];
+        
+        // Dinamik ikon belirleme
+        const getServiceIcon = (title, category) => {
+            const titleLower = (title || '').toLowerCase();
+            const categoryLower = (category || '').toLowerCase();
+            
+            if (titleLower.includes('inşaat') || titleLower.includes('yapı')) return 'fas fa-building';
+            if (titleLower.includes('tasarım') || titleLower.includes('mimari')) return 'fas fa-drafting-compass';
+            if (titleLower.includes('tadilat') || titleLower.includes('renovasyon')) return 'fas fa-hammer';
+            if (titleLower.includes('elektrik')) return 'fas fa-bolt';
+            if (titleLower.includes('su') || titleLower.includes('tesisat')) return 'fas fa-tint';
+            if (titleLower.includes('boya') || titleLower.includes('boyama')) return 'fas fa-paint-roller';
+            if (titleLower.includes('düşey') || titleLower.includes('yüksek')) return 'fas fa-city';
+            if (titleLower.includes('peyzaj') || titleLower.includes('bahçe')) return 'fas fa-seedling';
+            if (titleLower.includes('danışmanlık')) return 'fas fa-user-tie';
+            return 'fas fa-cogs';
+        };
+        
+        const serviceIcon = getServiceIcon(service.title, service.category);
         
         if (service.image) {
             serviceElement.innerHTML = `
-                <div class="service-number">${serviceNumber}</div>
-                <div class="service-image">
-                    <img src="${service.image}" alt="${service.title}" onerror="this.style.display='none'">
-                    <div class="service-overlay">
-                        <span class="service-text-overlay">${service.text || ''}</span>
+                <div class="service-number" style="background: linear-gradient(135deg, ${categoryColor}, ${categoryColor}aa)">${serviceNumber}</div>
+                <div class="service-image-container">
+                    <img src="${service.image}" alt="${service.title}" onerror="this.parentElement.style.display='none'">
+                    <div class="service-image-overlay">
+                        <div class="service-image-icon" style="background: linear-gradient(135deg, ${categoryColor}, ${categoryColor}dd)">
+                            <i class="${serviceIcon}"></i>
+                        </div>
+                        <span class="service-image-text">${service.text || service.title}</span>
                     </div>
                 </div>
                 <div class="service-content">
+                    ${service.category ? `<span class="service-category" style="background: ${categoryColor}22; color: ${categoryColor}">${service.category}</span>` : ''}
                     <h3>${service.title || ''}</h3>
                     <p>${service.description || ''}</p>
-                    <button class="service-details-btn" onclick="openServiceModal('${service.id}', '${service.title}', '${service.details}', '${service.image}')">
+                    <div class="service-features">
+                        ${service.features ? service.features.split(',').map(f => `<span class="feature-tag">${f.trim()}</span>`).join('') : ''}
+                    </div>
+                    <button class="service-details-btn" style="background: linear-gradient(135deg, ${categoryColor}, ${categoryColor}dd)" onclick="openServiceModal('${service.id}', '${service.title}', '${service.details}', '${service.image}')">
                         <i class="fas fa-info-circle"></i> Detayları Gör
                     </button>
                 </div>
             `;
         } else if (service.text) {
             serviceElement.innerHTML = `
-                <div class="service-number">${serviceNumber}</div>
-                <div class="service-text-display">
+                <div class="service-number" style="background: linear-gradient(135deg, ${categoryColor}, ${categoryColor}aa)">${serviceNumber}</div>
+                <div class="service-text-display" style="background: linear-gradient(135deg, ${categoryColor}, ${categoryColor}dd)">
                     <span class="service-text-content">${service.text}</span>
                 </div>
+                ${service.category ? `<span class="service-category" style="background: ${categoryColor}22; color: ${categoryColor}">${service.category}</span>` : ''}
                 <h3>${service.title || ''}</h3>
                 <p>${service.description || ''}</p>
-                <button class="service-details-btn" onclick="openServiceModal('${service.id}', '${service.title}', '${service.details}', '${service.image}')">
+                <div class="service-features">
+                    ${service.features ? service.features.split(',').map(f => `<span class="feature-tag">${f.trim()}</span>`).join('') : ''}
+                </div>
+                <button class="service-details-btn" style="background: linear-gradient(135deg, ${categoryColor}, ${categoryColor}dd)" onclick="openServiceModal('${service.id}', '${service.title}', '${service.details}', '${service.image}')">
                     <i class="fas fa-info-circle"></i> Detayları Gör
                 </button>
             `;
         } else {
             serviceElement.innerHTML = `
-                <div class="service-number">${serviceNumber}</div>
-                <div class="service-icon">
-                    <i class="fas fa-tools"></i>
+                <div class="service-number" style="background: linear-gradient(135deg, ${categoryColor}, ${categoryColor}aa)">${serviceNumber}</div>
+                <div class="service-icon" style="background: linear-gradient(135deg, ${categoryColor}, ${categoryColor}dd)">
+                    <i class="${serviceIcon}"></i>
                 </div>
+                ${service.category ? `<span class="service-category" style="background: ${categoryColor}22; color: ${categoryColor}">${service.category}</span>` : ''}
                 <h3>${service.title || ''}</h3>
                 <p>${service.description || ''}</p>
-                <button class="service-details-btn" onclick="openServiceModal('${service.id}', '${service.title}', '${service.details}', '${service.image}')">
+                <div class="service-features">
+                    ${service.features ? service.features.split(',').map(f => `<span class="feature-tag">${f.trim()}</span>`).join('') : ''}
+                </div>
+                <button class="service-details-btn" style="background: linear-gradient(135deg, ${categoryColor}, ${categoryColor}dd)" onclick="openServiceModal('${service.id}', '${service.title}', '${service.details}', '${service.image}')">
                     <i class="fas fa-info-circle"></i> Detayları Gör
                 </button>
             `;
@@ -143,10 +179,13 @@ function renderServices(services) {
             
             // Kart belirdikten sonra içerik animasyonu
             setTimeout(() => {
-                const icon = serviceElement.querySelector('.service-icon, .service-text-display');
+                const icon = serviceElement.querySelector('.service-icon, .service-text-display, .service-image-container');
                 const title = serviceElement.querySelector('h3');
                 const desc = serviceElement.querySelector('p');
                 const number = serviceElement.querySelector('.service-number');
+                const category = serviceElement.querySelector('.service-category');
+                const features = serviceElement.querySelectorAll('.feature-tag');
+                const button = serviceElement.querySelector('.service-details-btn');
                 
                 if (icon) {
                     icon.style.animation = 'iconPulse 4s ease-in-out infinite, iconBounceIn 0.8s ease-out';
@@ -160,6 +199,17 @@ function renderServices(services) {
                 if (number) {
                     number.style.animation = 'numberBounce 2s ease-in-out infinite 0.6s, numberSpinIn 0.8s ease-out';
                 }
+                if (category) {
+                    category.style.animation = 'categorySlideIn 0.5s ease-out 0.1s both';
+                }
+                if (button) {
+                    button.style.animation = 'buttonBounceIn 0.6s ease-out 0.8s both';
+                }
+                
+                // Özellik etiketlerini sırayla animasyonla
+                features.forEach((feature, idx) => {
+                    feature.style.animation = `featureSlideIn 0.4s ease-out ${0.6 + idx * 0.1}s both`;
+                });
             }, 300);
         }, index * 300);
     });
