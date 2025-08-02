@@ -805,15 +805,19 @@ function initMouseFollowCards() {
         const container = card.querySelector('.reference-container');
         
         if (isMobile) {
-            // Mobil için otomatik dönme animasyonu
+            let isRotated = false;
+            // Mobil için toggle dönme animasyonu
             card.addEventListener('click', (e) => {
                 e.preventDefault();
-                container.style.transform = 'rotateY(360deg) scale(1.1)';
-                container.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                container.style.transition = 'all 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
                 
-                setTimeout(() => {
+                if (!isRotated) {
+                    container.style.transform = 'rotateY(15deg) rotateX(8deg) scale(1.05)';
+                    isRotated = true;
+                } else {
                     container.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-                }, 800);
+                    isRotated = false;
+                }
             });
         } else {
             // Desktop için mouse eventleri
@@ -844,15 +848,19 @@ function initMouseFollowCards() {
         const container = card.querySelector('.employee-container');
         
         if (isMobile) {
-            // Mobil için otomatik dönme animasyonu
+            let isRotated = false;
+            // Mobil için toggle dönme animasyonu
             card.addEventListener('click', (e) => {
                 e.preventDefault();
-                container.style.transform = 'rotateY(-360deg) scale(1.1)';
-                container.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                container.style.transition = 'all 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
                 
-                setTimeout(() => {
+                if (!isRotated) {
+                    container.style.transform = 'rotateY(-15deg) rotateX(-8deg) scale(1.05)';
+                    isRotated = true;
+                } else {
                     container.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-                }, 800);
+                    isRotated = false;
+                }
             });
         } else {
             // Desktop için mouse eventleri
