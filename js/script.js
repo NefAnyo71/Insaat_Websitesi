@@ -74,8 +74,9 @@ function renderServices(services) {
         
         // Başlangıçta görünmez yap
         serviceElement.style.opacity = '0';
-        serviceElement.style.transform = 'translateY(80px) scale(0.8) rotateX(15deg)';
-        serviceElement.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+        serviceElement.style.transform = 'translateY(120px) scale(0.6) rotateX(30deg) rotateY(-15deg)';
+        serviceElement.style.transition = 'all 1.2s cubic-bezier(0.23, 1, 0.32, 1)';
+        serviceElement.style.filter = 'blur(10px)';
         
         // Hizmet numarası ekle
         const serviceNumber = String(index + 1).padStart(2, '0');
@@ -137,8 +138,30 @@ function renderServices(services) {
         // Sırayla animasyonlu göster
         setTimeout(() => {
             serviceElement.style.opacity = '1';
-            serviceElement.style.transform = 'translateY(0) scale(1) rotateX(0deg)';
-        }, index * 200);
+            serviceElement.style.transform = 'translateY(0) scale(1) rotateX(0deg) rotateY(0deg)';
+            serviceElement.style.filter = 'blur(0px)';
+            
+            // Kart belirdikten sonra içerik animasyonu
+            setTimeout(() => {
+                const icon = serviceElement.querySelector('.service-icon, .service-text-display');
+                const title = serviceElement.querySelector('h3');
+                const desc = serviceElement.querySelector('p');
+                const number = serviceElement.querySelector('.service-number');
+                
+                if (icon) {
+                    icon.style.animation = 'iconPulse 4s ease-in-out infinite, iconBounceIn 0.8s ease-out';
+                }
+                if (title) {
+                    title.style.animation = 'textSlideIn 0.6s ease-out 0.2s both, textGlow 3s ease-in-out infinite alternate 1s';
+                }
+                if (desc) {
+                    desc.style.animation = 'textSlideIn 0.6s ease-out 0.4s both';
+                }
+                if (number) {
+                    number.style.animation = 'numberBounce 2s ease-in-out infinite 0.6s, numberSpinIn 0.8s ease-out';
+                }
+            }, 300);
+        }, index * 300);
     });
 }
 
