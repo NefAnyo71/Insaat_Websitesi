@@ -414,6 +414,9 @@ function renderReferences(references) {
             
             // Mouse takip animasyonunu başlat
             initMouseFollowCards();
+            
+            // Referans hover sistemini başlat
+            initReferenceHoverSystem();
         }, index * 300);
     });
 }
@@ -791,7 +794,54 @@ document.addEventListener('DOMContentLoaded', async function() {
     setTimeout(() => {
         animateSVGPaths();
         initMouseFollowCards();
+        initReferenceHoverSystem();
     }, 1000);
+});
+
+// Referans kartları için özel hover sistemi
+function initReferenceHoverSystem() {
+    const referenceItems = document.querySelectorAll('.reference-item');
+    
+    referenceItems.forEach(item => {
+        // Mouse enter - büyüt ve diğerlerini küçült
+        item.addEventListener('mouseenter', () => {
+            item.classList.add('active');
+            
+            referenceItems.forEach(otherItem => {
+                if (otherItem !== item) {
+                    otherItem.classList.add('shrink');
+                }
+            });
+        });
+        
+        // Mouse leave - hepsini normale döndür
+        item.addEventListener('mouseleave', () => {
+            referenceItems.forEach(allItem => {
+                allItem.classList.remove('active', 'shrink');
+            });
+        });
+        
+        // Click - toggle büyütme
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            if (item.classList.contains('active')) {
+                // Zaten aktifse hepsini normale döndür
+                referenceItems.forEach(allItem => {
+                    allItem.classList.remove('active', 'shrink');
+                });
+            } else {
+                // Aktif değilse bu kartı büyüt, diğerlerini küçült
+                item.classList.add('active');
+                referenceItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.add('shrink');
+                    }
+                });
+            }
+        });
+    });
+}
 });
 
 // Mouse takip eden kart animasyonları
