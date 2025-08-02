@@ -475,24 +475,6 @@ function openEditModal(type, data, id) {
         <button class="btn save-btn" onclick="saveEdit('reference', '${id}')">Kaydet</button>
       </div>
     `;
-  } else if (type === 'contact') {
-    modalContent = `
-      <h2><i class="fas fa-edit"></i> İletişim Düzenle</h2>
-      <div class="edit-form">
-        <select id="edit-contact-type">
-          <option value="">Tür Seçin</option>
-          <option value="email" ${data.type === 'email' ? 'selected' : ''}>E-mail</option>
-          <option value="whatsapp" ${data.type === 'whatsapp' ? 'selected' : ''}>WhatsApp</option>
-          <option value="instagram" ${data.type === 'instagram' ? 'selected' : ''}>Instagram</option>
-        </select>
-        <input type="text" id="edit-contact-value" placeholder="Değer" value="${data.value || ''}">
-        <input type="text" id="edit-contact-label" placeholder="Etiket" value="${data.label || ''}">
-      </div>
-      <div class="modal-actions">
-        <button class="btn cancel-btn" onclick="closeEditModal()">İptal</button>
-        <button class="btn save-btn" onclick="saveEdit('contact', '${id}')">Kaydet</button>
-      </div>
-    `;
   } else if (type === 'admin') {
     modalContent = `
       <h2><i class="fas fa-edit"></i> Admin Düzenle</h2>
@@ -555,25 +537,6 @@ window.saveEdit = async function(type, id) {
       loadAdmins();
     } else {
       alert('Güncelleme sırasında hata oluştu!');
-    }
-  } else if (type === 'contact') {
-    const contactType = document.getElementById('edit-contact-type').value;
-    const value = document.getElementById('edit-contact-value').value;
-    const label = document.getElementById('edit-contact-label').value;
-    
-    if (!contactType || !value || !label) {
-      alert('Lütfen tüm alanları doldurun!');
-      return;
-    }
-    
-    try {
-      await updateContact(id, { type: contactType, value, label });
-      alert('İletişim bilgisi başarıyla güncellendi!');
-      closeEditModal();
-      loadContacts();
-    } catch (error) {
-      console.error('İletişim güncelleme hatası:', error);
-      alert('İletişim bilgisi güncellenirken hata oluştu!');
     }
   } else if (type === 'reference') {
     const name = document.getElementById('edit-reference-name').value;

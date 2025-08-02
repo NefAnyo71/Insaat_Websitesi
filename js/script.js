@@ -1,4 +1,4 @@
-import { getServices, getProjects, getEmployees, getReferences, getContacts, saveSecurityLog } from './firebase.js';
+import { getServices, getProjects, getEmployees, getReferences, saveSecurityLog } from './firebase.js';
 
 // Loading screen kontrolü
 window.addEventListener('load', function() {
@@ -55,11 +55,7 @@ async function loadDynamicContent() {
             renderReferences(references);
         }
 
-        // İletişim bilgilerini yükle
-        const contacts = await getContacts();
-        if (contacts.length > 0) {
-            renderContacts(contacts);
-        }
+
     } catch (error) {
         console.error('Veri yükleme hatası:', error);
     }
@@ -423,57 +419,7 @@ function renderReferences(references) {
     });
 }
 
-// İletişim bilgilerini render et
-function renderContacts(contacts) {
-    const contactsContainer = document.getElementById('contacts-section');
-    if (!contactsContainer) return;
 
-    contactsContainer.innerHTML = '';
-    
-    const contactsHTML = `
-        <div class="contacts-wrapper">
-            <h2 class="contacts-title">İletişim</h2>
-            <div class="contacts-grid">
-                ${contacts.map(contact => {
-                    let icon = '';
-                    let linkPrefix = '';
-                    
-                    switch(contact.type) {
-                        case 'email':
-                            icon = 'fas fa-envelope';
-                            linkPrefix = 'mailto:';
-                            break;
-                        case 'whatsapp':
-                            icon = 'fab fa-whatsapp';
-                            linkPrefix = 'https://wa.me/';
-                            break;
-                        case 'instagram':
-                            icon = 'fab fa-instagram';
-                            linkPrefix = 'https://instagram.com/';
-                            break;
-                        default:
-                            icon = 'fas fa-link';
-                            linkPrefix = '';
-                    }
-                    
-                    return `
-                        <a href="${linkPrefix}${contact.value}" class="contact-item" target="_blank">
-                            <div class="contact-icon">
-                                <i class="${icon}"></i>
-                            </div>
-                            <div class="contact-info">
-                                <div class="contact-label">${contact.label}</div>
-                                <div class="contact-value">${contact.value}</div>
-                            </div>
-                        </a>
-                    `;
-                }).join('')}
-            </div>
-        </div>
-    `;
-    
-    contactsContainer.innerHTML = contactsHTML;
-}
 
 // Hizmet detay modalı aç
 window.openServiceModal = function(id, title, details, image) {
