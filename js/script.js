@@ -104,10 +104,11 @@ function renderServices(services) {
         
         serviceElement.innerHTML = `
             <div class="service-card-container">
-                <div class="service-header" style="background: linear-gradient(135deg, ${categoryColor}, ${categoryColor}dd)">
+                <div class="service-hologram"></div>
+                <div class="service-header">
                     <div class="service-icon-main">
                         ${service.image ? `
-                            <div style="width: 80px; height: 80px; border-radius: 50%; background-image: url('${service.image}'); background-size: cover; background-position: center;"></div>
+                            <div style="width: 90px; height: 90px; border-radius: 50%; background-image: url('${service.image}'); background-size: cover; background-position: center; border: 2px solid rgba(255,255,255,0.5);"></div>
                         ` : `
                             <i class="${serviceIcon}"></i>
                         `}
@@ -117,27 +118,27 @@ function renderServices(services) {
                 <div class="service-body">
                     <div class="service-number-badge">${serviceNumber}</div>
                     
-                    ${service.category ? `<span class="service-category-pill" style="background: ${categoryColor}22; color: ${categoryColor}; border-color: ${categoryColor}33">${service.category}</span>` : ''}
+                    ${service.category ? `<span class="service-category-pill">${service.category}</span>` : ''}
                     
                     <h3 class="service-title">${service.title || ''}</h3>
                     
-                    <p class="service-description">${(service.description || '').substring(0, 100)}${service.description && service.description.length > 100 ? '...' : ''}</p>
+                    <p class="service-description">${(service.description || '').substring(0, 120)}${service.description && service.description.length > 120 ? '...' : ''}</p>
                     
                     <div class="service-features-mini">
-                        ${service.features ? service.features.split(',').slice(0, 3).map(f => `<span class="feature-mini">${f.trim()}</span>`).join('') : ''}
+                        ${service.features ? service.features.split(',').slice(0, 4).map((f, i) => `<span class="feature-mini" style="--i: ${i}">${f.trim()}</span>`).join('') : ''}
                     </div>
                     
-                    <button class="service-action-btn" style="background: linear-gradient(135deg, ${categoryColor}, ${categoryColor}dd)">
-                        <i class="fas fa-expand-alt"></i> Detayları Gör
+                    <button class="service-action-btn">
+                        <i class="fas fa-rocket"></i> KEŞFET
                     </button>
                     
                     <div class="service-expanded-content">
-                        <p style="font-size: 0.85rem; color: #666; margin-bottom: 1rem;">${service.description || ''}</p>
+                        <p style="font-size: 0.9rem; color: rgba(255,255,255,0.9); margin-bottom: 1.5rem; line-height: 1.6;">${service.description || ''}</p>
                         <div class="service-features">
-                            ${service.features ? service.features.split(',').map(f => `<span class="feature-tag" style="background: ${categoryColor}22; color: ${categoryColor}; border-color: ${categoryColor}33">${f.trim()}</span>`).join('') : ''}
+                            ${service.features ? service.features.split(',').map(f => `<span class="feature-tag" style="background: rgba(0,255,255,0.2); color: #00ffff; border: 1px solid rgba(0,255,255,0.5); padding: 0.4rem 0.8rem; border-radius: 15px; font-size: 0.8rem; margin: 0.2rem;">${f.trim()}</span>`).join('') : ''}
                         </div>
-                        <button class="service-details-btn" style="background: linear-gradient(135deg, ${categoryColor}, ${categoryColor}dd); margin-top: 1rem;" onclick="openServiceModal('${service.id}', '${service.title}', '${service.details}', '${service.image}'); logServiceInteraction('${service.id}', 'modal_open')">
-                            <i class="fas fa-info-circle"></i> Detaylı Bilgi
+                        <button class="service-details-btn" style="background: linear-gradient(45deg, #ff006e, #8338ec); border: none; color: white; padding: 0.8rem 1.5rem; border-radius: 25px; margin-top: 1.5rem; cursor: pointer; font-weight: 600; text-transform: uppercase;" onclick="openServiceModal('${service.id}', '${service.title}', '${service.details}', '${service.image}'); logServiceInteraction('${service.id}', 'modal_open')">
+                            <i class="fas fa-info-circle"></i> DETAYLI BİLGİ
                         </button>
                     </div>
                 </div>

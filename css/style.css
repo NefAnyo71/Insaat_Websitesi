@@ -619,24 +619,51 @@ nav ul li a:hover::after {
 
 .service-card {
   position: relative;
-  width: 300px;
-  height: 400px;
-  margin: 1.5rem;
+  width: 320px;
+  height: 420px;
+  margin: 2rem;
   cursor: pointer;
-  transform-style: preserve-3d;
-  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  perspective: 1500px;
+  animation: cardLevitate 6s ease-in-out infinite;
+}
+
+@keyframes cardLevitate {
+  0%, 100% { transform: translateY(0px) rotateZ(0deg); }
+  25% { transform: translateY(-10px) rotateZ(1deg); }
+  50% { transform: translateY(-5px) rotateZ(0deg); }
+  75% { transform: translateY(-15px) rotateZ(-1deg); }
 }
 
 .service-card-container {
   position: relative;
   width: 100%;
   height: 100%;
-  border-radius: 25px;
+  transform-style: preserve-3d;
+  transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  background: rgba(0, 0, 0, 0.9);
+  border-radius: 20px;
   overflow: hidden;
-  background: linear-gradient(145deg, #ffffff, #f8f9fa);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.service-card-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff, #06ffa5, #ffbe0b, #ff006e);
+  background-size: 400% 400%;
+  border-radius: 20px;
+  z-index: -1;
+  animation: neonBorder 3s ease-in-out infinite;
+}
+
+@keyframes neonBorder {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
 .service-card:hover .service-card-container {
