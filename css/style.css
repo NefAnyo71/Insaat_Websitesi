@@ -639,7 +639,7 @@ nav ul li a:hover::after {
 /* REFERANSLAR - PREMIUM TASARIM */
 .reference-item {
   width: 400px;
-  height: 280px;
+  height: 350px;
   margin: 2rem;
   perspective: 1500px;
   cursor: pointer;
@@ -1307,7 +1307,7 @@ footer {
   
   .reference-item {
     width: 350px;
-    height: 250px;
+    height: 300px;
     margin: 1.5rem;
   }
   
