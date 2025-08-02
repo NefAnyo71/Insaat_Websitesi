@@ -392,18 +392,15 @@ function renderReferences(references) {
         const imageUrl = reference.image || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=300&fit=crop&crop=entropy&auto=format';
         
         referenceElement.innerHTML = `
-            <div class="reference-glow"></div>
-            <div class="reference-header">
+            <div class="reference-hexagon">
+                <div class="reference-pulse"></div>
                 <div class="reference-logo">
-                    <img src="${reference.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzAwMTI0OCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+TG9nbzwvdGV4dD48L3N2Zz4='}" alt="${reference.name || ''}">
-                </div>
-                <div class="reference-info">
-                    <div class="reference-name">${reference.name || 'Referans Şirketi'}</div>
-                    <div class="reference-sector">${reference.sector || 'Genel'}</div>
+                    <img src="${reference.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzAwMTI0OCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+TG9nbzwvdGV4dD48L3N2Zz4='}" alt="${reference.name || ''}">
                 </div>
             </div>
-            <div class="reference-content">
-                <div class="reference-description">${reference.description || 'Bu referansımız ile uzun yıllardır başarılı projeler gerçekleştirmekteyiz. Kaliteli hizmet anlayışımızla müşteri memnuniyetini ön planda tutuyoruz.'}</div>
+            <div class="reference-tooltip">
+                ${reference.name || 'Referans Şirketi'}<br>
+                <small style="opacity: 0.8;">${reference.sector || 'Genel'}</small>
             </div>
         `;
         
