@@ -1395,7 +1395,7 @@ footer {
 
 .typing-text::after {
   content: '|';
-  animation: blink 1s infinite, fadeOutCursor 0.5s ease-out 5s forwards;
+  animation: blink 1s infinite, fadeOutCursor 0.5s ease-out 8s forwards;
 }
 
 @keyframes fadeOutCursor {
@@ -1412,12 +1412,12 @@ footer {
   overflow: hidden;
   white-space: nowrap;
   width: 0;
-  animation: typing2 3s steps(50) 5s forwards;
+  animation: typing2 3s steps(50) 8s forwards;
 }
 
 .typing-text-2::after {
   content: '|';
-  animation: blink 1s infinite 5s;
+  animation: blink 1s infinite 8s;
 }
 
 @keyframes typing2 {
@@ -1515,7 +1515,7 @@ footer {
   animation: scrollBounce 2s ease-in-out infinite;
   z-index: 10;
   opacity: 0;
-  animation: scrollAppear 1s ease-out 8.5s forwards, scrollBounce 2s ease-in-out 9.5s infinite;
+  animation: scrollAppear 1s ease-out 11.5s forwards, scrollBounce 2s ease-in-out 12.5s infinite;
 }
 
 .scroll-text {
@@ -1570,7 +1570,7 @@ footer {
 @media (max-width: 768px) {
   .scroll-indicator {
     bottom: 80px;
-    animation: scrollAppear 1s ease-out 7s forwards, scrollBounce 2s ease-in-out 8s infinite;
+    animation: scrollAppear 1s ease-out 9s forwards, scrollBounce 2s ease-in-out 10s infinite;
   }
   
   .scroll-text {
@@ -1811,10 +1811,10 @@ footer {
   
   .typing-text-2 {
     font-size: 0.9rem;
-    animation: typing2 2.5s steps(50) 4s forwards;
+    animation: typing2 2.5s steps(50) 6s forwards;
   }
   
   .typing-text-2::after {
-    animation: blink 1s infinite 4s;
+    animation: blink 1s infinite 6s;
   }
 }
