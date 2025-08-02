@@ -186,28 +186,52 @@ nav ul li a:hover::after {
 }
 
 .services {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: linear-gradient(135deg, #001248 0%, #0056b3 50%, #001248 100%);
+  color: white;
+  position: relative;
 }
 
 .services::before {
   content: '';
   position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(0, 18, 72, 0.05) 0%, transparent 70%);
-  animation: rotate 20s linear infinite, breathe 6s ease-in-out infinite;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="hexagon" width="50" height="43.4" patternUnits="userSpaceOnUse"><polygon points="25,0 50,14.4 50,28.9 25,43.4 0,28.9 0,14.4" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23hexagon)"/></svg>');
+  opacity: 0.3;
+  animation: patternMove 20s linear infinite;
+}
+
+.services::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 30% 20%, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 70% 80%, rgba(247, 147, 30, 0.1) 0%, transparent 50%);
+  animation: breathe 8s ease-in-out infinite;
+}
+
+@keyframes patternMove {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  100% {
+    transform: translateX(50px) translateY(43.4px);
+  }
 }
 
 @keyframes breathe {
   0%, 100% {
     transform: scale(1);
-    opacity: 0.5;
+    opacity: 0.3;
   }
   50% {
-    transform: scale(1.1);
-    opacity: 0.8;
+    transform: scale(1.05);
+    opacity: 0.6;
   }
 }
 
@@ -267,6 +291,28 @@ nav ul li a:hover::after {
   text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+.services h2 {
+  color: white;
+  text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+.services h2::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #FF6B35, #F7931E);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+}
+
 .services h2::after, .projects h2::after, .employees h2::after, .references h2::after {
   content: '';
   position: absolute;
@@ -277,6 +323,10 @@ nav ul li a:hover::after {
   height: 4px;
   background: linear-gradient(135deg, #FF6B35, #F7931E);
   border-radius: 2px;
+}
+
+.services h2::after {
+  background: linear-gradient(135deg, #ffffff, rgba(255,255,255,0.8));
 }
 
 .services-container, .projects-container, .employees-container, .references-container {
@@ -294,36 +344,38 @@ nav ul li a:hover::after {
 }
 
 .service-card {
-  background: white;
-  border-radius: 15px;
-  padding: 2rem;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
-  border: 1px solid #e9ecef;
-}
-
-.service-card {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(145deg, #ffffff, #f8f9fa);
-  border: 1px solid rgba(255, 107, 53, 0.1);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .service-card::before {
   content: '';
   position: absolute;
   top: 0;
-  left: -100%;
+  left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 107, 53, 0.1), transparent);
-  transition: left 0.6s ease;
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.05), rgba(247, 147, 30, 0.05));
+  opacity: 0;
+  transition: opacity 0.4s ease;
   z-index: 1;
 }
 
 .service-card:hover::before {
-  left: 100%;
+  opacity: 1;
 }
 
 .service-card::after {
@@ -332,10 +384,11 @@ nav ul li a:hover::after {
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
+  height: 6px;
   background: linear-gradient(90deg, #FF6B35, #F7931E, #FF6B35);
   transform: scaleX(0);
-  transition: transform 0.3s ease;
+  transition: transform 0.4s ease;
+  border-radius: 20px 20px 0 0;
 }
 
 .service-card:hover::after {
@@ -343,25 +396,56 @@ nav ul li a:hover::after {
 }
 
 .service-card:hover {
-  transform: translateY(-15px) scale(1.03);
-  box-shadow: 0 25px 50px rgba(255, 107, 53, 0.2);
+  transform: translateY(-20px) scale(1.05);
+  box-shadow: 0 30px 60px rgba(255, 107, 53, 0.2), 0 0 0 1px rgba(255, 107, 53, 0.1);
   border-color: rgba(255, 107, 53, 0.3);
 }
 
-.service-text-display {
-  width: 120px;
+.service-card .service-icon {
+  width: 80px;
   height: 80px;
   background: linear-gradient(135deg, #FF6B35, #F7931E);
-  border-radius: 15px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  font-size: 2rem;
+  color: white;
+  box-shadow: 0 10px 25px rgba(255, 107, 53, 0.3);
+  position: relative;
+  z-index: 2;
+  transition: all 0.4s ease;
+}
+
+.service-card:hover .service-icon {
+  transform: scale(1.1) rotate(10deg);
+  box-shadow: 0 15px 35px rgba(255, 107, 53, 0.4);
+}
+
+.service-text-display {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, #FF6B35, #F7931E);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 1.5rem;
   color: white;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: bold;
   text-align: center;
-  padding: 10px;
+  padding: 15px;
+  box-shadow: 0 10px 25px rgba(255, 107, 53, 0.3);
+  position: relative;
+  z-index: 2;
+  transition: all 0.4s ease;
+}
+
+.service-card:hover .service-text-display {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 15px 35px rgba(255, 107, 53, 0.4);
 }
 
 .service-text-display:empty {
@@ -382,19 +466,28 @@ nav ul li a:hover::after {
 }
 
 .service-text {
-  width: 120px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   background: linear-gradient(135deg, #FF6B35, #F7931E);
-  border-radius: 15px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 1.5rem;
   color: white;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: bold;
   text-align: center;
-  padding: 10px;
+  padding: 15px;
+  box-shadow: 0 10px 25px rgba(255, 107, 53, 0.3);
+  position: relative;
+  z-index: 2;
+  transition: all 0.4s ease;
+}
+
+.service-card:hover .service-text {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 15px 35px rgba(255, 107, 53, 0.4);
 }
 
 .service-text:empty {
@@ -406,16 +499,46 @@ nav ul li a:hover::after {
 }
 
 .service-card h3 {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   margin-bottom: 1rem;
-  color: #333;
-  font-weight: 600;
+  color: #2c3e50;
+  font-weight: 700;
   letter-spacing: 0.5px;
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .service-card p {
-  color: #666;
-  line-height: 1.6;
+  color: #555;
+  line-height: 1.7;
+  font-size: 1rem;
+  position: relative;
+  z-index: 2;
+  opacity: 0.9;
+}
+
+.service-card .service-number {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 107, 53, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #FF6B35;
+  font-size: 1.2rem;
+  z-index: 3;
+  transition: all 0.3s ease;
+}
+
+.service-card:hover .service-number {
+  background: rgba(255, 107, 53, 0.2);
+  transform: scale(1.1);
 }
 
 /* Resimli Hizmet Kartları */
@@ -1390,15 +1513,65 @@ footer {
     font-size: 0.8rem !important;
   }
   
-  .services, .projects, .employees, .references {
-    padding: 2rem 0.5rem;
+  .services {
+    padding: 3rem 0.5rem;
   }
   
-  .services h2, .projects h2, .employees h2, .references h2 {
+  .services h2 {
     font-size: 1.6rem;
   }
   
-  .service-card, .project-card, .employee-card, .reference-card {
+  .service-card {
+    min-height: 220px;
+    padding: 1.5rem 1rem;
+    max-width: 100%;
+  }
+  
+  .service-card .service-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+  }
+  
+  .service-text-display {
+    width: 70px;
+    height: 70px;
+    font-size: 0.8rem;
+    padding: 8px;
+  }
+  
+  .service-card h3 {
+    font-size: 1.1rem;
+  }
+  
+  .service-card p {
+    font-size: 0.8rem;
+  }
+  
+  .service-number {
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 1rem !important;
+  }
+  
+  .services-footer {
+    margin-top: 1.5rem !important;
+    padding: 1rem !important;
+  }
+  
+  .services-footer p {
+    font-size: 0.9rem !important;
+  }
+  
+  .projects, .employees, .references {
+    padding: 2rem 0.5rem;
+  }
+  
+  .projects h2, .employees h2, .references h2 {
+    font-size: 1.6rem;
+  }
+  
+  .project-card, .employee-card, .reference-card {
     max-width: 100%;
   }
 }
@@ -1458,6 +1631,61 @@ footer {
 
 
 @media (max-width: 768px) {
+  .services {
+    padding: 4rem 1rem;
+  }
+  
+  .services h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .services-container {
+    gap: 1.5rem;
+    padding: 1rem;
+  }
+  
+  .service-card {
+    min-height: 250px;
+    padding: 2rem 1.5rem;
+    margin: 0 auto;
+    max-width: 350px;
+  }
+  
+  .service-card .service-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+  
+  .service-text-display {
+    width: 80px;
+    height: 80px;
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+  
+  .service-card h3 {
+    font-size: 1.3rem;
+  }
+  
+  .service-card p {
+    font-size: 0.9rem;
+  }
+  
+  .service-card:hover {
+    transform: translateY(-10px) scale(1.02);
+  }
+  
+  .services-footer {
+    margin-top: 2rem !important;
+    padding: 1.5rem !important;
+  }
+  
+  .services-footer p {
+    font-size: 1rem !important;
+  }
+  
   .service-image {
     height: 180px;
   }
@@ -1499,7 +1727,7 @@ footer {
     height: 40px;
   }
   
-  .service-card:hover, .project-card:hover, .employee-card:hover, .reference-card:hover {
+  .project-card:hover, .employee-card:hover, .reference-card:hover {
     transform: translateY(-10px) scale(1.02);
   }
   

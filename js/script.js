@@ -74,11 +74,15 @@ function renderServices(services) {
         
         // Başlangıçta görünmez yap
         serviceElement.style.opacity = '0';
-        serviceElement.style.transform = 'translateX(-100px) rotateY(-15deg)';
+        serviceElement.style.transform = 'translateY(80px) scale(0.8) rotateX(15deg)';
         serviceElement.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+        
+        // Hizmet numarası ekle
+        const serviceNumber = String(index + 1).padStart(2, '0');
         
         if (service.image) {
             serviceElement.innerHTML = `
+                <div class="service-number">${serviceNumber}</div>
                 <div class="service-image">
                     <img src="${service.image}" alt="${service.title}" onerror="this.style.display='none'">
                     <div class="service-overlay">
@@ -93,18 +97,29 @@ function renderServices(services) {
                     </button>
                 </div>
             `;
+        } else if (service.text) {
+            serviceElement.innerHTML = `
+                <div class="service-number">${serviceNumber}</div>
+                <div class="service-text-display">
+                    <span class="service-text-content">${service.text}</span>
+                </div>
+                <h3>${service.title || ''}</h3>
+                <p>${service.description || ''}</p>
+                <button class="service-details-btn" onclick="openServiceModal('${service.id}', '${service.title}', '${service.details}', '${service.image}')">
+                    <i class="fas fa-info-circle"></i> Detayları Gör
+                </button>
+            `;
         } else {
             serviceElement.innerHTML = `
-                <div class="service-content-only">
-                    <div class="service-icon-placeholder">
-                        <i class="fas fa-cogs"></i>
-                    </div>
-                    <h3>${service.title || ''}</h3>
-                    <p>${service.description || ''}</p>
-                    <button class="service-details-btn" onclick="openServiceModal('${service.id}', '${service.title}', '${service.details}', '${service.image}')">
-                        <i class="fas fa-info-circle"></i> Detayları Gör
-                    </button>
+                <div class="service-number">${serviceNumber}</div>
+                <div class="service-icon">
+                    <i class="fas fa-tools"></i>
                 </div>
+                <h3>${service.title || ''}</h3>
+                <p>${service.description || ''}</p>
+                <button class="service-details-btn" onclick="openServiceModal('${service.id}', '${service.title}', '${service.details}', '${service.image}')">
+                    <i class="fas fa-info-circle"></i> Detayları Gör
+                </button>
             `;
         }
         
@@ -122,8 +137,8 @@ function renderServices(services) {
         // Sırayla animasyonlu göster
         setTimeout(() => {
             serviceElement.style.opacity = '1';
-            serviceElement.style.transform = 'translateX(0) rotateY(0)';
-        }, index * 150);
+            serviceElement.style.transform = 'translateY(0) scale(1) rotateX(0deg)';
+        }, index * 200);
     });
 }
 
