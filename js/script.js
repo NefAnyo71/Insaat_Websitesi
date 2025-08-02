@@ -389,15 +389,12 @@ function renderReferences(references) {
         referenceElement.style.transition = 'all 1.5s cubic-bezier(0.23, 1, 0.32, 1)';
         
         // Görsel URL'si varsa kullan, yoksa varsayılan
-        const imageUrl = reference.image || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=300&fit=crop&crop=entropy&auto=format';
-        
-        // Görsel URL'si varsa kullan, yoksa varsayılan
-        const imageUrl = reference.image || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=300&fit=crop&crop=entropy&auto=format';
+        const referenceImageUrl = reference.image || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=300&fit=crop&crop=entropy&auto=format';
         
         referenceElement.innerHTML = `
             <div class="reference-container">
                 <div class="reference-glow"></div>
-                <div class="reference-image" style="background-image: url('${imageUrl}')"></div>
+                <div class="reference-image" style="background-image: url('${referenceImageUrl}')"></div>
                 <div class="reference-overlay"></div>
                 <div class="reference-content">
                     <div class="reference-avatar">
