@@ -432,3 +432,55 @@ export async function getSecurityLogs() {
     return [];
   }
 }
+
+// İletişim ekleme
+export async function addContact(type, value, label) {
+  try {
+    await initializeFirebase();
+    
+    await addDoc(collection(db, "contacts"), {
+      type: type,
+      value: value,
+      label: label,
+      createdAt: new Date()
+    });
+    return true;
+  } catch (error) {
+    console.error("İletişim eklenirken hata:", error);
+    return false;
+  }
+}
+
+// İletişim bilgilerini getirme
+export async function getContacts() {
+  try {
+    await initializeFirebase();
+    
+    const querySnapshot = await getDocs(collection(db, "contacts"));
+    const contacts = [];
+    querySnapshot.forEach((doc) => {
+      contacts.push({ id: doc.id, ...doc.data() });
+    });
+    return contacts;
+  } catch (error) {
+    console.error("İletişim bilgileri getirilirken hata:", error);
+    return [];
+  }
+}
+
+// İletişim güncelleme
+export async function updateContact(id, data) {
+  try {
+    await initializeFirebase();
+    
+    const contactRef = doc(db, "contacts", id);
+    await updateDoc(contactRef, {
+      ...data,
+      updatedAt: new Date()
+    });
+    return true;
+  } catch (error) {
+    console.error("İletişim güncellenirken hata:", error);
+    return false;
+  }
+}

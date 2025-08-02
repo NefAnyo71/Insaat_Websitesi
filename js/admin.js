@@ -475,6 +475,24 @@ function openEditModal(type, data, id) {
         <button class="btn save-btn" onclick="saveEdit('reference', '${id}')">Kaydet</button>
       </div>
     `;
+  } else if (type === 'contact') {
+    modalContent = `
+      <h2><i class="fas fa-edit"></i> İletişim Düzenle</h2>
+      <div class="edit-form">
+        <select id="edit-contact-type">
+          <option value="">Tür Seçin</option>
+          <option value="email" ${data.type === 'email' ? 'selected' : ''}>E-mail</option>
+          <option value="whatsapp" ${data.type === 'whatsapp' ? 'selected' : ''}>WhatsApp</option>
+          <option value="instagram" ${data.type === 'instagram' ? 'selected' : ''}>Instagram</option>
+        </select>
+        <input type="text" id="edit-contact-value" placeholder="Değer" value="${data.value || ''}">
+        <input type="text" id="edit-contact-label" placeholder="Etiket" value="${data.label || ''}">
+      </div>
+      <div class="modal-actions">
+        <button class="btn cancel-btn" onclick="closeEditModal()">İptal</button>
+        <button class="btn save-btn" onclick="saveEdit('contact', '${id}')">Kaydet</button>
+      </div>
+    `;
   } else if (type === 'admin') {
     modalContent = `
       <h2><i class="fas fa-edit"></i> Admin Düzenle</h2>
@@ -537,6 +555,25 @@ window.saveEdit = async function(type, id) {
       loadAdmins();
     } else {
       alert('Güncelleme sırasında hata oluştu!');
+    }
+  } else if (type === 'contact') {
+    const contactType = document.getElementById('edit-contact-type').value;
+    const value = document.getElementById('edit-contact-value').value;
+    const label = document.getElementById('edit-contact-label').value;
+    
+    if (!contactType || !value || !label) {
+      alert('Lütfen tüm alanları doldurun!');
+      return;
+    }
+    
+    try {
+      await updateContact(id, { type: contactType, value, label });
+      alert('İletişim bilgisi başarıyla güncellendi!');
+      closeEditModal();
+      loadContacts();
+    } catch (error) {
+      console.error('İletişim güncelleme hatası:', error);
+      alert('İletişim bilgisi güncellenirken hata oluştu!');
     }
   } else if (type === 'reference') {
     const name = document.getElementById('edit-reference-name').value;
@@ -661,9 +698,75 @@ function loadAdminData() {
   loadProjects();
   loadEmployees();
   loadReferences();
+  loadContacts();
   loadAdmins();
   loadLogs();
   loadAnalytics();
+}
+
+// İletişim ekleme
+window.addContact = async function() {
+  const type = document.getElementById('contact-type').value;
+  const value = document.getElementById('contact-value').value;
+  const label = document.getElementById('contact-label').value;
+  
+  if (!type || !value || !label) {
+    alert('Lütfen tüm alanları doldurun!');
+    return;
+  }
+  
+  const success = await addContact(type, value, label);
+  if (success) {
+    alert('İletişim bilgisi başarıyla eklendi!');
+    document.getElementById('contact-type').value = '';
+    document.getElementById('contact-value').value = '';
+    document.getElementById('contact-label').value = '';
+    loadContacts();
+  } else {
+    alert('İletişim bilgisi eklenirken hata oluştu!');
+  }
+}
+
+// İletişim bilgilerini yükleme
+async function loadContacts() {
+  const contacts = await getContacts();
+  const container = document.getElementById('contacts-list');
+  container.innerHTML = '';
+  
+  contacts.forEach(contact => {
+    const div = document.createElement('div');
+    div.className = 'item';
+    div.innerHTML = `
+      <h4>${contact.label || ''}</h4>
+      <p>Tür: ${contact.type || ''}</p>
+      <p>Değer: ${contact.value || ''}</p>
+      <div class="item-actions">
+        <button class="edit-btn" onclick="editContact('${contact.id}')">Düzenle</button>
+        <button class="delete-btn" onclick="deleteContact('${contact.id}')">Sil</button>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+// İletişim düzenle
+window.editContact = async function(id) {
+  const contacts = await getContacts();
+  const contact = contacts.find(c => c.id === id);
+  if (contact) {
+    openEditModal('contact', contact, id);
+  }
+}
+
+// İletişim sil
+window.deleteContact = async function(id) {
+  if (confirm('Bu iletişim bilgisini silmek istediğinizden emin misiniz?')) {
+    const success = await deleteItem('contacts', id);
+    if (success) {
+      alert('İletişim bilgisi silindi!');
+      loadContacts();
+    }
+  }
 }
 
 // Kullanıcı analizlerini yükle

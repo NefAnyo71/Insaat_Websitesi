@@ -1,0 +1,120 @@
+/* İLETİŞİM BÖLÜMÜ */
+.contacts {
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  text-align: center;
+}
+
+.contacts-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.contacts-title {
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  color: #2c3e50;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.contacts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 18, 72, 0.1);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid transparent;
+}
+
+.contact-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 18, 72, 0.2);
+  border-color: rgba(0, 18, 72, 0.1);
+  text-decoration: none;
+  color: inherit;
+}
+
+.contact-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  font-size: 1.5rem;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.contact-item[href*="mailto"] .contact-icon {
+  background: linear-gradient(135deg, #ea4335, #d33b2c);
+}
+
+.contact-item[href*="wa.me"] .contact-icon {
+  background: linear-gradient(135deg, #25d366, #128c7e);
+}
+
+.contact-item[href*="instagram"] .contact-icon {
+  background: linear-gradient(135deg, #e4405f, #833ab4, #fd1d1d);
+}
+
+.contact-item:hover .contact-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.contact-info {
+  flex: 1;
+  text-align: left;
+}
+
+.contact-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.3rem;
+}
+
+.contact-value {
+  font-size: 0.9rem;
+  color: #666;
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .contacts {
+    padding: 3rem 1rem;
+  }
+  
+  .contacts-title {
+    font-size: 2rem;
+  }
+  
+  .contacts-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .contact-item {
+    padding: 1.2rem;
+  }
+  
+  .contact-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+  }
+}
