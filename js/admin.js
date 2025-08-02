@@ -884,6 +884,33 @@ window.exportAnalytics = async function() {
   const cardSheet = XLSX.utils.aoa_to_sheet(cardData);
   XLSX.utils.book_append_sheet(workbook, cardSheet, 'Kart Analizi');
   
+  // Özet sayfa
+  const summaryData = [
+    ['Rapor Tarihi', new Date().toLocaleDateString('tr-TR')],
+    ['Toplam Ziyaretçi', new Set(activities.map(a => a.ipAddress)).size],
+    ['Toplam Tıklama', activities.filter(a => a.activityType === 'click_activity').length],
+    ['Toplam Oturum', new Set(activities.map(a => a.sessionId)).size],
+    [''],
+    ['Kart Bazında Tıklama Analizi', ''],
+    ['Kart Adı', 'Tıklama Sayısı']
+  ];
+  
+  Object.entries(cardStats).forEach(([card, count]) => {
+    summaryData.push([card, count]);
+  });
+  
+  summaryData.push(['']);
+  summaryData.push(['Bölüm Bazında İlgi Dağılımı', '']);
+  summaryData.push(['Bölüm', 'Ziyaret', 'Yüzde']);
+  
+  Object.entries(sectionStats).forEach(([section, count]) => {
+    const percentage = ((count / sectionTotal) * 100).toFixed(1);
+    summaryData.push([section, count, `${percentage}%`]);
+  });
+  
+  const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
+  XLSX.utils.book_append_sheet(workbook, summarySheet, 'Özet Rapor');
+  
   // Excel dosyasını indir
   XLSX.writeFile(workbook, `kullanici-analizi-${new Date().toISOString().split('T')[0]}.xlsx`);
 }
