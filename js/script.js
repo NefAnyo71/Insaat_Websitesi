@@ -387,20 +387,23 @@ function renderReferences(references) {
         
         // Başlangıçta görünmez yap
         referenceElement.style.opacity = '0';
-        referenceElement.style.transform = 'rotateY(90deg) scale(0.8)';
-        referenceElement.style.transition = 'all 1s cubic-bezier(0.4, 0, 0.2, 1)';
+        referenceElement.style.transform = 'translateY(50px) scale(0.9)';
+        referenceElement.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
         
         referenceElement.innerHTML = `
-            <div class="reference-logo">
-                <img src="${reference.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjRkY2QjM1Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5Mb2dvPC90ZXh0Pjwvc3ZnPg=='}" alt="${reference.name || ''}" onerror="this.style.display='none'">
-                <div class="reference-overlay">
-                    <div class="reference-details">
-                        <h4>${reference.name || ''}</h4>
-                        <span class="reference-sector">${reference.sector || ''}</span>
-                        <p>${reference.description || ''}</p>
+            <div class="reference-card">
+                <div class="reference-front">
+                    <div class="reference-logo">
+                        <img src="${reference.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzAwMTI0OCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+TG9nbzwvdGV4dD48L3N2Zz4='}" alt="${reference.name || ''}">
                     </div>
+                    <div class="reference-name">${reference.name || ''}</div>
+                    <div class="reference-sector">${reference.sector || ''}</div>
                 </div>
-                <div class="reference-pulse"></div>
+                <div class="reference-back">
+                    <h4>${reference.name || ''}</h4>
+                    <div class="sector-tag">${reference.sector || ''}</div>
+                    <div class="reference-description">${reference.description || 'Bu referansımız hakkında detaylı bilgi yakında eklenecektir.'}</div>
+                </div>
             </div>
         `;
         
@@ -409,8 +412,8 @@ function renderReferences(references) {
         // Sırayla animasyonlu göster
         setTimeout(() => {
             referenceElement.style.opacity = '1';
-            referenceElement.style.transform = 'rotateY(0deg) scale(1)';
-        }, index * 200);
+            referenceElement.style.transform = 'translateY(0) scale(1)';
+        }, index * 150);
     });
 }
 
