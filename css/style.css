@@ -780,8 +780,9 @@ nav ul li a:hover::after {
   transition: all 0.8s ease;
 }
 
-.reference-item:hover .reference-logo-main {
-  transform: translate(-50%, -50%) scale(1.1);
+.reference-item:hover .reference-container {
+  transform: scale(1.3);
+  z-index: 10;
 }
 
 .reference-item:hover .reference-logo-main img {
