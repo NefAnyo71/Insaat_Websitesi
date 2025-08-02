@@ -333,15 +333,19 @@
       </div>
 
       <!-- Favicon Tab -->
-      <div id="favicon" class="tab-content">
-        <div class="form-section">
-          <h2><i class="fas fa-image"></i> Favicon Yönetimi</h2>
-          <div class="form-group">
-            <input type="url" id="favicon-url-input" placeholder="Favicon URL'si (Örn: https://example.com/favicon.ico)">
-            <small style="color: #666; font-size: 0.8rem;">32x32 piksel .ico, .png veya .jpg formatında olmalıdır.</small>
-          </div>
-          <button class="btn" onclick="updateFavicon()"><i class="fas fa-save"></i> Kaydet</button>
-        </div>
+   <div id="favicon" class="tab-content">
+     <div class="form-section">
+       <h2><i class="fas fa-image"></i> Favicon Yönetimi</h2>
+       <div class="form-group">
+         <input type="url" id="favicon-url-input" placeholder="Favicon URL'si (Örn: https://example.com/favicon.ico)">
+         <a href="https://resimlink.com/" target="_blank" class="btn" style="margin-top: 8px; display: inline-block; font-size: 0.8rem;">
+           <i class="fas fa-link"></i> Favicon için görsel yükle (resimlink.com)
+         </a>
+       </div>
+       <button class="btn" onclick="updateFavicon()"><i class="fas fa-save"></i> Kaydet</button>
+     </div>
+   </div>
+
         
         <div class="items-section">
           <h3><i class="fas fa-info-circle"></i> Mevcut Favicon</h3>
