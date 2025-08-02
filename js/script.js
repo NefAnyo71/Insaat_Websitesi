@@ -784,7 +784,43 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     initScrollReveal();
     initTypingAnimation();
+    setTimeout(() => {
+        animateSVGPaths();
+    }, 1000);
 });
+
+// SVG Path animasyonları
+function animateSVGPaths() {
+    const svgPaths = document.querySelectorAll('.section-wave path');
+    
+    svgPaths.forEach((path, index) => {
+        const originalD = path.getAttribute('d');
+        let time = 0;
+        
+        function animatePath() {
+            time += 0.02;
+            
+            // Path'i hafifçe deforme et
+            const deformation = Math.sin(time + index) * 3;
+            const deformation2 = Math.cos(time * 1.5 + index) * 2;
+            
+            // Orijinal path'i al ve hafifçe değiştir
+            let newPath = originalD.replace(/([0-9.]+),([0-9.]+)/g, (match, x, y) => {
+                const newX = parseFloat(x) + Math.sin(time + parseFloat(x) * 0.01) * deformation;
+                const newY = parseFloat(y) + Math.cos(time + parseFloat(y) * 0.01) * deformation2;
+                return `${newX},${newY}`;
+            });
+            
+            path.setAttribute('d', newPath);
+            requestAnimationFrame(animatePath);
+        }
+        
+        // Her path için farklı gecikme
+        setTimeout(() => {
+            animatePath();
+        }, index * 500);
+    });
+}
 
 // Firebase fonksiyonlarını kullan
 async function saveCookieConsent(ip, consent) {
