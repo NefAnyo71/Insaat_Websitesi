@@ -520,3 +520,39 @@ export async function getSiteName() {
     return "İnşaat WebSitesi";
   }
 }
+
+// Favicon ekleme/güncelleme
+export async function setFavicon(faviconUrl) {
+  try {
+    await initializeFirebase();
+    
+    await addDoc(collection(db, "favicon"), {
+      url: faviconUrl,
+      createdAt: new Date()
+    });
+    return true;
+  } catch (error) {
+    console.error("Favicon kaydedilirken hata:", error);
+    return false;
+  }
+}
+
+// Favicon getirme
+export async function getFavicon() {
+  try {
+    await initializeFirebase();
+    
+    const querySnapshot = await getDocs(collection(db, "favicon"));
+    let faviconUrl = null;
+    
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      faviconUrl = data.url;
+    });
+    
+    return faviconUrl;
+  } catch (error) {
+    console.error("Favicon getirilirken hata:", error);
+    return null;
+  }
+}

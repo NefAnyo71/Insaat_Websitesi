@@ -1,4 +1,4 @@
-import { addService, getServices, addProject, getProjects, addEmployee, getEmployees, addReference, getReferences, deleteItem, checkAdminLogin, getAdmins, addAdmin, updateAdmin, addAdminLog, getAdminLogs, getUserStats, getSiteName, setSiteName } from './firebase.js';
+import { addService, getServices, addProject, getProjects, addEmployee, getEmployees, addReference, getReferences, deleteItem, checkAdminLogin, getAdmins, addAdmin, updateAdmin, addAdminLog, getAdminLogs, getUserStats, getSiteName, setSiteName, getFavicon, setFavicon } from './firebase.js';
 
 // Hizmet ekleme
 window.addService = async function() {
@@ -666,6 +666,7 @@ function loadAdminData() {
   loadLogs();
   loadAnalytics();
   loadCurrentSiteName();
+  loadCurrentFavicon();
 }
 
 // Site adını yükle
@@ -703,6 +704,65 @@ window.updateSiteName = async function() {
     console.error('Site adı güncelleme hatası:', error);
     alert('Site adı güncellenirken hata oluştu!');
   }
+}
+
+// Favicon yükle
+window.loadCurrentFavicon = async function() {
+  try {
+    const faviconUrl = await getFavicon();
+    const previewImg = document.getElementById('favicon-preview');
+    const statusSpan = document.getElementById('favicon-status');
+    const inputField = document.getElementById('favicon-url-input');
+    
+    if (faviconUrl) {
+      previewImg.src = faviconUrl;
+      previewImg.style.display = 'block';
+      statusSpan.textContent = faviconUrl;
+      inputField.value = faviconUrl;
+    } else {
+      previewImg.style.display = 'none';
+      statusSpan.textContent = 'Favicon ayarlanmamış';
+      inputField.value = '';
+    }
+  } catch (error) {
+    console.error('Favicon yüklenirken hata:', error);
+    document.getElementById('favicon-status').textContent = 'Yükleme hatası';
+  }
+}
+
+// Favicon güncelle
+window.updateFavicon = async function() {
+  const faviconUrl = document.getElementById('favicon-url-input').value.trim();
+  
+  if (!faviconUrl) {
+    alert('Lütfen favicon URL\'si girin!');
+    return;
+  }
+  
+  try {
+    await logAdminAccess('data_edit', { type: 'favicon', newUrl: faviconUrl });
+    
+    const success = await setFavicon(faviconUrl);
+    if (success) {
+      alert('Favicon başarıyla güncellendi!');
+      loadCurrentFavicon();
+      updatePageFavicon(faviconUrl);
+    } else {
+      alert('Favicon güncellenirken hata oluştu!');
+    }
+  } catch (error) {
+    console.error('Favicon güncelleme hatası:', error);
+    alert('Favicon güncellenirken hata oluştu!');
+  }
+}
+
+// Sayfa favicon'ını güncelle
+function updatePageFavicon(faviconUrl) {
+  let link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+  link.type = 'image/x-icon';
+  link.rel = 'shortcut icon';
+  link.href = faviconUrl;
+  document.getElementsByTagName('head')[0].appendChild(link);
 }
 
 // İletişim ekleme

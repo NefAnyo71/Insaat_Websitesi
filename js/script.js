@@ -1,4 +1,4 @@
-import { getServices, getProjects, getEmployees, getReferences, saveSecurityLog, getSiteName } from './firebase.js';
+import { getServices, getProjects, getEmployees, getReferences, saveSecurityLog, getSiteName, getFavicon } from './firebase.js';
 
 // Loading screen kontrolü
 window.addEventListener('load', function() {
@@ -34,6 +34,12 @@ async function loadDynamicContent() {
         // Site adını yükle
         const siteName = await getSiteName();
         updateSiteName(siteName);
+        
+        // Favicon yükle
+        const faviconUrl = await getFavicon();
+        if (faviconUrl) {
+            updatePageFavicon(faviconUrl);
+        }
 
         // Hizmetleri yükle
         const services = await getServices();
@@ -91,6 +97,15 @@ function updateSiteName(siteName) {
     
     // Title
     document.title = siteName;
+}
+
+// Sayfa favicon'ını güncelle
+function updatePageFavicon(faviconUrl) {
+    let link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+    link.type = 'image/x-icon';
+    link.rel = 'shortcut icon';
+    link.href = faviconUrl;
+    document.getElementsByTagName('head')[0].appendChild(link);
 }
 
 // Hizmetleri render et
