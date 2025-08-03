@@ -3053,6 +3053,191 @@ footer {
   }
 }
 
+/* ANIMATED EXPERIENCE SECTION */
+.animated-experience {
+  margin-top: 3rem;
+  padding: 2.5rem;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+  border-radius: 20px;
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  position: relative;
+  overflow: hidden;
+  animation: experienceFloat 6s ease-in-out infinite;
+}
+
+.animated-experience::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+  animation: shimmer 4s ease-in-out infinite;
+}
+
+.experience-badge {
+  background: linear-gradient(135deg, #FF6B35, #F7931E);
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4);
+  animation: badgePulse 3s ease-in-out infinite;
+  position: relative;
+  z-index: 2;
+}
+
+.badge-number {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: white;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  animation: numberCount 2s ease-out;
+}
+
+.badge-text {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.9);
+  letter-spacing: 2px;
+}
+
+.experience-content {
+  text-align: center;
+  z-index: 2;
+  position: relative;
+}
+
+.experience-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 0.8rem;
+  text-shadow: 0 3px 6px rgba(0,0,0,0.4);
+  animation: titleGlow 3s ease-in-out infinite alternate;
+}
+
+.experience-description {
+  font-size: 1.2rem;
+  color: rgba(255,255,255,0.95);
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.pulse-icon {
+  color: #F7931E;
+  animation: iconPulse 2s ease-in-out infinite;
+  font-size: 1.1rem;
+}
+
+@keyframes experienceFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+@keyframes badgePulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 20px 50px rgba(255, 107, 53, 0.6);
+  }
+}
+
+@keyframes numberCount {
+  0% {
+    transform: scale(0) rotate(-180deg);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.2) rotate(-90deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes titleGlow {
+  0% {
+    text-shadow: 0 3px 6px rgba(0,0,0,0.4);
+  }
+  100% {
+    text-shadow: 0 3px 6px rgba(0,0,0,0.4), 0 0 20px rgba(255,255,255,0.3);
+  }
+}
+
+@keyframes iconPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .animated-experience {
+    flex-direction: column;
+    padding: 2rem 1.5rem;
+    gap: 1.5rem;
+  }
+  
+  .experience-badge {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .badge-number {
+    font-size: 2rem;
+  }
+  
+  .badge-text {
+    font-size: 0.8rem;
+  }
+  
+  .experience-title {
+    font-size: 1.5rem;
+  }
+  
+  .experience-description {
+    font-size: 1rem;
+    text-align: center;
+  }
+}
+
 /* SOSYAL MEDYA BUTONLARI */
 .social-media-buttons {
   position: fixed;
