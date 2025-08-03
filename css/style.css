@@ -2639,7 +2639,7 @@ footer {
 .typing-text {
   overflow: hidden;
   white-space: nowrap;
-  animation: typing 3s steps(30) 1s both;
+  animation: typing 1s steps(30) 0.5s both;
 }
 
 .typing-text::after {
@@ -2661,12 +2661,12 @@ footer {
   overflow: hidden;
   white-space: nowrap;
   width: 0;
-  animation: typing2 3s steps(50) 8s forwards;
+  animation: typing2 1.5s steps(50) 2.5s forwards;
 }
 
 .typing-text-2::after {
   content: '|';
-  animation: blink 1s infinite 8s;
+  animation: blink 1s infinite 2.5s;
 }
 
 @keyframes typing2 {
@@ -3185,7 +3185,7 @@ footer {
   
   .typing-text-2 {
     font-size: 0.9rem;
-    animation: typing2 2.5s steps(50) 6s forwards;
+    animation: typing2 1.8s steps(50) 3s forwards;
   }
   
   .typing-text-2::after {
