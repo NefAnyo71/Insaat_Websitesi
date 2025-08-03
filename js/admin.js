@@ -1,4 +1,4 @@
-import { addService, getServices, addProject, getProjects, addEmployee, getEmployees, addReference, getReferences, deleteItem, checkAdminLogin, getAdmins, addAdmin, updateAdmin, addAdminLog, getAdminLogs, getUserStats, getSiteName, setSiteName, getFavicon, setFavicon } from './firebase.js';
+import { addService, getServices, addProject, getProjects, addEmployee, getEmployees, addReference, getReferences, deleteItem, checkAdminLogin, getAdmins, addAdmin, updateAdmin, addAdminLog, getAdminLogs, getUserStats, getSiteName, setSiteName, getFavicon, setFavicon, getExperience, setExperience } from './firebase.js';
 
 // Hizmet ekleme
 window.addService = async function() {
@@ -655,6 +655,53 @@ window.attemptLogin = async function() {
   }
 }
 
+// Deneyim güncelleme
+window.updateExperience = async function() {
+  const years = document.getElementById('experience-years').value;
+  const title = document.getElementById('experience-title').value;
+  const description = document.getElementById('experience-description').value;
+  
+  if (!years || !title || !description) {
+    alert('Lütfen tüm alanları doldurun!');
+    return;
+  }
+  
+  try {
+    await logAdminAccess('data_edit', { type: 'experience', years, title, description });
+    
+    const success = await setExperience({ years, title, description });
+    if (success) {
+      alert('Deneyim bilgileri başarıyla güncellendi!');
+      loadCurrentExperience();
+    } else {
+      alert('Deneyim bilgileri güncellenirken hata oluştu!');
+    }
+  } catch (error) {
+    console.error('Deneyim güncelleme hatası:', error);
+    alert('Deneyim bilgileri güncellenirken hata oluştu!');
+  }
+}
+
+// Mevcut deneyim bilgilerini yükle
+window.loadCurrentExperience = async function() {
+  try {
+    const experience = await getExperience();
+    
+    document.getElementById('current-years-badge').textContent = experience.years + '+';
+    document.getElementById('current-experience-title').textContent = experience.title;
+    document.getElementById('current-experience-desc').textContent = experience.description;
+    
+    // Form alanlarını da doldur
+    document.getElementById('experience-years').value = experience.years;
+    document.getElementById('experience-title').value = experience.title;
+    document.getElementById('experience-description').value = experience.description;
+  } catch (error) {
+    console.error('Deneyim bilgileri yüklenirken hata:', error);
+    document.getElementById('current-experience-title').textContent = 'Yükleme hatası';
+    document.getElementById('current-experience-desc').textContent = 'Veriler yüklenemedi';
+  }
+}
+
 // Admin verilerini yükle
 function loadAdminData() {
   loadServices();
@@ -667,6 +714,7 @@ function loadAdminData() {
   loadAnalytics();
   loadCurrentSiteName();
   loadCurrentFavicon();
+  loadCurrentExperience();
 }
 
 // Site adını yükle

@@ -1,4 +1,4 @@
-import { getServices, getProjects, getEmployees, getReferences, saveSecurityLog, getSiteName, getFavicon } from './firebase.js';
+import { getServices, getProjects, getEmployees, getReferences, saveSecurityLog, getSiteName, getFavicon, getExperience } from './firebase.js';
 
 // Loading screen kontrolü
 window.addEventListener('load', function() {
@@ -65,6 +65,9 @@ async function loadDynamicContent() {
             renderReferences(references);
         }
 
+        // Deneyim bilgilerini yükle
+        const experience = await getExperience();
+        renderExperience(experience);
 
     } catch (error) {
         console.error('Veri yükleme hatası:', error);
@@ -548,6 +551,35 @@ function renderReferences(references) {
             referenceElement.style.transform = 'translateY(0) rotateX(0deg) rotateY(0deg) scale(1)';
         }, index * 300);
     });
+}
+
+// Deneyim bilgilerini render et
+function renderExperience(experience) {
+    const experienceContainer = document.querySelector('.animated-experience');
+    if (!experienceContainer) return;
+
+    // Yıl rozeti güncelle
+    const yearsBadge = experienceContainer.querySelector('.badge-number');
+    if (yearsBadge) {
+        yearsBadge.textContent = experience.years + '+';
+    }
+
+    // Başlık güncelle
+    const title = experienceContainer.querySelector('.experience-title');
+    if (title) {
+        title.textContent = experience.title;
+    }
+
+    // Açıklama güncelle
+    const description = experienceContainer.querySelector('.experience-description');
+    if (description) {
+        // İkonları koru, sadece metni güncelle
+        const icons = description.querySelectorAll('i');
+        const iconHTML = icons.length > 0 ? 
+            `<i class="${icons[0].className}"></i> ${experience.description} <i class="${icons[1] ? icons[1].className : 'fas fa-trophy pulse-icon'}"></i>` :
+            `<i class="fas fa-award pulse-icon"></i> ${experience.description} <i class="fas fa-trophy pulse-icon"></i>`;
+        description.innerHTML = iconHTML;
+    }
 }
 
 

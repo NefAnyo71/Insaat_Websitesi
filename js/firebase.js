@@ -556,3 +556,53 @@ export async function getFavicon() {
     return null;
   }
 }
+
+// Deneyim bilgisi ekleme/güncelleme
+export async function setExperience(experienceData) {
+  try {
+    await initializeFirebase();
+    
+    await addDoc(collection(db, "experience"), {
+      years: experienceData.years,
+      title: experienceData.title,
+      description: experienceData.description,
+      createdAt: new Date()
+    });
+    return true;
+  } catch (error) {
+    console.error("Deneyim bilgisi kaydedilirken hata:", error);
+    return false;
+  }
+}
+
+// Deneyim bilgisini getirme
+export async function getExperience() {
+  try {
+    await initializeFirebase();
+    
+    const querySnapshot = await getDocs(collection(db, "experience"));
+    let experience = {
+      years: "25",
+      title: "Deneyim & Güven",
+      description: "Çeyrek asırlık tecrübemizle her projede mükemmellik"
+    }; // Varsayılan değerler
+    
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      experience = {
+        years: data.years,
+        title: data.title,
+        description: data.description
+      };
+    });
+    
+    return experience;
+  } catch (error) {
+    console.error("Deneyim bilgisi getirilirken hata:", error);
+    return {
+      years: "25",
+      title: "Deneyim & Güven",
+      description: "Çeyrek asırlık tecrübemizle her projede mükemmellik"
+    };
+  }
+}

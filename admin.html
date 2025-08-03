@@ -163,6 +163,7 @@
         <button class="tab" onclick="showTab('projects')"><i class="fas fa-building"></i> Projeler</button>
         <button class="tab" onclick="showTab('employees')"><i class="fas fa-users"></i>Uzman Ailemiz</button>
         <button class="tab" onclick="showTab('references')"><i class="fas fa-handshake"></i> Referanslar</button>
+        <button class="tab" onclick="showTab('experience')"><i class="fas fa-award"></i> Deneyim</button>
         <button class="tab" onclick="showTab('sitename')"><i class="fas fa-globe"></i> Site Adı</button>
         <button class="tab" onclick="showTab('favicon')"><i class="fas fa-image"></i> Favicon</button>
         <button class="tab" onclick="showTab('admins')"><i class="fas fa-user-shield"></i> Admin Yönetimi</button>
@@ -312,6 +313,32 @@
         <div class="items-section">
           <h3><i class="fas fa-list"></i> Mevcut Referanslar</h3>
           <div id="references-list" class="items-list"></div>
+        </div>
+      </div>
+
+      <!-- Deneyim Tab -->
+      <div id="experience" class="tab-content">
+        <div class="form-section">
+          <h2><i class="fas fa-award"></i> Deneyim Bilgilerini Düzenle</h2>
+          <div class="form-group">
+            <input type="number" id="experience-years" placeholder="Deneyim Yılı (Örn: 25)" min="1" max="100">
+            <input type="text" id="experience-title" placeholder="Başlık (Örn: Deneyim & Güven)">
+            <textarea id="experience-description" placeholder="Açıklama metni (Örn: Çeyrek asırlık tecrübemizle her projede mükemmellik)"></textarea>
+          </div>
+          <button class="btn" onclick="updateExperience()"><i class="fas fa-save"></i> Kaydet</button>
+        </div>
+        
+        <div class="items-section">
+          <h3><i class="fas fa-info-circle"></i> Mevcut Deneyim Bilgileri</h3>
+          <div id="current-experience" class="current-experience-display" style="padding: 1.5rem; background: #f8f9fa; border-radius: 10px;">
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+              <div style="background: linear-gradient(135deg, #FF6B35, #F7931E); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem;" id="current-years-badge">25+</div>
+              <div>
+                <h4 id="current-experience-title" style="margin: 0; color: #333;">Yükleniyor...</h4>
+                <p id="current-experience-desc" style="margin: 0; color: #666; font-size: 0.9rem;">Yükleniyor...</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
