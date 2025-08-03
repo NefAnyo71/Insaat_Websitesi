@@ -765,7 +765,7 @@ window.loadCurrentFavicon = async function() {
     if (faviconUrl) {
       previewImg.src = faviconUrl;
       previewImg.style.display = 'block';
-      statusSpan.textContent = faviconUrl;
+      statusSpan.textContent = 'Favicon ayarlandı';
       inputField.value = faviconUrl;
     } else {
       previewImg.style.display = 'none';
