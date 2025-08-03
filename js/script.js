@@ -98,6 +98,12 @@ function updateSiteName(siteName) {
         }
     }
     
+    // Footer
+    const footerText = document.querySelector('footer p');
+    if (footerText) {
+        footerText.innerHTML = `&copy; 2025 ${siteName}. Tüm hakları saklıdır.`;
+    }
+    
     // Title
     document.title = siteName;
 }
@@ -274,20 +280,25 @@ function renderProjects(projects) {
         
         // Başlangıçta görünmez yap
         projectElement.style.opacity = '0';
-        projectElement.style.transform = 'translateY(50px)';
-        projectElement.style.transition = 'all 0.6s ease';
+        projectElement.style.transform = 'translateY(120px) rotateX(30deg) rotateY(-15deg) scale(0.7)';
+        projectElement.style.transition = 'all 1.2s cubic-bezier(0.23, 1, 0.32, 1)';
+        projectElement.style.filter = 'blur(8px)';
         
         projectElement.innerHTML = `
-            <div class="project-image-container">
-                <img src="${project.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjRkY2QjM1Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5Qcm9qZSBHw7xyc2VsaTwvdGV4dD48L3N2Zz4='}" alt="${project.title || ''}">
-                <div class="project-text-overlay">
-                    <span class="project-text-content">${project.text || ''}</span>
+            <div class="project-card-container">
+                <div class="project-image-container">
+                    <img src="${project.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjRkY2QjM1Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5Qcm9qZSBHw7xyc2VsaTwvdGV4dD48L3N2Zz4='}" alt="${project.title || ''}">
+                    <div class="project-image-glow"></div>
+                    <div class="project-text-overlay">
+                        <span class="project-text-content">${project.text || ''}</span>
+                    </div>
+                    <div class="project-shine"></div>
                 </div>
-            </div>
-            <div class="project-info">
-                <span class="project-category">${project.category || ''}</span>
-                <h3>${project.title || ''}</h3>
-                <p>${project.description || ''}</p>
+                <div class="project-info">
+                    <span class="project-category">${project.category || ''}</span>
+                    <h3>${project.title || ''}</h3>
+                    <p>${project.description || ''}</p>
+                </div>
             </div>
         `;
         
@@ -300,14 +311,23 @@ function renderProjects(projects) {
         // Mobil cihazlar için tıklama eventi
         const isMobile = window.innerWidth <= 768;
         if (isMobile) {
-            projectElement.addEventListener('click', function() {
-                this.classList.toggle('mobile-clicked');
+            projectElement.addEventListener('click', function(e) {
+                e.preventDefault();
+                const container = this.querySelector('.project-card-container');
+                container.style.transition = 'all 1s cubic-bezier(0.4, 0, 0.2, 1)';
                 
-                // 5 saniye sonra otomatik geri dön
-                if (this.classList.contains('mobile-clicked')) {
+                if (!this.dataset.rotated) {
+                    this.classList.add('mobile-rotated');
+                    this.dataset.rotated = 'true';
+                    
+                    // 10 saniye sonra otomatik geri dön
                     setTimeout(() => {
-                        this.classList.remove('mobile-clicked');
-                    }, 5000);
+                        this.classList.remove('mobile-rotated');
+                        this.dataset.rotated = '';
+                    }, 10000);
+                } else {
+                    this.classList.remove('mobile-rotated');
+                    this.dataset.rotated = '';
                 }
             });
         }
@@ -317,8 +337,9 @@ function renderProjects(projects) {
         // Sırayla animasyonlu göster
         setTimeout(() => {
             projectElement.style.opacity = '1';
-            projectElement.style.transform = 'translateY(0)';
-        }, index * 150);
+            projectElement.style.transform = 'translateY(0) rotateX(0deg) rotateY(0deg) scale(1)';
+            projectElement.style.filter = 'blur(0px)';
+        }, index * 250);
     });
 }
 
