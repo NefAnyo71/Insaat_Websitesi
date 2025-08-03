@@ -713,7 +713,6 @@ function loadAdminData() {
   loadLogs();
   loadAnalytics();
   loadCurrentSiteName();
-  loadCurrentFavicon();
   loadCurrentExperience();
 }
 
