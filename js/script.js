@@ -238,7 +238,7 @@ function renderServices(services) {
                 slides[currentImageIndex].style.opacity = '0';
                 currentImageIndex = (currentImageIndex + 1) % images.length;
                 slides[currentImageIndex].style.opacity = '1';
-            }, 3000);
+            }, 2000);
         }
         
         // Kart tıklama eventi
