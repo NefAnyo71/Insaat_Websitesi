@@ -161,11 +161,21 @@ function renderServices(services) {
         
         const serviceIcon = getServiceIcon(service.title, service.category);
         
+        // Görsel rotasyonu için
+        const images = service.images && service.images.length > 0 ? service.images : (service.image ? [service.image] : []);
+        const hasImages = images.length > 0;
+        
         serviceElement.innerHTML = `
             <div class="service-card-container">
                 <div class="service-hologram"></div>
-                <div class="service-header" ${service.image ? `style="background-image: url('${service.image}')"` : `style="background: linear-gradient(135deg, #667eea, #764ba2)"`}>
-                    ${service.image ? `<img src="${service.image}" alt="${service.title}" style="width: 100%; height: 100%; object-fit: cover;">` : `
+                <div class="service-header" ${hasImages ? '' : `style="background: linear-gradient(135deg, #667eea, #764ba2)"`}>
+                    ${hasImages ? `
+                        <div class="service-image-slider">
+                            ${images.map((img, imgIndex) => `
+                                <img src="${img}" alt="${service.title}" class="service-slide ${imgIndex === 0 ? 'active' : ''}" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; opacity: ${imgIndex === 0 ? 1 : 0}; transition: opacity 0.5s ease;">
+                            `).join('')}
+                        </div>
+                    ` : `
                         <div class="service-icon-main">
                             <i class="${serviceIcon}"></i>
                         </div>
@@ -184,6 +194,14 @@ function renderServices(services) {
                     <div class="service-features-mini">
                         ${service.features ? service.features.split(',').slice(0, 4).map((f, i) => `<span class="feature-mini" style="--i: ${i}">${f.trim()}</span>`).join('') : ''}
                     </div>
+                    
+                    ${(service.instagram || service.whatsapp || service.gmail) ? `
+                        <div class="service-social-links">
+                            ${service.instagram ? `<a href="${service.instagram}" target="_blank" class="service-social-btn instagram"><i class="fab fa-instagram"></i></a>` : ''}
+                            ${service.whatsapp ? `<a href="${service.whatsapp}" target="_blank" class="service-social-btn whatsapp"><i class="fab fa-whatsapp"></i></a>` : ''}
+                            ${service.gmail ? `<a href="mailto:${service.gmail}" class="service-social-btn gmail"><i class="fas fa-envelope"></i></a>` : ''}
+                        </div>
+                    ` : ''}
                     
                     <button class="service-action-btn" onclick="toggleServiceDetails(this)">
                         <i class="fas fa-chevron-down"></i> DETAYLAR
@@ -211,9 +229,21 @@ function renderServices(services) {
         // 3D hover efekti ekle
         serviceElement.classList.add('hover-3d');
         
+        // Görsel rotasyonu başlat (sadece birden fazla görsel varsa)
+        if (images.length > 1) {
+            let currentImageIndex = 0;
+            const slides = serviceElement.querySelectorAll('.service-slide');
+            
+            setInterval(() => {
+                slides[currentImageIndex].style.opacity = '0';
+                currentImageIndex = (currentImageIndex + 1) % images.length;
+                slides[currentImageIndex].style.opacity = '1';
+            }, 3000);
+        }
+        
         // Kart tıklama eventi
         serviceElement.addEventListener('click', function(e) {
-            if (!e.target.closest('.service-action-btn')) {
+            if (!e.target.closest('.service-action-btn') && !e.target.closest('.service-social-btn')) {
                 toggleServiceDetails(this.querySelector('.service-action-btn'));
             }
         });

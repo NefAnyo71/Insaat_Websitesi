@@ -147,6 +147,44 @@
         transform: translateY(0) scale(1);
       }
     }
+    
+    .image-input-group {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      align-items: center;
+    }
+    
+    .service-image-input {
+      flex: 1;
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    
+    .btn-small {
+      padding: 0.4rem 0.8rem;
+      background: #FF6B35;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-small:hover {
+      background: #F7931E;
+      transform: translateY(-1px);
+    }
+    
+    .btn-remove {
+      background: #dc3545;
+    }
+    
+    .btn-remove:hover {
+      background: #c82333;
+    }
   </style>
 </head>
 <body>
@@ -189,8 +227,25 @@
               <option value="outline">Konturlu</option>
               <option value="modern">Modern</option>
             </select>
-            <input type="url" id="service-image" placeholder="Hizmet Resim URL (isteğe bağlı)">
-            <small style="color: #666; font-size: 0.8rem;">Resim yüklemek için: <a href="https://resimlink.com/" target="_blank" style="color: #FF6B35;">resimlink.com</a></small>
+            
+            <div style="margin: 1rem 0; padding: 1rem; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #FF6B35;">
+              <h4 style="margin: 0 0 0.5rem 0; color: #FF6B35;"><i class="fas fa-images"></i> Görseller (Birden fazla ekleyebilirsiniz)</h4>
+              <div id="service-images-container">
+                <div class="image-input-group">
+                  <input type="url" class="service-image-input" placeholder="Görsel URL 1">
+                  <button type="button" class="btn-small" onclick="addImageInput()"><i class="fas fa-plus"></i></button>
+                </div>
+              </div>
+              <small style="color: #666; font-size: 0.8rem;">Resim yüklemek için: <a href="https://resimlink.com/" target="_blank" style="color: #FF6B35;">resimlink.com</a></small>
+            </div>
+            
+            <div style="margin: 1rem 0; padding: 1rem; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #28a745;">
+              <h4 style="margin: 0 0 0.5rem 0; color: #28a745;"><i class="fas fa-share-alt"></i> Sosyal Medya Linkleri</h4>
+              <input type="url" id="service-instagram" placeholder="Instagram Profil URL (isteğe bağlı)">
+              <input type="url" id="service-whatsapp" placeholder="WhatsApp Link (isteğe bağlı)">
+              <input type="email" id="service-gmail" placeholder="E-mail Adresi (isteğe bağlı)">
+            </div>
+            
             <textarea id="service-desc" placeholder="Hizmet açıklaması..."></textarea>
             <textarea id="service-details" placeholder="Detaylı hizmet bilgileri (proje detayları, özellikler, süreç vb.)..."></textarea>
           </div>
@@ -207,7 +262,6 @@
             </div>
           </div>
           <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-            <button class="btn" onclick="previewService()"><i class="fas fa-eye"></i> Önizle</button>
             <button class="btn" onclick="addService()"><i class="fas fa-plus"></i> Hizmet Ekle</button>
           </div>
         </div>

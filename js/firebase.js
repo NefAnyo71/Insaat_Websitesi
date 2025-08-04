@@ -37,7 +37,7 @@ async function initializeFirebase() {
 }
 
 // Hizmet ekleme
-export async function addService(title, text, textStyle, description, details, image = null) {
+export async function addService(title, text, textStyle, description, details, images = [], instagram = '', whatsapp = '', gmail = '') {
   try {
     await initializeFirebase();
     
@@ -47,12 +47,12 @@ export async function addService(title, text, textStyle, description, details, i
       textStyle: textStyle,
       description: description,
       details: details,
+      images: images || [],
+      instagram: instagram || '',
+      whatsapp: whatsapp || '',
+      gmail: gmail || '',
       createdAt: new Date()
     };
-    
-    if (image) {
-      serviceData.image = image;
-    }
     
     await addDoc(collection(db, "services"), serviceData);
     return true;

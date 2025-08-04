@@ -1,5 +1,37 @@
 import { addService, getServices, addProject, getProjects, addEmployee, getEmployees, addReference, getReferences, deleteItem, checkAdminLogin, getAdmins, addAdmin, updateAdmin, getSiteName, setSiteName, getFavicon, setFavicon, getExperience, setExperience, getHeroImage, setHeroImage, resetHeroImage } from './firebase.js';
 
+// Görsel input ekleme
+window.addImageInput = function() {
+  const container = document.getElementById('service-images-container');
+  const inputCount = container.querySelectorAll('.image-input-group').length;
+  
+  if (inputCount >= 5) {
+    alert('En fazla 5 görsel ekleyebilirsiniz!');
+    return;
+  }
+  
+  const newInputGroup = document.createElement('div');
+  newInputGroup.className = 'image-input-group';
+  newInputGroup.innerHTML = `
+    <input type="url" class="service-image-input" placeholder="Görsel URL ${inputCount + 1}">
+    <button type="button" class="btn-small btn-remove" onclick="removeImageInput(this)"><i class="fas fa-minus"></i></button>
+  `;
+  
+  container.appendChild(newInputGroup);
+}
+
+// Görsel input kaldırma
+window.removeImageInput = function(button) {
+  const container = document.getElementById('service-images-container');
+  const inputGroups = container.querySelectorAll('.image-input-group');
+  
+  if (inputGroups.length > 1) {
+    button.parentElement.remove();
+  } else {
+    alert('En az bir görsel alanı olmalıdır!');
+  }
+}
+
 // Hizmet ekleme
 window.addService = async function() {
   const title = document.getElementById('service-title').value;
@@ -7,22 +39,44 @@ window.addService = async function() {
   const textStyle = document.getElementById('service-text-style').value;
   const description = document.getElementById('service-desc').value;
   const details = document.getElementById('service-details').value;
-  const image = document.getElementById('service-image').value;
+  
+  // Görselleri topla
+  const imageInputs = document.querySelectorAll('.service-image-input');
+  const images = Array.from(imageInputs)
+    .map(input => input.value.trim())
+    .filter(url => url !== '');
+  
+  // Sosyal medya bilgileri
+  const instagram = document.getElementById('service-instagram').value.trim();
+  const whatsapp = document.getElementById('service-whatsapp').value.trim();
+  const gmail = document.getElementById('service-gmail').value.trim();
   
   if (!title || !text || !description || !details) {
     alert('Lütfen zorunlu alanları doldurun!');
     return;
   }
   
-  const success = await addService(title, text, textStyle, description, details, image);
+  const success = await addService(title, text, textStyle, description, details, images, instagram, whatsapp, gmail);
   if (success) {
     alert('Hizmet başarıyla eklendi!');
     document.getElementById('service-title').value = '';
     document.getElementById('service-text').value = '';
     document.getElementById('service-text-style').value = '';
-    document.getElementById('service-image').value = '';
     document.getElementById('service-desc').value = '';
     document.getElementById('service-details').value = '';
+    document.getElementById('service-instagram').value = '';
+    document.getElementById('service-whatsapp').value = '';
+    document.getElementById('service-gmail').value = '';
+    
+    // Görsel inputlarını sıfırla
+    const container = document.getElementById('service-images-container');
+    container.innerHTML = `
+      <div class="image-input-group">
+        <input type="url" class="service-image-input" placeholder="Görsel URL 1">
+        <button type="button" class="btn-small" onclick="addImageInput()"><i class="fas fa-plus"></i></button>
+      </div>
+    `;
+    
     document.getElementById('service-preview').style.display = 'none';
     loadServices();
   } else {
@@ -151,12 +205,23 @@ async function loadServices() {
   services.forEach(service => {
     const div = document.createElement('div');
     div.className = 'item';
+    
+    const images = service.images || (service.image ? [service.image] : []);
+    const imageCount = images.length;
+    const socialLinks = [];
+    if (service.instagram) socialLinks.push('Instagram');
+    if (service.whatsapp) socialLinks.push('WhatsApp');
+    if (service.gmail) socialLinks.push('Gmail');
+    
     div.innerHTML = `
       <h4>${service.title || ''}</h4>
       <p>Metin: ${service.text || ''}</p>
       <p>Stil: ${service.textStyle || 'Yok'}</p>
       <p>${service.description || ''}</p>
       <p><strong>Detaylar:</strong> ${(service.details || '').substring(0, 100)}...</p>
+      <p><strong>Görseller:</strong> ${imageCount} adet</p>
+      <p><strong>Sosyal Medya:</strong> ${socialLinks.length > 0 ? socialLinks.join(', ') : 'Yok'}</p>
+      ${images.length > 0 ? `<img src="${images[0]}" style="width: 100px; height: 60px; object-fit: cover; border-radius: 5px;">` : ''}
       <div class="item-actions">
         <button class="edit-btn" onclick="editService('${service.id}')">Düzenle</button>
         <button class="delete-btn" onclick="deleteService('${service.id}')">Sil</button>
