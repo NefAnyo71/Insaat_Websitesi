@@ -518,3 +518,20 @@ export async function resetHeroImage() {
     return false;
   }
 }
+
+// Sosyal medya linklerini getirme
+export async function getSocialLinks() {
+  try {
+    await initializeFirebase();
+    
+    const querySnapshot = await getDocs(collection(db, "sociallinks"));
+    const socialLinks = [];
+    querySnapshot.forEach((doc) => {
+      socialLinks.push({ id: doc.id, ...doc.data() });
+    });
+    return socialLinks;
+  } catch (error) {
+    console.error("Sosyal medya linkleri getirilirken hata:", error);
+    return [];
+  }
+}
