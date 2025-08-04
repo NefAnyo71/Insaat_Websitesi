@@ -1,4 +1,4 @@
-import { addService, getServices, addProject, getProjects, addEmployee, getEmployees, addReference, getReferences, deleteItem, checkAdminLogin, getAdmins, addAdmin, updateAdmin, addAdminLog, getAdminLogs, getUserStats, getSiteName, setSiteName, getFavicon, setFavicon, getExperience, setExperience } from './firebase.js';
+import { addService, getServices, addProject, getProjects, addEmployee, getEmployees, addReference, getReferences, deleteItem, checkAdminLogin, getAdmins, addAdmin, updateAdmin, getSiteName, setSiteName, getFavicon, setFavicon, getExperience, setExperience, getHeroImage, setHeroImage, resetHeroImage } from './firebase.js';
 
 // Hizmet ekleme
 window.addService = async function() {
@@ -702,18 +702,86 @@ window.loadCurrentExperience = async function() {
   }
 }
 
+// Hero görsel güncelleme
+window.updateHeroImage = async function() {
+  const imageUrl = document.getElementById('hero-image-url').value.trim();
+  
+  if (!imageUrl) {
+    alert('Lütfen görsel URL\'si girin!');
+    return;
+  }
+  
+  try {
+    await logAdminAccess('data_edit', { type: 'heroimage', newUrl: imageUrl });
+    
+    const success = await setHeroImage(imageUrl);
+    if (success) {
+      alert('Ana sayfa görseli başarıyla güncellendi!');
+      loadCurrentHeroImage();
+    } else {
+      alert('Görsel güncellenirken hata oluştu!');
+    }
+  } catch (error) {
+    console.error('Hero görsel güncelleme hatası:', error);
+    alert('Görsel güncellenirken hata oluştu!');
+  }
+}
+
+// Varsayılan hero görseline dön
+window.resetToDefaultHero = async function() {
+  if (confirm('Varsayılan görsele dönmek istediğinizden emin misiniz?')) {
+    try {
+      await logAdminAccess('data_edit', { type: 'heroimage', action: 'reset_to_default' });
+      
+      const success = await resetHeroImage();
+      if (success) {
+        alert('Varsayılan görsele başarıyla dönüldü!');
+        loadCurrentHeroImage();
+      } else {
+        alert('Varsayılan görsele dönülürken hata oluştu!');
+      }
+    } catch (error) {
+      console.error('Varsayılan görsel sıfırlama hatası:', error);
+      alert('Varsayılan görsele dönülürken hata oluştu!');
+    }
+  }
+}
+
+// Mevcut hero görselini yükle
+window.loadCurrentHeroImage = async function() {
+  try {
+    const heroImageUrl = await getHeroImage();
+    const previewImg = document.getElementById('hero-preview');
+    const statusText = document.getElementById('hero-status');
+    const inputField = document.getElementById('hero-image-url');
+    
+    if (heroImageUrl && heroImageUrl !== 'default') {
+      previewImg.src = heroImageUrl;
+      previewImg.style.display = 'block';
+      statusText.textContent = 'Özel görsel ayarlandı';
+      inputField.value = heroImageUrl;
+    } else {
+      previewImg.style.display = 'none';
+      statusText.textContent = 'Varsayılan görsel kullanılıyor';
+      inputField.value = '';
+    }
+  } catch (error) {
+    console.error('Hero görsel yüklenirken hata:', error);
+    document.getElementById('hero-status').textContent = 'Yükleme hatası';
+  }
+}
+
 // Admin verilerini yükle
 function loadAdminData() {
   loadServices();
   loadProjects();
   loadEmployees();
   loadReferences();
-  loadContacts();
   loadAdmins();
-  loadLogs();
   loadAnalytics();
   loadCurrentSiteName();
   loadCurrentExperience();
+  loadCurrentHeroImage();
 }
 
 // Site adını yükle
@@ -879,105 +947,26 @@ window.deleteContact = async function(id) {
 
 // Kullanıcı analizlerini yükle
 window.loadAnalytics = async function() {
-  try {
-    const { activities, consents } = await getUserStats();
-    
-    // Temel istatistikler
-    const uniqueIPs = new Set(activities.map(a => a.ipAddress)).size;
-    const totalClicks = activities.filter(a => a.activityType === 'click_activity').length;
-    const totalSessions = new Set(activities.map(a => a.sessionId)).size;
-    
-    // Güvenlik loglarını da al
-    const { getSecurityLogs } = await import('./firebase.js');
-    const securityLogs = await getSecurityLogs();
-    const totalSecurityVisits = securityLogs.length;
-    
-    // DOM elementlerini güncelle
-    const totalVisitorsEl = document.getElementById('total-visitors');
-    const totalClicksEl = document.getElementById('total-clicks');
-    const totalSessionsEl = document.getElementById('total-sessions');
-    
-    if (totalVisitorsEl) totalVisitorsEl.textContent = Math.max(uniqueIPs, totalSecurityVisits);
-    if (totalClicksEl) totalClicksEl.textContent = totalClicks;
-    if (totalSessionsEl) totalSessionsEl.textContent = totalSessions;
-    
-    console.log('Analytics loaded:', {
-      uniqueIPs,
-      totalClicks,
-      totalSessions,
-      totalSecurityVisits,
-      activitiesCount: activities.length,
-      consentsCount: consents.length
-    });
+  // Çerez sistemi kaldırıldığı için analiz verileri mevcut değil
+  document.getElementById('total-visitors').textContent = '0';
+  document.getElementById('total-clicks').textContent = '0';
+  document.getElementById('total-sessions').textContent = '0';
+  document.getElementById('most-viewed-section').textContent = 'Veri Yok';
+  document.getElementById('most-popular-card').textContent = 'Veri Yok';
   
-    // IP analizi - hem aktivite hem güvenlik loglarından
-    const ipStats = {};
-    
-    // Aktivite loglarından IP'leri al
-    activities.forEach(activity => {
-      const ip = activity.ipAddress;
-      if (ip && ip !== 'unknown') {
-        ipStats[ip] = (ipStats[ip] || 0) + 1;
-      }
-    });
-    
-    // Güvenlik loglarından da IP'leri al
-    securityLogs.forEach(log => {
-      const ip = log.ipAddress;
-      if (ip && ip !== 'unknown') {
-        ipStats[ip] = (ipStats[ip] || 0) + 1;
-      }
-    });
-    
-    displayIPStats(ipStats);
+  const ipContainer = document.getElementById('ip-stats');
+  if (ipContainer) {
+    ipContainer.innerHTML = '<p style="text-align: center; color: #666;">Kullanıcı takibi devre dışı bırakıldı</p>';
+  }
   
-  // Bölüm analizi
-  const sectionStats = {};
-  const cardStats = {};
+  const sectionChart = document.getElementById('section-chart');
+  if (sectionChart) {
+    sectionChart.innerHTML = '<p style="text-align: center; color: #666;">Veri mevcut değil</p>';
+  }
   
-  activities.forEach(activity => {
-    if (activity.activityType === 'mouse_movement' && activity.data.movements) {
-      activity.data.movements.forEach(movement => {
-        if (movement.section) {
-          sectionStats[movement.section] = (sectionStats[movement.section] || 0) + 1;
-        }
-        
-        if (movement.cardType && movement.cardTitle) {
-          const cardKey = `${movement.cardType}: ${movement.cardTitle}`;
-          cardStats[cardKey] = (cardStats[cardKey] || 0) + 1;
-        }
-      });
-    }
-  });
-  
-  // En popüler bölüm
-  const mostViewedSection = Object.keys(sectionStats).length > 0 ? 
-    Object.keys(sectionStats).reduce((a, b) => 
-      sectionStats[a] > sectionStats[b] ? a : b
-    ) : 'Veri yok';
-  document.getElementById('most-viewed-section').textContent = mostViewedSection;
-  
-  // En popüler kart
-  const mostPopularCard = Object.keys(cardStats).reduce((a, b) => 
-    cardStats[a] > cardStats[b] ? a : b, 'Veri yok'
-  );
-  document.getElementById('most-popular-card').textContent = mostPopularCard.substring(0, 30) + '...';
-  
-    // Grafikleri çiz
-    drawSectionChart(sectionStats);
-    drawCardChart(cardStats);
-    
-  } catch (error) {
-    console.error('Analytics loading error:', error);
-    
-    // Hata durumunda varsayılan değerler
-    const totalVisitorsEl = document.getElementById('total-visitors');
-    const totalClicksEl = document.getElementById('total-clicks');
-    const totalSessionsEl = document.getElementById('total-sessions');
-    
-    if (totalVisitorsEl) totalVisitorsEl.textContent = '0';
-    if (totalClicksEl) totalClicksEl.textContent = '0';
-    if (totalSessionsEl) totalSessionsEl.textContent = '0';
+  const cardChart = document.getElementById('card-chart');
+  if (cardChart) {
+    cardChart.innerHTML = '<p style="text-align: center; color: #666;">Veri mevcut değil</p>';
   }
 }
 
@@ -1151,41 +1140,8 @@ window.exportAnalytics = async function() {
 
 // Logları yükleme
 window.loadLogs = async function() {
-  const logs = await getAdminLogs();
   const container = document.getElementById('logs-list');
-  container.innerHTML = '';
-  
-  if (logs.length === 0) {
-    container.innerHTML = '<p>Henüz log kaydı bulunmuyor.</p>';
-    return;
-  }
-  
-  logs.forEach(log => {
-    const logDiv = document.createElement('div');
-    logDiv.className = 'log-item';
-    
-    const actionColor = getActionColor(log.action);
-    const detailsText = formatLogDetails(log.details);
-    
-    logDiv.innerHTML = `
-      <div class="log-header">
-        <span class="log-action" style="background: ${actionColor}">${getActionText(log.action)}</span>
-        <span class="log-time">${log.dateFormatted}</span>
-        <span class="log-user">👤 ${log.adminUser}</span>
-        <span class="log-ip">🌍 ${log.ipAddress}</span>
-      </div>
-      <div class="log-details">
-        <p><strong>Session:</strong> ${log.sessionId}</p>
-        <p><strong>Detaylar:</strong> ${detailsText}</p>
-        <p><strong>Tarayıcı:</strong> ${log.browserInfo?.userAgent?.substring(0, 100) || 'Bilinmiyor'}...</p>
-        <p><strong>Ekran:</strong> ${log.browserInfo?.screenResolution || 'Bilinmiyor'} | 
-           <strong>Dil:</strong> ${log.browserInfo?.language || 'Bilinmiyor'} | 
-           <strong>Platform:</strong> ${log.browserInfo?.platform || 'Bilinmiyor'}</p>
-      </div>
-    `;
-    
-    container.appendChild(logDiv);
-  });
+  container.innerHTML = '<p style="text-align: center; color: #666;">Log sistemi devre dışı bırakıldı</p>';
 }
 
 function getActionColor(action) {
@@ -1402,28 +1358,8 @@ async function getClientIP() {
 }
 
 async function logAdminAccess(action, details = {}) {
-  let sessionId = getCookie('adminSessionId');
-  if (!sessionId) {
-    sessionId = generateSessionId();
-    setCookie('adminSessionId', sessionId, 1);
-  }
-  
-  const currentUser = getCookie('adminUser') || sessionStorage.getItem('currentAdminUser') || 'unknown';
-  const clientIP = await getClientIP();
-  
-  const logData = {
-    sessionId: sessionId,
-    action: action,
-    details: details,
-    adminUser: currentUser,
-    ipAddress: clientIP,
-    browserInfo: getBrowserInfo(),
-    url: window.location.href,
-    timestamp: new Date().toISOString(),
-    dateFormatted: new Date().toLocaleString('tr-TR')
-  };
-  
-  await addAdminLog(logData);
+  // Log sistemi devre dışı
+  return;
 }
 
 // Sayfa yüklendiğinde giriş kontrolü yap

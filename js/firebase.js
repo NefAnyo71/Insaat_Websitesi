@@ -282,156 +282,7 @@ export async function updateAdmin(id, username, password) {
   }
 }
 
-// Kullanıcı çerez tercihi kaydetme
-export async function saveCookieConsent(ipAddress, consent) {
-  try {
-    await initializeFirebase();
-    
-    await addDoc(collection(db, "cookieconsent"), {
-      ipAddress: ipAddress,
-      consent: consent,
-      timestamp: new Date(),
-      userAgent: navigator.userAgent
-    });
-    return true;
-  } catch (error) {
-    console.error("Çerez tercihi kaydedilirken hata:", error);
-    return false;
-  }
-}
 
-// Çerez tercihi kontrol etme
-export async function checkCookieConsent(ipAddress) {
-  try {
-    await initializeFirebase();
-    
-    const querySnapshot = await getDocs(collection(db, "cookieconsent"));
-    let hasConsent = null;
-    
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      if (data.ipAddress === ipAddress) {
-        hasConsent = data.consent;
-      }
-    });
-    
-    return hasConsent;
-  } catch (error) {
-    console.error("Çerez tercihi kontrol edilirken hata:", error);
-    return null;
-  }
-}
-
-// Kullanıcı aktivitesi kaydetme
-export async function saveUserActivity(activityData) {
-  try {
-    await initializeFirebase();
-    
-    await addDoc(collection(db, "useractivity"), {
-      ...activityData,
-      timestamp: new Date()
-    });
-    return true;
-  } catch (error) {
-    console.error("Kullanıcı aktivitesi kaydedilirken hata:", error);
-    return false;
-  }
-}
-
-// Kullanıcı istatistiklerini getirme
-export async function getUserStats() {
-  try {
-    await initializeFirebase();
-    
-    const activitySnapshot = await getDocs(collection(db, "useractivity"));
-    const consentSnapshot = await getDocs(collection(db, "cookieconsent"));
-    
-    const activities = [];
-    const consents = [];
-    
-    activitySnapshot.forEach((doc) => {
-      activities.push({ id: doc.id, ...doc.data() });
-    });
-    
-    consentSnapshot.forEach((doc) => {
-      consents.push({ id: doc.id, ...doc.data() });
-    });
-    
-    return { activities, consents };
-  } catch (error) {
-    console.error("Kullanıcı istatistikleri getirilirken hata:", error);
-    return { activities: [], consents: [] };
-  }
-}
-
-// Admin çerez log ekleme
-export async function addAdminLog(logData) {
-  try {
-    await initializeFirebase();
-    
-    await addDoc(collection(db, "admincookie"), {
-      ...logData,
-      timestamp: new Date()
-    });
-    return true;
-  } catch (error) {
-    console.error("Log eklenirken hata:", error);
-    return false;
-  }
-}
-
-// Admin loglarını getirme
-export async function getAdminLogs() {
-  try {
-    await initializeFirebase();
-    
-    const querySnapshot = await getDocs(collection(db, "admincookie"));
-    const logs = [];
-    querySnapshot.forEach((doc) => {
-      logs.push({ id: doc.id, ...doc.data() });
-    });
-    
-    // Tarihe göre sırala (en yeni önce)
-    return logs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-  } catch (error) {
-    console.error("Loglar getirilirken hata:", error);
-    return [];
-  }
-}
-
-// Güvenlik log'u kaydetme (yasal zorunluluk)
-export async function saveSecurityLog(securityData) {
-  try {
-    await initializeFirebase();
-    
-    await addDoc(collection(db, "securitylogs"), {
-      ...securityData,
-      timestamp: new Date()
-    });
-    return true;
-  } catch (error) {
-    console.error("Güvenlik log'u kaydedilirken hata:", error);
-    return false;
-  }
-}
-
-// Güvenlik loglarını getirme
-export async function getSecurityLogs() {
-  try {
-    await initializeFirebase();
-    
-    const querySnapshot = await getDocs(collection(db, "securitylogs"));
-    const logs = [];
-    querySnapshot.forEach((doc) => {
-      logs.push({ id: doc.id, ...doc.data() });
-    });
-    
-    return logs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-  } catch (error) {
-    console.error("Güvenlik logları getirilirken hata:", error);
-    return [];
-  }
-}
 
 // İletişim ekleme
 export async function addContact(type, value, label) {
@@ -490,6 +341,15 @@ export async function setSiteName(siteName) {
   try {
     await initializeFirebase();
     
+    // Önce mevcut kayıtları sil
+    const querySnapshot = await getDocs(collection(db, "sitename"));
+    const deletePromises = [];
+    querySnapshot.forEach((doc) => {
+      deletePromises.push(deleteDoc(doc.ref));
+    });
+    await Promise.all(deletePromises);
+    
+    // Yeni kayıt ekle
     await addDoc(collection(db, "sitename"), {
       name: siteName,
       createdAt: new Date()
@@ -604,5 +464,57 @@ export async function getExperience() {
       title: "Deneyim & Güven",
       description: "Çeyrek asırlık tecrübemizle her projede mükemmellik"
     };
+  }
+}
+
+// Hero görsel ekleme/güncelleme
+export async function setHeroImage(imageUrl) {
+  try {
+    await initializeFirebase();
+    
+    await addDoc(collection(db, "heroimage"), {
+      url: imageUrl,
+      createdAt: new Date()
+    });
+    return true;
+  } catch (error) {
+    console.error("Hero görsel kaydedilirken hata:", error);
+    return false;
+  }
+}
+
+// Hero görsel getirme
+export async function getHeroImage() {
+  try {
+    await initializeFirebase();
+    
+    const querySnapshot = await getDocs(collection(db, "heroimage"));
+    let heroImageUrl = null;
+    
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      heroImageUrl = data.url;
+    });
+    
+    return heroImageUrl;
+  } catch (error) {
+    console.error("Hero görsel getirilirken hata:", error);
+    return null;
+  }
+}
+
+// Hero görseli varsayılana sıfırla
+export async function resetHeroImage() {
+  try {
+    await initializeFirebase();
+    
+    await addDoc(collection(db, "heroimage"), {
+      url: "default",
+      createdAt: new Date()
+    });
+    return true;
+  } catch (error) {
+    console.error("Hero görsel sıfırlanırken hata:", error);
+    return false;
   }
 }

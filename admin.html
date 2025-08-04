@@ -164,6 +164,7 @@
         <button class="tab" onclick="showTab('employees')"><i class="fas fa-users"></i>Uzman Ailemiz</button>
         <button class="tab" onclick="showTab('references')"><i class="fas fa-handshake"></i> Referanslar</button>
         <button class="tab" onclick="showTab('experience')"><i class="fas fa-award"></i> Deneyim</button>
+        <button class="tab" onclick="showTab('heroimage')"><i class="fas fa-image"></i> Ana Sayfa Görseli</button>
         <button class="tab" onclick="showTab('sitename')"><i class="fas fa-globe"></i> Site Adı</button>
         <button class="tab" onclick="showTab('favicon')"><i class="fas fa-image"></i> Favicon</button>
         <button class="tab" onclick="showTab('admins')"><i class="fas fa-user-shield"></i> Admin Yönetimi</button>
@@ -337,6 +338,31 @@
                 <h4 id="current-experience-title" style="margin: 0; color: #333;">Yükleniyor...</h4>
                 <p id="current-experience-desc" style="margin: 0; color: #666; font-size: 0.9rem;">Yükleniyor...</p>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ana Sayfa Görseli Tab -->
+      <div id="heroimage" class="tab-content">
+        <div class="form-section">
+          <h2><i class="fas fa-image"></i> Ana Sayfa Arka Plan Görselini Düzenle</h2>
+          <div class="form-group">
+            <input type="url" id="hero-image-url" placeholder="Görsel URL'si (Örn: https://example.com/image.jpg)">
+            <small style="color: #666; font-size: 0.8rem;">Görsel yüklemek için: <a href="https://resimlink.com/" target="_blank" style="color: #FF6B35;">resimlink.com</a></small>
+          </div>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="btn" onclick="updateHeroImage()"><i class="fas fa-save"></i> Özel Görsel Kaydet</button>
+            <button class="btn" onclick="resetToDefaultHero()" style="background: #6c757d;"><i class="fas fa-undo"></i> Varsayılan Görsele Dön</button>
+          </div>
+        </div>
+        
+        <div class="items-section">
+          <h3><i class="fas fa-info-circle"></i> Mevcut Ana Sayfa Görseli</h3>
+          <div id="current-hero-image" class="current-hero-display" style="padding: 1.5rem; background: #f8f9fa; border-radius: 10px;">
+            <div style="text-align: center;">
+              <img id="hero-preview" src="" alt="Ana Sayfa Görseli" style="max-width: 300px; max-height: 200px; border-radius: 10px; display: none; margin-bottom: 1rem;">
+              <p id="hero-status" style="margin: 0; color: #666;">Yükleniyor...</p>
             </div>
           </div>
         </div>
