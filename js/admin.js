@@ -1308,12 +1308,7 @@ function displayFilteredLogs(logs) {
   });
 }
 
-// Tüm CRUD işlemlerini logla
-window.addService = async function() {
-  const title = document.getElementById('service-title').value;
-  await logAdminAccess('data_add', { type: 'service', title: title });
-  // Orijinal fonksiyon devam eder...
-}
+
 
 // Yeni admin ekleme
 window.addNewAdmin = async function() {
