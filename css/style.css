@@ -2273,9 +2273,8 @@ footer {
 /* RESPONSIVE TASARIM */
 @media (max-width: 768px) {
   .hero {
+    background: linear-gradient(rgba(0, 18, 72, 0.7), rgba(0, 18, 72, 0.7)), url('../assets/images/phonebackground.jpg') no-repeat center/cover !important;
     padding-top: 100px;
-    background-size: cover;
-    background-position: center 30%;
     background-attachment: scroll;
   }
   
