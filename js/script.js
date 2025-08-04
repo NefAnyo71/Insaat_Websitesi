@@ -28,9 +28,9 @@ document.addEventListener('DOMContentLoaded', async function() {
 // Firebase'den dinamik içerikleri yükle
 async function loadDynamicContent() {
     try {
-        // Site adını yükle
-        const siteName = await getSiteName();
-        updateSiteName(siteName);
+        // Site adını yükle - devre dışı
+        // const siteName = await getSiteName();
+        // updateSiteName(siteName);
         
         // Favicon yükle
         const faviconUrl = await getFavicon();

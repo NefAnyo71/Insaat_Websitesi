@@ -151,7 +151,7 @@ nav ul li a:hover::after {
 
 /* HERO STİLİ */
 .hero {
-  background: linear-gradient(rgba(0, 18, 72, 0.7), rgba(0, 18, 72, 0.7)), url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center/cover;
+  background: linear-gradient(rgba(0, 18, 72, 0.7), rgba(0, 18, 72, 0.7)), url('../assets/images/backgroundlogo.png') no-repeat center/cover;
   height: 100vh;
   display: flex;
   align-items: center;
@@ -2274,6 +2274,9 @@ footer {
 @media (max-width: 768px) {
   .hero {
     padding-top: 100px;
+    background-size: cover;
+    background-position: center 30%;
+    background-attachment: scroll;
   }
   
   .hero h1 {
@@ -2342,6 +2345,12 @@ footer {
     pointer-events: auto;
     z-index: 1001;
     position: relative;
+  }
+  
+  .hero {
+    background-size: cover;
+    background-position: center 25%;
+    min-height: 100vh;
   }
   
   .hero h1 {
@@ -3426,14 +3435,14 @@ footer {
 }
 
 .social-btn {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   text-decoration: none;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(0,0,0,0.2);
@@ -3511,9 +3520,9 @@ footer {
   }
   
   .social-btn {
-    width: 45px;
-    height: 45px;
-    font-size: 1.1rem;
+    width: 55px;
+    height: 55px;
+    font-size: 1.3rem;
     transform: translateX(120px);
     animation: slideInSocial 3s ease-out forwards;
   }

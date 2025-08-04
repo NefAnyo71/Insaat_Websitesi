@@ -367,7 +367,7 @@ export async function getSiteName() {
     await initializeFirebase();
     
     const querySnapshot = await getDocs(collection(db, "sitename"));
-    let siteName = "İnşaat WebSitesi"; // Varsayılan
+    let siteName = "KEF YAPI"; // Varsayılan
     
     querySnapshot.forEach((doc) => {
       const data = doc.data();
