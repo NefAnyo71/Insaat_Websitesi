@@ -244,7 +244,11 @@ function renderServices(services) {
         // Kart tıklama eventi
         serviceElement.addEventListener('click', function(e) {
             if (!e.target.closest('.service-action-btn') && !e.target.closest('.service-social-btn')) {
-                toggleServiceDetails(this.querySelector('.service-action-btn'));
+                if (window.innerWidth <= 768) {
+                    openServiceModal(service);
+                } else {
+                    toggleServiceDetails(this.querySelector('.service-action-btn'));
+                }
             }
         });
         
