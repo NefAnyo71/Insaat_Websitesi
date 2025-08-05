@@ -1002,7 +1002,7 @@ window.toggleServiceDetails = function(button) {
             cardContainer.style.transform = 'rotateY(0deg)';
         }, 300);
         
-        button.innerHTML = '<i class="fas fa-chevron-down"></i> DETAYLAR';
+        button.innerHTML = '<i class="fas fa-chevron-down"></i>';
     }
 };
 
