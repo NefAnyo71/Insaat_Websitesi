@@ -640,6 +640,10 @@ function checkLogin() {
 
 // Login modal göster
 function showLoginModal() {
+  // Çerezden kayıtlı bilgileri al
+  const savedUsername = getCookie('adminUsername');
+  const savedPassword = getCookie('adminPassword');
+  
   const loginHTML = `
     <div id="login-modal" class="login-modal">
       <div class="login-backdrop"></div>
@@ -652,11 +656,18 @@ function showLoginModal() {
         <div class="login-form">
           <div class="input-group">
             <i class="fas fa-user"></i>
-            <input type="text" id="admin-username" placeholder="Kullanıcı Adı" required>
+            <input type="text" id="admin-username" placeholder="Kullanıcı Adı" value="${savedUsername || ''}" required>
           </div>
           <div class="input-group">
             <i class="fas fa-lock"></i>
-            <input type="password" id="admin-password" placeholder="Şifre" required>
+            <input type="password" id="admin-password" placeholder="Şifre" value="${savedPassword || ''}" required>
+          </div>
+          <div class="remember-me-group">
+            <label class="remember-checkbox">
+              <input type="checkbox" id="remember-me" ${savedUsername && savedPassword ? 'checked' : ''}>
+              <span class="checkmark"></span>
+              <span class="remember-text">Beni Hatırla</span>
+            </label>
           </div>
           <button class="btn login-btn" onclick="attemptLogin()">
             <i class="fas fa-sign-in-alt"></i> Giriş Yap
@@ -684,6 +695,7 @@ function showLoginModal() {
 window.attemptLogin = async function() {
   const username = document.getElementById('admin-username').value;
   const password = document.getElementById('admin-password').value;
+  const rememberMe = document.getElementById('remember-me').checked;
   
   if (!username || !password) {
     alert('Lütfen kullanıcı adı ve şifre girin!');
@@ -698,10 +710,20 @@ window.attemptLogin = async function() {
   if (isValid) {
     // Başarılı girişi logla
     sessionStorage.setItem('currentAdminUser', username);
-    setCookie('adminUser', username, 1);
+    sessionStorage.setItem('adminLoggedIn', 'true');
     await logAdminAccess('login_success', { username: username });
     
-    sessionStorage.setItem('adminLoggedIn', 'true');
+    // "Beni Hatırla" seçiliyse çerezleri kaydet
+    if (rememberMe) {
+      setCookie('adminUsername', username, 30); // 30 gün
+      setCookie('adminPassword', password, 30); // 30 gün
+      setCookie('adminRemembered', 'true', 30);
+    } else {
+      // "Beni Hatırla" seçili değilse çerezleri temizle
+      setCookie('adminUsername', '', -1);
+      setCookie('adminPassword', '', -1);
+      setCookie('adminRemembered', '', -1);
+    }
     
     document.getElementById('login-modal').remove();
     document.body.style.overflow = 'visible';
@@ -1121,13 +1143,54 @@ async function logAdminAccess(action, details = {}) {
   return;
 }
 
+// Çerez tabanlı otomatik giriş kontrolü
+async function checkAutoLogin() {
+  const savedUsername = getCookie('adminUsername');
+  const savedPassword = getCookie('adminPassword');
+  const isRemembered = getCookie('adminRemembered');
+  
+  if (savedUsername && savedPassword && isRemembered === 'true') {
+    // Kayıtlı bilgilerle otomatik giriş dene
+    const isValid = await checkAdminLogin(savedUsername, savedPassword);
+    
+    if (isValid) {
+      // Otomatik giriş başarılı
+      sessionStorage.setItem('currentAdminUser', savedUsername);
+      sessionStorage.setItem('adminLoggedIn', 'true');
+      await logAdminAccess('auto_login_success', { username: savedUsername });
+      
+      // Admin panelini göster
+      const adminContent = document.querySelector('.admin-content');
+      if (adminContent) {
+        adminContent.style.display = 'block';
+      }
+      
+      loadAdminData();
+      return true; // Otomatik giriş başarılı
+    } else {
+      // Kayıtlı bilgiler geçersiz, çerezleri temizle
+      setCookie('adminUsername', '', -1);
+      setCookie('adminPassword', '', -1);
+      setCookie('adminRemembered', '', -1);
+      await logAdminAccess('auto_login_failed', { username: savedUsername });
+    }
+  }
+  
+  return false; // Otomatik giriş başarısız veya mevcut değil
+}
+
 // Sayfa yüklendiğinde giriş kontrolü yap
 document.addEventListener('DOMContentLoaded', async function() {
   // Sayfa erişimini logla
   await logAdminAccess('page_access', { page: 'admin_panel' });
   
-  // Hemen giriş modalını göster
-  showLoginModal();
+  // Önce otomatik giriş dene
+  const autoLoginSuccess = await checkAutoLogin();
+  
+  // Otomatik giriş başarısız ise login modalını göster
+  if (!autoLoginSuccess) {
+    showLoginModal();
+  }
 });
 
 // Sayfa yüklendiğinde admin panelini gizle

@@ -137,6 +137,67 @@
       margin-right: 5px;
     }
     
+    .remember-me-group {
+      margin: 1rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .remember-checkbox {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: #555;
+      user-select: none;
+    }
+    
+    .remember-checkbox input[type="checkbox"] {
+      display: none;
+    }
+    
+    .checkmark {
+      width: 18px;
+      height: 18px;
+      border: 2px solid #ddd;
+      border-radius: 4px;
+      margin-right: 8px;
+      position: relative;
+      transition: all 0.3s ease;
+      background: white;
+    }
+    
+    .remember-checkbox:hover .checkmark {
+      border-color: #FF6B35;
+    }
+    
+    .remember-checkbox input[type="checkbox"]:checked + .checkmark {
+      background: #FF6B35;
+      border-color: #FF6B35;
+    }
+    
+    .remember-checkbox input[type="checkbox"]:checked + .checkmark::after {
+      content: "";
+      position: absolute;
+      left: 5px;
+      top: 2px;
+      width: 4px;
+      height: 8px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+    
+    .remember-text {
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    
+    .remember-checkbox:hover .remember-text {
+      color: #FF6B35;
+    }
+    
     @keyframes modalSlideIn {
       from {
         opacity: 0;
