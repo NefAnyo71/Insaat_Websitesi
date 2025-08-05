@@ -189,7 +189,7 @@ function renderServices(services) {
                     
                     <h3 class="service-title">${service.title || ''}</h3>
                     
-                    <p class="service-description">${(service.description || '').substring(0, 120)}${service.description && service.description.length > 120 ? '...' : ''}</p>
+                    <p class="service-description">${service.description || ''}</p>
                     
                     <div class="service-features-mini">
                         ${service.features ? service.features.split(',').slice(0, 4).map((f, i) => `<span class="feature-mini" style="--i: ${i}">${f.trim()}</span>`).join('') : ''}
