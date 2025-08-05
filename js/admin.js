@@ -696,8 +696,62 @@ window.saveEdit = async function(type, id) {
       console.error('Bayi güncelleme hatası:', error);
       alert('Bayi güncellenirken hata oluştu!');
     }
+  } else if (type === 'project') {
+    const title = document.getElementById('edit-project-title').value.trim();
+    const text = document.getElementById('edit-project-text').value.trim();
+    const textStyle = document.getElementById('edit-project-text-style').value.trim();
+    const category = document.getElementById('edit-project-category').value.trim();
+    const description = document.getElementById('edit-project-description').value.trim();
+    const image = document.getElementById('edit-project-image').value.trim();
+
+    if (!title || !category || !description || !image) {
+      alert('Lütfen zorunlu alanları doldurun!');
+      return;
+    }
+    try {
+      const { updateProject, getProjects } = await import('./firebase.js');
+      const projects = await getProjects();
+      const old = projects.find(p => p.id === id) || {};
+      // Modalda olmayan alanları eski veriden al
+      const oldText = text || old.text || '';
+      const oldTextStyle = textStyle || old.textStyle || '';
+      await updateProject(id, { title, text: oldText, textStyle: oldTextStyle, category, description, image });
+      alert('Proje başarıyla güncellendi!');
+      closeEditModal();
+      loadProjects();
+    } catch (error) {
+      console.error('Proje güncelleme hatası:', error);
+      alert('Proje güncellenirken hata oluştu!');
+    }
+  } else if (type === 'employee') {
+    const name = document.getElementById('edit-employee-name').value.trim();
+    const text = document.getElementById('edit-employee-text').value.trim();
+    const textStyle = document.getElementById('edit-employee-text-style').value.trim();
+    const position = document.getElementById('edit-employee-position').value.trim();
+    const image = document.getElementById('edit-employee-image').value.trim();
+    const experience = document.getElementById('edit-employee-experience').value.trim();
+
+    if (!name || !position || !image) {
+      alert('Lütfen zorunlu alanları doldurun!');
+      return;
+    }
+    try {
+      const { updateEmployee, getEmployees } = await import('./firebase.js');
+      const employees = await getEmployees();
+      const old = employees.find(e => e.id === id) || {};
+      const oldText = text || old.text || '';
+      const oldTextStyle = textStyle || old.textStyle || '';
+      const oldExperience = experience || old.experience || '';
+      await updateEmployee(id, { name, text: oldText, textStyle: oldTextStyle, position, image, experience: oldExperience });
+      alert('Çalışan başarıyla güncellendi!');
+      closeEditModal();
+      loadEmployees();
+    } catch (error) {
+      console.error('Çalışan güncelleme hatası:', error);
+      alert('Çalışan güncellenirken hata oluştu!');
+    }
   } else {
-    alert('Diğer güncelleme fonksiyonları henüz eklenmedi!');
+    alert('Bilinmeyen güncelleme türü!');
     closeEditModal();
   }
 }
