@@ -546,7 +546,7 @@ function openEditModal(type, data, id) {
           <option value="modern" ${data.textStyle === 'modern' ? 'selected' : ''}>Modern</option>
         </select>
         <input type="text" id="edit-employee-position" placeholder="Pozisyon" value="${data.position || ''}">
-        <input type="number" id="edit-employee-experience" placeholder="Deneyim (yıl)" value="${data.experience || ''}">
+        <input type="number" id="edit-employee-experience" placeholder="Deneyim" value="${data.experience || ''}">
         <input type="url" id="edit-employee-image" placeholder="Çalışan Resim URL" value="${data.image || ''}">
       </div>
       <div class="modal-actions">

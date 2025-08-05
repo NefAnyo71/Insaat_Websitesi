@@ -564,7 +564,7 @@ function renderEmployees(employees) {
                     </div>
                     <div class="employee-name">${employee.name || 'Uzman Çalışan'}</div>
                     <div class="employee-position-tag">${employee.position || 'Uzman'}</div>
-                    <div class="employee-experience">${employee.experience || 5} yıl deneyimle projelerinizde kaliteli hizmet sunmaktayız. Müşteri memnuniyeti odaklı çalışma anlayışımızla sektörde öncü konumdayız.</div>
+                    <div class="employee-experience">${employee.experience ? employee.experience : ''}</div>
                 </div>
             </div>
         `;
