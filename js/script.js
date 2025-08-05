@@ -564,8 +564,7 @@ function renderEmployees(employees) {
                     </div>
                     <div class="employee-name">${employee.name || 'Uzman Çalışan'}</div>
                     <div class="employee-position-tag">${employee.position || 'Uzman'}</div>
-                    ${employee.experience ? `<div class="employee-experience">${employee.experience}</div>` : ''} 
-                    <!-- <div class="employee-experience">${employee.experience ? employee.experience : ''}</div> eğer bi hata olursa yukardaki kodu sil-->
+                    <div class="employee-experience">${employee.experience ? employee.experience : ''}</div>
                 </div>
             </div>
         `;
