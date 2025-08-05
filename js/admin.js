@@ -477,8 +477,8 @@ function openEditModal(type, data, id) {
       window.addImageInputEdit = function() {
         const container = document.getElementById('edit-service-images-container');
         const inputCount = container.querySelectorAll('.image-input-group').length;
-        if (inputCount >= 5) {
-          alert('En fazla 5 görsel ekleyebilirsiniz!');
+        if (inputCount >= 10) {
+          alert('En fazla 10 görsel ekleyebilirsiniz!');
           return;
         }
         const newInputGroup = document.createElement('div');
@@ -664,6 +664,28 @@ window.saveEdit = async function(type, id) {
     } catch (error) {
       console.error('Referans güncelleme hatası:', error);
       alert('Referans güncellenirken hata oluştu!');
+    }
+  } else if (type === 'service') {
+    const title = document.getElementById('edit-service-title').value.trim();
+    const description = document.getElementById('edit-service-desc').value.trim();
+    const details = document.getElementById('edit-service-details').value.trim();
+    // Multi-image support
+    const imageInputs = document.querySelectorAll('#edit-service-images-container .service-image-input');
+    const images = Array.from(imageInputs).map(input => input.value.trim()).filter(url => url !== '');
+
+    if (!title || !description || !details || images.length === 0) {
+      alert('Lütfen tüm alanları ve en az bir görsel URL girin!');
+      return;
+    }
+    try {
+      const { updateService } = await import('./firebase.js');
+      await updateService(id, { title, description, details, images });
+      alert('Bayi başarıyla güncellendi!');
+      closeEditModal();
+      loadServices();
+    } catch (error) {
+      console.error('Bayi güncelleme hatası:', error);
+      alert('Bayi güncellenirken hata oluştu!');
     }
   } else {
     alert('Diğer güncelleme fonksiyonları henüz eklenmedi!');
