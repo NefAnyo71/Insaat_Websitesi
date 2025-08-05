@@ -62,6 +62,19 @@ export async function addService(title, text, textStyle, description, details, i
   }
 }
 
+// Bayi (Hizmet) güncelleme
+export async function updateService(id, data) {
+  try {
+    await initializeFirebase();
+    const serviceRef = doc(db, "services", id);
+    await updateDoc(serviceRef, { ...data, updatedAt: new Date() });
+    return true;
+  } catch (error) {
+    console.error("Hizmet güncellenirken hata:", error);
+    return false;
+  }
+}
+
 // Hizmetleri getirme
 export async function getServices() {
   try {
