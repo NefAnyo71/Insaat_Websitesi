@@ -206,8 +206,6 @@
         <button class="tab" onclick="showTab('sitename')"><i class="fas fa-globe"></i> Site Adı</button>
         <button class="tab" onclick="showTab('favicon')"><i class="fas fa-image"></i> Favicon</button>
         <button class="tab" onclick="showTab('admins')"><i class="fas fa-user-shield"></i> Admin Yönetimi</button>
-        <button class="tab" onclick="showTab('logs')"><i class="fas fa-history"></i> Aktivite Logları</button>
-        <button class="tab" onclick="showTab('analytics')"><i class="fas fa-chart-bar"></i> Kullanıcı Analizi</button>
       </div>
 
       <!-- Hizmetler Tab -->
@@ -468,106 +466,12 @@
         </div>
         
         <div class="items-section">
-          <h3><i class="fas fa-list"></i> Mevcut Adminler</h3>
+          <h3><i class="fas fa-list"></i> Mevcut Yöneticiler</h3>
           <div id="admins-list" class="items-list"></div>
         </div>
       </div>
 
-      <!-- Aktivite Logları Tab -->
-      <div id="logs" class="tab-content">
-        <div class="logs-section">
-          <h2><i class="fas fa-history"></i> Admin Aktivite Logları</h2>
-          <div class="logs-filters">
-            <input type="date" id="log-date-filter" placeholder="Tarih Filtresi">
-            <select id="log-action-filter">
-              <option value="">Tüm Aktiviteler</option>
-              <option value="page_access">Sayfa Erişimi</option>
-              <option value="login_attempt">Giriş Denemesi</option>
-              <option value="login_success">Başarılı Giriş</option>
-              <option value="login_failed">Başarısız Giriş</option>
-              <option value="data_add">Veri Ekleme</option>
-              <option value="data_edit">Veri Düzenle</option>
-              <option value="data_delete">Veri Silme</option>
-              <option value="admin_add">Admin Ekleme</option>
-              <option value="admin_update">Admin Güncelleme</option>
-              <option value="admin_delete">Admin Silme</option>
-            </select>
-            <button class="btn" onclick="filterLogs()">Filtrele</button>
-            <button class="btn" onclick="loadLogs()">Yenile</button>
-          </div>
-          <div id="logs-list" class="logs-list"></div>
-        </div>
-      </div>
 
-      <!-- Kullanıcı Analizi Tab -->
-      <div id="analytics" class="tab-content">
-        <div class="analytics-section">
-          <h2><i class="fas fa-chart-bar"></i> Kullanıcı Davranış Analizi</h2>
-          
-          <!-- İstatistik Kartları -->
-          <div class="stats-cards">
-            <div class="stat-card">
-              <div class="stat-icon"><i class="fas fa-users"></i></div>
-              <div class="stat-info">
-                <h3 id="total-visitors">0</h3>
-                <p>Toplam Ziyaretçi</p>
-              </div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-icon"><i class="fas fa-mouse-pointer"></i></div>
-              <div class="stat-info">
-                <h3 id="total-clicks">0</h3>
-                <p>Toplam Tıklama</p>
-              </div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-icon"><i class="fas fa-clock"></i></div>
-              <div class="stat-info">
-                <h3 id="total-sessions">0</h3>
-                <p>Toplam Oturum</p>
-              </div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-icon"><i class="fas fa-eye"></i></div>
-              <div class="stat-info">
-                <h3 id="most-viewed-section">-</h3>
-                <p>En Çok Bakılan Bölüm</p>
-              </div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-icon"><i class="fas fa-heart"></i></div>
-              <div class="stat-info">
-                <h3 id="most-popular-card">-</h3>
-                <p>En Popüler Kart</p>
-              </div>
-            </div>
-          </div>
-          
-          <!-- IP Analizi -->
-          <div class="ip-analysis">
-            <h3><i class="fas fa-globe"></i> IP Adresi Analizi</h3>
-            <div id="ip-stats" class="ip-stats-container"></div>
-          </div>
-          
-          <!-- Detaylı Analiz -->
-          <div class="analytics-details">
-            <div class="analytics-chart">
-              <h3>Bölüm Bazında İlgi Dağılımı</h3>
-              <div id="section-chart" class="chart-container"></div>
-            </div>
-            
-            <div class="analytics-chart">
-              <h3>Kart Bazında Tıklama Analizi</h3>
-              <div id="card-chart" class="chart-container"></div>
-            </div>
-          </div>
-          
-          <div class="analytics-actions">
-            <button class="btn" onclick="loadAnalytics()">Verileri Yenile</button>
-            <button class="btn" onclick="exportAnalytics()">Rapor İndir</button>
-          </div>
-        </div>
-      </div>
 
 
     </div>
