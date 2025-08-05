@@ -92,6 +92,45 @@ export async function getServices() {
   }
 }
 
+// Proje güncelleme
+export async function updateProject(id, data) {
+  try {
+    await initializeFirebase();
+    const projectRef = doc(db, "projects", id);
+    await updateDoc(projectRef, { ...data, updatedAt: new Date() });
+    return true;
+  } catch (error) {
+    console.error("Proje güncellenirken hata:", error);
+    return false;
+  }
+}
+
+// Çalışan güncelleme
+export async function updateEmployee(id, data) {
+  try {
+    await initializeFirebase();
+    const employeeRef = doc(db, "employees", id);
+    await updateDoc(employeeRef, { ...data, updatedAt: new Date() });
+    return true;
+  } catch (error) {
+    console.error("Çalışan güncellenirken hata:", error);
+    return false;
+  }
+}
+
+// Referans güncelleme
+export async function updateReference(id, data) {
+  try {
+    await initializeFirebase();
+    const referenceRef = doc(db, "references", id);
+    await updateDoc(referenceRef, { ...data, updatedAt: new Date() });
+    return true;
+  } catch (error) {
+    console.error("Referans güncellenirken hata:", error);
+    return false;
+  }
+}
+
 // Proje ekleme
 export async function addProject(title, text, textStyle, category, description, image) {
   try {
