@@ -701,7 +701,7 @@ window.saveEdit = async function(type, id) {
     const text = document.getElementById('edit-project-text').value.trim();
     const textStyle = document.getElementById('edit-project-text-style').value.trim();
     const category = document.getElementById('edit-project-category').value.trim();
-    const description = document.getElementById('edit-project-description').value.trim();
+    const description = document.getElementById('edit-project-desc').value.trim();
     const image = document.getElementById('edit-project-image').value.trim();
 
     if (!title || !category || !description || !image) {
