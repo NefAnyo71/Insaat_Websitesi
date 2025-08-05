@@ -322,7 +322,7 @@ async function loadEmployees() {
       <h4>${employee.name || ''}</h4>
       <p>Metin: ${employee.text || ''}</p>
       <p>Pozisyon: ${employee.position || ''}</p>
-      <p>Deneyim: ${employee.experience || 0} yıl</p>
+      <p>Deneyim: ${employee.experience || 0}</p>
       <img src="${employee.image || 'https://via.placeholder.com/100x100'}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;">
       <div class="item-actions">
         <button class="edit-btn" onclick="editEmployee('${employee.id}')">Düzenle</button>
