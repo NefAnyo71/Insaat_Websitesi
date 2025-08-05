@@ -524,6 +524,13 @@ nav ul li a:hover::after {
 
 @keyframes breathe {
   0%, 100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.6;
+  }
 }
 
 .projects {
