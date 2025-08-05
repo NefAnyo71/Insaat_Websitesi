@@ -1615,8 +1615,8 @@ nav ul li a:hover::after {
 
 /* REFERANSLAR - YUVARLAK TASARIM */
 .reference-item {
-  width: 280px;
-  height: 280px;
+  width: 320px;
+  height: 350px;
   margin: 1.5rem;
   perspective: 1000px;
   cursor: pointer;
@@ -1694,8 +1694,6 @@ nav ul li a:hover::after {
   object-fit: contain;
   transition: all 0.8s ease;
 }
-
-
 
 .reference-item:hover .reference-logo-main img {
   transform: scale(1.1);
@@ -1813,11 +1811,14 @@ nav ul li a:hover::after {
 }
 
 .reference-description {
-  font-size: 0.9rem;
-  line-height: 1.6;
-  opacity: 0.95;
-  max-height: 60px;
-  overflow: hidden;
+  font-size: 1rem;
+  line-height: 1.7;
+  opacity: 0.97;
+  max-height: 8.5em;
+  overflow: auto;
+  word-break: break-word;
+  padding: 0.3em 0.1em;
+  text-align: left;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
