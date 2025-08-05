@@ -198,7 +198,7 @@ function renderServices(services) {
                     ${(service.instagram || service.whatsapp || service.gmail) ? `
                         <div class="service-social-links">
                             ${service.instagram ? `<a href="${service.instagram}" target="_blank" class="service-social-btn instagram"><i class="fab fa-instagram"></i></a>` : ''}
-                            ${service.whatsapp ? `<a href="${service.whatsapp}" target="_blank" class="service-social-btn whatsapp"><i class="fab fa-whatsapp"></i></a>` : ''}
+                            ${service.whatsapp ? `<a href="https://wa.me/${service.whatsapp.replace(/[^0-9]/g, '')}" target="_blank" class="service-social-btn whatsapp"><i class="fab fa-whatsapp"></i></a>` : ''}
                             ${service.gmail ? `<a href="mailto:${service.gmail}" class="service-social-btn gmail"><i class="fas fa-envelope"></i></a>` : ''}
                         </div>
                     ` : ''}
@@ -662,22 +662,37 @@ function updateHeroBackground(imageUrl) {
 
 
 // Hizmet detay modalı aç
-window.openServiceModal = function(id, title, details, image) {
-    // Modal HTML oluştur
+window.openServiceModal = function(service) {
+    const images = service.images && service.images.length > 0 ? service.images : (service.image ? [service.image] : []);
+    const hasImages = images.length > 0;
+    
     const modalHTML = `
         <div id="service-modal" class="service-modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2><i class="fas fa-cogs"></i> ${title}</h2>
+                    <h2><i class="fas fa-cogs"></i> ${service.title}</h2>
                     <button class="modal-close" onclick="closeServiceModal()">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
                 <div class="modal-body">
-                    ${image ? `<img src="${image}" alt="${title}" class="modal-image">` : ''}
+                    ${hasImages ? `
+                        <div class="modal-image-slider">
+                            ${images.map((img, index) => `
+                                <img src="${img}" alt="${service.title}" class="modal-slide ${index === 0 ? 'active' : ''}" style="width: 100%; height: 250px; object-fit: cover; border-radius: 10px; ${index === 0 ? 'display: block;' : 'display: none;'}">
+                            `).join('')}
+                        </div>
+                    ` : ''}
                     <div class="modal-text">
                         <h3>Hizmet Detayları</h3>
-                        <p>${details}</p>
+                        <p>${service.details || service.description}</p>
+                        ${(service.instagram || service.whatsapp || service.gmail) ? `
+                            <div class="modal-social-links" style="margin-top: 1rem; text-align: center;">
+                                ${service.instagram ? `<a href="${service.instagram}" target="_blank" class="service-social-btn instagram"><i class="fab fa-instagram"></i></a>` : ''}
+                                ${service.whatsapp ? `<a href="https://wa.me/${service.whatsapp.replace(/[^0-9]/g, '')}" target="_blank" class="service-social-btn whatsapp"><i class="fab fa-whatsapp"></i></a>` : ''}
+                                ${service.gmail ? `<a href="mailto:${service.gmail}" class="service-social-btn gmail"><i class="fas fa-envelope"></i></a>` : ''}
+                            </div>
+                        ` : ''}
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -689,15 +704,24 @@ window.openServiceModal = function(id, title, details, image) {
         </div>
     `;
     
-    // Modal'ı sayfaya ekle
     document.body.insertAdjacentHTML('beforeend', modalHTML);
     
-    // Modal animasyonu
+    // Görsel rotasyonu başlat
+    if (images.length > 1) {
+        let currentIndex = 0;
+        const slides = document.querySelectorAll('.modal-slide');
+        
+        setInterval(() => {
+            slides[currentIndex].style.display = 'none';
+            currentIndex = (currentIndex + 1) % images.length;
+            slides[currentIndex].style.display = 'block';
+        }, 2000);
+    }
+    
     setTimeout(() => {
         document.getElementById('service-modal').classList.add('show');
     }, 10);
     
-    // Scroll'u engelle
     document.body.style.overflow = 'hidden';
 }
 
