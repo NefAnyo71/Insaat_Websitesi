@@ -689,7 +689,55 @@ nav ul li a:hover::after {
 }
 
 .service-card:hover {
-  transform: translateY(-8px);
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(102, 126, 234, 0.15), 0 0 0 1px rgba(102, 126, 234, 0.1);
+}
+
+.service-card {
+  position: relative;
+  width: 450px;
+  height: 420px;
+  margin: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Hover teşvik efektleri */
+.service-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.03), rgba(118, 75, 162, 0.03));
+  border-radius: 16px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.service-card:hover::after {
+  opacity: 1;
+}
+
+/* Kartın üst kısmına ince bir highlight çizgisi */
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 16px 16px 0 0;
+  transform: scaleX(0);
+  transition: transform 0.4s ease;
+  z-index: 1;
+}
+
+.service-card:hover::before {
+  transform: scaleX(1);
 }
 
 .service-card-container {
@@ -724,8 +772,9 @@ nav ul li a:hover::after {
 }
 
 .service-card:hover .service-card-container {
-  transform: translateY(-15px) rotateX(5deg);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(102, 126, 234, 0.15);
+  border-color: rgba(102, 126, 234, 0.2);
 }
 
 .service-header {

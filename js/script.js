@@ -23,6 +23,11 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     await loadDynamicContent();
     initializeAnimations();
+    
+    // Hover event'lerini başlat
+    setTimeout(() => {
+        initServiceCardHovers();
+    }, 1000); // İçerik yüklendikten sonra hover'ları başlat
 });
 
 // Firebase'den dinamik içerikleri yükle
@@ -971,14 +976,13 @@ function animateSVGPaths() {
 
 
 // Hizmet detaylarını aç/kapat
-window.toggleServiceDetails = function(button) {
-    const serviceCard = button.closest('.service-card');
+// Hover ile kart açma/kapama fonksiyonu
+window.expandServiceCard = function(serviceCard) {
     const expandedContent = serviceCard.querySelector('.service-expanded-content');
     const cardContainer = serviceCard.querySelector('.service-card-container');
-    const isExpanded = serviceCard.classList.contains('expanded');
+    const button = serviceCard.querySelector('.service-action-btn');
     
-    if (!isExpanded) {
-        // Açılıyor
+    if (!serviceCard.classList.contains('expanded')) {
         serviceCard.classList.add('expanded');
         cardContainer.style.transform = 'rotateY(180deg)';
         
@@ -989,9 +993,16 @@ window.toggleServiceDetails = function(button) {
             cardContainer.style.transform = 'rotateY(0deg)';
         }, 300);
         
-        button.innerHTML = '<i class="fas fa-chevron-up"></i>';
-    } else {
-        // Kapanıyor
+        if (button) button.innerHTML = '<i class="fas fa-chevron-up"></i>';
+    }
+};
+
+window.collapseServiceCard = function(serviceCard) {
+    const expandedContent = serviceCard.querySelector('.service-expanded-content');
+    const cardContainer = serviceCard.querySelector('.service-card-container');
+    const button = serviceCard.querySelector('.service-action-btn');
+    
+    if (serviceCard.classList.contains('expanded')) {
         cardContainer.style.transform = 'rotateY(-180deg)';
         expandedContent.style.opacity = '0';
         expandedContent.style.transform = 'rotateY(180deg)';
@@ -1002,7 +1013,49 @@ window.toggleServiceDetails = function(button) {
             cardContainer.style.transform = 'rotateY(0deg)';
         }, 300);
         
-        button.innerHTML = '<i class="fas fa-chevron-down"></i>';
+        if (button) button.innerHTML = '<i class="fas fa-chevron-down"></i>';
     }
+};
+
+// Tıklama ile toggle fonksiyonu (eski fonksiyon korundu)
+window.toggleServiceDetails = function(button) {
+    const serviceCard = button.closest('.service-card');
+    const expandedContent = serviceCard.querySelector('.service-expanded-content');
+    const cardContainer = serviceCard.querySelector('.service-card-container');
+    const isExpanded = serviceCard.classList.contains('expanded');
+    
+    if (!isExpanded) {
+        window.expandServiceCard(serviceCard);
+    } else {
+        window.collapseServiceCard(serviceCard);
+    }
+};
+
+// Hover event'lerini ekle
+window.initServiceCardHovers = function() {
+    const serviceCards = document.querySelectorAll('.service-card');
+    
+    serviceCards.forEach(card => {
+        let hoverTimeout;
+        
+        card.addEventListener('mouseenter', () => {
+            // Kısa bir gecikme ile hover açma
+            hoverTimeout = setTimeout(() => {
+                window.expandServiceCard(card);
+            }, 200);
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            // Hover timeout'unu iptal et
+            if (hoverTimeout) {
+                clearTimeout(hoverTimeout);
+            }
+            
+            // Kısa bir gecikme ile hover kapama
+            setTimeout(() => {
+                window.collapseServiceCard(card);
+            }, 300);
+        });
+    });
 };
 
