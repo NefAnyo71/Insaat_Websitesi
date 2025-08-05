@@ -678,8 +678,17 @@ window.saveEdit = async function(type, id) {
       return;
     }
     try {
-      const { updateService } = await import('./firebase.js');
-      await updateService(id, { title, description, details, images });
+      const { updateService, getServices } = await import('./firebase.js');
+      // Eski verileri çek
+      const services = await getServices();
+      const old = services.find(s => s.id === id) || {};
+      // Modalda olmayan alanları eski veriden al
+      const text = old.text || '';
+      const textStyle = old.textStyle || '';
+      const instagram = old.instagram || '';
+      const whatsapp = old.whatsapp || '';
+      const gmail = old.gmail || '';
+      await updateService(id, { title, description, details, images, text, textStyle, instagram, whatsapp, gmail });
       alert('Bayi başarıyla güncellendi!');
       closeEditModal();
       loadServices();
