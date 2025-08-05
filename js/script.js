@@ -989,7 +989,7 @@ window.toggleServiceDetails = function(button) {
             cardContainer.style.transform = 'rotateY(0deg)';
         }, 300);
         
-        button.innerHTML = '<i class="fas fa-chevron-up"></i> KAPAT';
+        button.innerHTML = '<i class="fas fa-chevron-up"></i>';
     } else {
         // Kapanıyor
         cardContainer.style.transform = 'rotateY(-180deg)';
