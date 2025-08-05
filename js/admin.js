@@ -446,19 +446,58 @@ function openEditModal(type, data, id) {
   let modalContent = '';
   
   if (type === 'service') {
+    // Multi-image input HTML
+    let imagesArr = Array.isArray(data.images) ? data.images : (data.image ? [data.image] : ['']);
+    if (imagesArr.length === 0) imagesArr = [''];
+    let imagesInputsHTML = imagesArr.map((img, idx) => `
+      <div class="image-input-group">
+        <input type="url" class="service-image-input" placeholder="Görsel URL ${idx+1}" value="${img || ''}">
+        ${idx === 0 ? `<button type=\"button\" class=\"btn-small\" onclick=\"addImageInputEdit()\"><i class=\"fas fa-plus\"></i></button>` : `<button type=\"button\" class=\"btn-small btn-remove\" onclick=\"removeImageInputEdit(this)\"><i class=\"fas fa-minus\"></i></button>`}
+      </div>
+    `).join('');
     modalContent = `
-      <h2><i class="fas fa-edit"></i> Hizmet Düzenle</h2>
+      <h2><i class="fas fa-edit"></i> Bayi Düzenle</h2>
       <div class="edit-form">
-        <input type="text" id="edit-service-title" placeholder="Hizmet Adı" value="${data.title || ''}">
-        <textarea id="edit-service-desc" placeholder="Hizmet açıklaması...">${data.description || ''}</textarea>
-        <textarea id="edit-service-details" placeholder="Detaylı hizmet bilgileri...">${data.details || ''}</textarea>
-        <input type="url" id="edit-service-image" placeholder="Hizmet Resim URL" value="${data.image || ''}">
+        <input type="text" id="edit-service-title" placeholder="Bayi Adı" value="${data.title || ''}">
+        <textarea id="edit-service-desc" placeholder="Bayi açıklaması...">${data.description || ''}</textarea>
+        <textarea id="edit-service-details" placeholder="Detaylı bayi bilgileri...">${data.details || ''}</textarea>
+        <div style="margin: 1rem 0; padding: 1rem; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #FF6B35;">
+          <h4 style="margin: 0 0 0.5rem 0; color: #FF6B35;"><i class=\"fas fa-images\"></i> Görseller (Birden fazla ekleyebilirsiniz)</h4>
+          <div id="edit-service-images-container">${imagesInputsHTML}</div>
+          <small style="color: #666; font-size: 0.8rem;">Resim yüklemek için: <a href=\"https://resimlink.com/\" target=\"_blank\" style=\"color: #FF6B35;\">resimlink.com</a></small>
+        </div>
       </div>
       <div class="modal-actions">
         <button class="btn cancel-btn" onclick="closeEditModal()">İptal</button>
         <button class="btn save-btn" onclick="saveEdit('service', '${id}')">Kaydet</button>
       </div>
     `;
+    // Attach add/remove logic for edit modal after modal is inserted
+    setTimeout(() => {
+      window.addImageInputEdit = function() {
+        const container = document.getElementById('edit-service-images-container');
+        const inputCount = container.querySelectorAll('.image-input-group').length;
+        if (inputCount >= 5) {
+          alert('En fazla 5 görsel ekleyebilirsiniz!');
+          return;
+        }
+        const newInputGroup = document.createElement('div');
+        newInputGroup.className = 'image-input-group';
+        newInputGroup.innerHTML = `
+          <input type=\"url\" class=\"service-image-input\" placeholder=\"Görsel URL ${inputCount+1}\">\n          <button type=\"button\" class=\"btn-small btn-remove\" onclick=\"removeImageInputEdit(this)\"><i class=\"fas fa-minus\"></i></button>\n        `;
+        container.appendChild(newInputGroup);
+      };
+      window.removeImageInputEdit = function(button) {
+        const container = document.getElementById('edit-service-images-container');
+        const inputGroups = container.querySelectorAll('.image-input-group');
+        if (inputGroups.length > 1) {
+          button.parentElement.remove();
+        } else {
+          alert('En az bir görsel alanı olmalıdır!');
+        }
+      };
+    }, 20);
+
   } else if (type === 'project') {
     modalContent = `
       <h2><i class="fas fa-edit"></i> Proje Düzenle</h2>
