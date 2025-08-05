@@ -564,10 +564,38 @@ function renderEmployees(employees) {
                     </div>
                     <div class="employee-name">${employee.name || 'Uzman Çalışan'}</div>
                     <div class="employee-position-tag">${employee.position || 'Uzman'}</div>
-                    <div class="employee-experience">${employee.experience ? employee.experience : ''}</div>
+                    <div class="employee-experience">${employee.experience ? employee.experience + ' Yıl Deneyim' : ''}</div>
+                    <div class="employee-text" style="margin: 10px 0;">
+                        <span class="employee-text-content">${employee.text || ''}</span>
+                    </div>
+                    <div class="employee-dates" style="font-size: 0.75em; opacity: 0.7;">
+                        ${employee.createdAt ? `<span>Eklenme: ${formatEmployeeDate(employee.createdAt)}</span>` : ''}
+                        ${employee.updatedAt ? `<span style='margin-left:8px;'>Güncelleme: ${formatEmployeeDate(employee.updatedAt)}</span>` : ''}
+                    </div>
                 </div>
             </div>
         `;
+
+        // TextStyle uygula
+        const textContent = employeeElement.querySelector('.employee-text-content');
+        if (textContent && employee.textStyle) {
+            applyTextStyleToElement(textContent, employee.textStyle);
+        }
+
+        // Tarih formatlama fonksiyonu
+        function formatEmployeeDate(dateValue) {
+            // Firestore Timestamp ise
+            if (typeof dateValue === 'object' && dateValue.seconds) {
+                const d = new Date(dateValue.seconds * 1000);
+                return d.toLocaleDateString('tr-TR', { year: 'numeric', month: 'short', day: 'numeric' });
+            } else if (typeof dateValue === 'string') {
+                // ISO veya başka string ise
+                const d = new Date(dateValue);
+                if (!isNaN(d)) return d.toLocaleDateString('tr-TR', { year: 'numeric', month: 'short', day: 'numeric' });
+                return dateValue;
+            }
+            return '';
+        }
         
         employeesContainer.appendChild(employeeElement);
         
@@ -815,12 +843,6 @@ function initTypingAnimation() {
     // 2 saniye bekle sonra başlat
     setTimeout(typeWriter, 2000);
 }
-
-
-
-
-
-
 
 // Scroll indicator click handler
 document.addEventListener('DOMContentLoaded', async function() {
