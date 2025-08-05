@@ -29,7 +29,7 @@ Bu proje **PROPRIETARY (Mülkiyet) Lisansı** altında korunmaktadır.
 Bu yazılımın tüm hakları saklıdır. Herhangi bir izinsiz kullanım yasal işlem gerektirecektir.
 
 ### 📞 İletişim:
-Lisans izinleri için: [İletişim Bilgileriniz]
+Lisans izinleri için: Kef Yapı & arifkerem71@gmail.com
 
 ---
 
