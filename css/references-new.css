@@ -208,7 +208,7 @@
   position: relative;
   transform-style: preserve-3d;
   transition: all 1s cubic-bezier(0.23, 1, 0.32, 1);
-  border-radius: 30px;
+  border-radius: 15px; /* Match the parent's border-radius */
   overflow: hidden;
   box-shadow: 0 25px 80px rgba(0, 18, 72, 0.2);
 }
@@ -274,7 +274,9 @@
   transform: translateY(120%) rotateX(-15deg);
   transition: all 1s cubic-bezier(0.23, 1, 0.32, 1);
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px); /* For Safari */
   text-align: center;
+  border-radius: 0 0 15px 15px; /* Round bottom corners */
 }
 
 .reference-item:hover .reference-content {
@@ -338,6 +340,8 @@
     width: 300px;
     height: 250px;
     margin: 1rem auto;
+    border-radius: 15px; /* Ensure consistent border-radius */
+    overflow: hidden; /* Ensure content doesn't overflow the rounded corners */
   }
   
   .reference-content {
@@ -379,6 +383,16 @@
     max-width: 320px;
     height: 230px;
     margin: 0.8rem auto;
+    border-radius: 15px; /* Ensure consistent border-radius */
+    overflow: hidden; /* Ensure content doesn't overflow the rounded corners */
+  }
+  
+  .reference-container {
+    border-radius: 15px; /* Match parent's border-radius */
+  }
+  
+  .reference-content {
+    border-radius: 0 0 15px 15px; /* Round only bottom corners */
   }
   
   .reference-content {
