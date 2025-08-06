@@ -238,8 +238,16 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  transition: all 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: all 0.3s ease-out;
   filter: brightness(1) contrast(1.1) saturate(1.1);
+  object-fit: cover;
+}
+
+/* For mobile, ensure image covers the full card */
+@media (max-width: 576px) {
+  .reference-image {
+    height: 100%;
+  }
 }
 
 .reference-item:hover .reference-image {
@@ -391,46 +399,39 @@
     margin: 0.8rem auto;
     border-radius: 15px;
     overflow: hidden;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
-    transform: translateZ(0); /* Force hardware acceleration */
-    will-change: transform, box-shadow;
+    transform: translateZ(0);
     transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
   }
   
-  .reference-item:active,
-  .reference-item:focus,
-  .reference-item:hover {
-    transform: translateY(-3px) translateZ(0);
-    box-shadow: 0 12px 20px rgba(0, 18, 72, 0.15);
+  /* Hide content by default on mobile */
+  .reference-content,
+  .reference-overlay {
+    display: none;
   }
   
-  .reference-container {
-    border-radius: 15px;
-    transform-style: preserve-3d;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    height: 100%;
+  /* Show content only in modal */
+  .reference-modal .reference-content,
+  .reference-modal .reference-overlay {
+    display: block;
   }
   
-  .reference-content {
-    border-radius: 0 0 15px 15px;
-    padding: 1.2rem;
-    transform: translateY(60%) translateZ(0);
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
-                background 0.3s ease-out;
-    will-change: transform, background;
-  }
-  
-  .reference-item:active .reference-content,
-  .reference-item:focus .reference-content,
-  .reference-item:hover .reference-content {
-    transform: translateY(0) rotateX(0) translateZ(0);
-  }
-  
+  /* Show overlay on tap */
   .reference-item:active .reference-overlay,
-  .reference-item:focus .reference-overlay,
-  .reference-item:hover .reference-overlay {
-    opacity: 0.9;
+  .reference-item:focus .reference-overlay {
+    display: block;
+    opacity: 0.3;
+    transition: opacity 0.2s ease;
+  }
+  
+  /* Make image cover full card */
+  .reference-image {
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* Add tap feedback */
+  .reference-item:active {
+    transform: scale(0.98) translateZ(0);
   }
   
   .reference-name {
