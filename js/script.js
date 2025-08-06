@@ -611,6 +611,71 @@ function renderEmployees(employees) {
 }
 
 // Referansları render et
+// Referans detay modalı aç
+window.openReferenceModal = function(reference) {
+    const modalHTML = `
+        <div id="reference-modal" class="reference-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-building"></i> ${reference.name || 'Referans'}</h2>
+                    <button class="modal-close" onclick="closeReferenceModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="reference-modal-image" style="background-image: url('${reference.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzAwMTI0OCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+TG9nbzwvdGV4dD48L3N2Zz4='}')"></div>
+                    <div class="modal-text">
+                        <div class="reference-info">
+                            <span class="reference-sector">${reference.sector || 'Genel'}</span>
+                            <h3>${reference.name || 'Referans Şirketi'}</h3>
+                        </div>
+                        <p>${reference.description || 'Bu referansımız ile uzun yıllardır başarılı projeler gerçekleştirmekteyiz. Kaliteli hizmet anlayışımızla müşteri memnuniyetini ön planda tutuyoruz.'}</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn modal-btn" onclick="closeReferenceModal()">
+                        <i class="fas fa-check"></i> Kapat
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    setTimeout(() => {
+        document.getElementById('reference-modal').classList.add('show');
+    }, 10);
+    
+    document.body.style.overflow = 'hidden';
+}
+
+// Referans detay modalını kapat
+window.closeReferenceModal = function() {
+    const modal = document.getElementById('reference-modal');
+    if (modal) {
+        modal.classList.remove('show');
+        setTimeout(() => {
+            modal.remove();
+            document.body.style.overflow = 'visible';
+        }, 300);
+    }
+}
+
+// Modal dışına tıklanınca kapat
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('reference-modal')) {
+        closeReferenceModal();
+    }
+});
+
+// ESC tuşuyla kapat
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && document.getElementById('reference-modal')) {
+        closeReferenceModal();
+    }
+});
+
 function renderReferences(references) {
     const referencesContainer = document.getElementById('references-list');
     if (!referencesContainer) return;
@@ -620,6 +685,7 @@ function renderReferences(references) {
     references.forEach((reference, index) => {
         const referenceElement = document.createElement('div');
         referenceElement.className = 'reference-item';
+        referenceElement.onclick = () => openReferenceModal(reference);
         
         // Başlangıçta görünmez yap
         referenceElement.style.opacity = '0';
@@ -641,6 +707,7 @@ function renderReferences(references) {
                     <div class="reference-name">${reference.name || 'Referans Şirketi'}</div>
                     <div class="reference-sector-tag">${reference.sector || 'Genel'}</div>
                     <div class="reference-description">${reference.description || 'Bu referansımız ile uzun yıllardır başarılı projeler gerçekleştirmekteyiz. Kaliteli hizmet anlayışımızla müşteri memnuniyetini ön planda tutuyoruz.'}</div>
+                    <div class="reference-more">Daha fazla bilgi için tıklayın</div>
                 </div>
             </div>
         `;

@@ -1,4 +1,189 @@
 /* REFERANSLAR - UZMAN AİLEMİZ TASARIMI */
+
+/* Reference Modal Styles */
+.reference-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.reference-modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.reference-modal .modal-content {
+    background: white;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    transform: translateY(50px);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.reference-modal.show .modal-content {
+    transform: translateY(0);
+}
+
+.reference-modal .modal-header {
+    padding: 1.5rem 2rem;
+    background: linear-gradient(135deg, #001248, #0056b3);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.reference-modal .modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.reference-modal .modal-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.reference-modal .modal-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
+.reference-modal .modal-body {
+    padding: 2rem;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.reference-modal .reference-modal-image {
+    width: 100%;
+    height: 250px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.reference-modal .modal-text {
+    color: #333;
+}
+
+.reference-modal .reference-info {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.reference-modal .reference-sector {
+    display: inline-block;
+    background: #0056b3;
+    color: white;
+    padding: 0.25rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+}
+
+.reference-modal h3 {
+    color: #001248;
+    margin: 0.5rem 0 1rem;
+    font-size: 1.5rem;
+}
+
+.reference-modal p {
+    line-height: 1.7;
+    color: #555;
+    margin: 0;
+}
+
+.reference-modal .modal-footer {
+    padding: 1.5rem 2rem;
+    background: #f8f9fa;
+    text-align: right;
+    border-top: 1px solid #eee;
+}
+
+.reference-modal .modal-btn {
+    background: #0056b3;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.reference-modal .modal-btn:hover {
+    background: #003d82;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 86, 179, 0.3);
+}
+
+/* Responsive styles for modal */
+@media (max-width: 768px) {
+    .reference-modal .modal-content {
+        width: 95%;
+        max-height: 90vh;
+    }
+    
+    .reference-modal .modal-body {
+        padding: 1.5rem;
+    }
+    
+    .reference-modal .reference-modal-image {
+        height: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .reference-modal .modal-header {
+        padding: 1rem 1.25rem;
+    }
+    
+    .reference-modal .modal-header h2 {
+        font-size: 1.25rem;
+    }
+    
+    .reference-modal .reference-modal-image {
+        height: 160px;
+    }
+    
+    .reference-modal h3 {
+        font-size: 1.25rem;
+    }
+}
+
 .reference-item {
   width: 350px;
   height: 300px;
@@ -6,6 +191,15 @@
   perspective: 1500px;
   cursor: pointer;
   position: relative;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.reference-item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(0, 18, 72, 0.2);
 }
 
 .reference-container {
@@ -172,12 +366,6 @@
   }
   
   .reference-description {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-height: 4.5em;
     font-size: 0.8rem;
     line-height: 1.5;
     margin: 0.5rem 0;
