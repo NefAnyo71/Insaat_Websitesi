@@ -268,15 +268,21 @@
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 2.5rem;
-  background: linear-gradient(transparent, rgba(0, 18, 72, 0.95), rgba(0, 18, 72, 0.98));
+  padding: 1.8rem 1.5rem;
+  background: linear-gradient(transparent, rgba(0, 18, 72, 0.9), rgba(0, 18, 72, 0.95));
   color: white;
   transform: translateY(120%) rotateX(-15deg);
-  transition: all 1s cubic-bezier(0.23, 1, 0.32, 1);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px); /* For Safari */
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
+              background 0.3s ease-out;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
   text-align: center;
-  border-radius: 0 0 15px 15px; /* Round bottom corners */
+  border-radius: 0 0 15px 15px;
+  will-change: transform, background;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .reference-item:hover .reference-content {
@@ -383,21 +389,48 @@
     max-width: 320px;
     height: 230px;
     margin: 0.8rem auto;
-    border-radius: 15px; /* Ensure consistent border-radius */
-    overflow: hidden; /* Ensure content doesn't overflow the rounded corners */
+    border-radius: 15px;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    transform: translateZ(0); /* Force hardware acceleration */
+    will-change: transform, box-shadow;
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+  }
+  
+  .reference-item:active,
+  .reference-item:focus,
+  .reference-item:hover {
+    transform: translateY(-3px) translateZ(0);
+    box-shadow: 0 12px 20px rgba(0, 18, 72, 0.15);
   }
   
   .reference-container {
-    border-radius: 15px; /* Match parent's border-radius */
+    border-radius: 15px;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
   }
   
   .reference-content {
-    border-radius: 0 0 15px 15px; /* Round only bottom corners */
+    border-radius: 0 0 15px 15px;
+    padding: 1.2rem;
+    transform: translateY(60%) translateZ(0);
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
+                background 0.3s ease-out;
+    will-change: transform, background;
   }
   
-  .reference-content {
-    padding: 1rem;
-    transform: translateY(70%) rotateX(-15deg);
+  .reference-item:active .reference-content,
+  .reference-item:focus .reference-content,
+  .reference-item:hover .reference-content {
+    transform: translateY(0) rotateX(0) translateZ(0);
+  }
+  
+  .reference-item:active .reference-overlay,
+  .reference-item:focus .reference-overlay,
+  .reference-item:hover .reference-overlay {
+    opacity: 0.9;
   }
   
   .reference-name {
