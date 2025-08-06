@@ -2,13 +2,13 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
-// API URL - Vercel proxy server adresinizi buraya yazın
+// sunucuya ddos ve türevi saldırılar yapmayı denemeniz hakkınızda yasal işlem başlatılmasına neden olabilir 
 const API_URL = 'https://safe-api-three.vercel.app';
 
 let app, db;
 let isInitialized = false;
 
-// Firebase config'i API'den al ve başlat
+// Firebase config
 async function initializeFirebase() {
   if (isInitialized) return;
   
@@ -36,7 +36,7 @@ async function initializeFirebase() {
   }
 }
 
-// Hizmet ekleme
+// Hizmet ekleme collectionu
 export async function addService(title, text, textStyle, description, details, images = [], instagram = '', whatsapp = '', gmail = '') {
   try {
     await initializeFirebase();
@@ -62,7 +62,7 @@ export async function addService(title, text, textStyle, description, details, i
   }
 }
 
-// Bayi (Hizmet) güncelleme
+// Bayi (Hizmet) güncelleme collectionu
 export async function updateService(id, data) {
   try {
     await initializeFirebase();
@@ -75,7 +75,7 @@ export async function updateService(id, data) {
   }
 }
 
-// Hizmetleri getirme
+// Hizmetleri getirme 
 export async function getServices() {
   try {
     await initializeFirebase();
@@ -105,7 +105,7 @@ export async function updateProject(id, data) {
   }
 }
 
-// Çalışan güncelleme
+// Çalışan güncelleme fonksiyonu 
 export async function updateEmployee(id, data) {
   try {
     await initializeFirebase();
@@ -118,7 +118,7 @@ export async function updateEmployee(id, data) {
   }
 }
 
-// Referans güncelleme
+// Referans güncelleme fonksiyonu 
 export async function updateReference(id, data) {
   try {
     await initializeFirebase();
@@ -152,7 +152,7 @@ export async function addProject(title, text, textStyle, category, description, 
   }
 }
 
-// Projeleri getirme
+// Projeleri getirme fonksiyonu
 export async function getProjects() {
   try {
     await initializeFirebase();
