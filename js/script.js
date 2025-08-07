@@ -890,25 +890,70 @@ function initTypingAnimation() {
     const typingElement = document.querySelector('.typing-text');
     if (!typingElement) return;
     
-    const text = typingElement.dataset.text || typingElement.textContent;
-    typingElement.textContent = '';
+    // Get the text from data-text attribute or fallback to current text
+    const fullText = typingElement.dataset.text || typingElement.textContent;
+    typingElement.innerHTML = ''; // Clear the element
+    
+    // Create a text node for the main text
+    const textNode = document.createTextNode('');
+    // Create a span for the highlighted part
+    const spanElement = document.createElement('span');
+    
+    // Reconstruct the element structure
+    typingElement.appendChild(textNode);
+    typingElement.appendChild(spanElement);
     
     let i = 0;
-    const typeWriter = () => {
-        if (i < text.length) {
-            typingElement.textContent += text.charAt(i);
-            i++;
-            setTimeout(typeWriter, 100);
+    let isInSpan = false;
+    let mainText = '';
+    let spanText = '';
+    
+    // Parse the text to separate main text and span content
+    for (let j = 0; j < fullText.length; j++) {
+        if (fullText.substring(j, j + 6) === '<span>') {
+            isInSpan = true;
+            j += 5; // Skip the <span> tag
+        } else if (fullText.substring(j, j + 7) === '</span>') {
+            isInSpan = false;
+            j += 6; // Skip the </span> tag
         } else {
-            // Cursor blink efekti
+            if (isInSpan) {
+                spanText += fullText[j];
+            } else {
+                mainText += fullText[j];
+            }
+        }
+    }
+    
+    // Type the main text first
+    const typeMainText = () => {
+        if (i < mainText.length) {
+            textNode.textContent += mainText[i];
+            i++;
+            setTimeout(typeMainText, 100);
+        } else {
+            // Start typing the span text
+            i = 0;
+            setTimeout(typeSpanText, 300);
+        }
+    };
+    
+    // Type the span text
+    const typeSpanText = () => {
+        if (i < spanText.length) {
+            spanElement.textContent += spanText[i];
+            i++;
+            setTimeout(typeSpanText, 100);
+        } else {
+            // Animation complete
             setTimeout(() => {
                 typingElement.classList.add('typing-complete');
             }, 1000);
         }
     };
     
-    // 2 saniye bekle sonra başlat
-    setTimeout(typeWriter, 2000);
+    // Start the animation after 2 seconds
+    setTimeout(typeMainText, 2000);
 }
 
 // Scroll indicator click handler
