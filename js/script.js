@@ -219,19 +219,25 @@ function renderServices(services) {
                         ${service.features ? service.features.split(',').slice(0, 4).map((f, i) => `<span class="feature-mini" style="--i: ${i}">${f.trim()}</span>`).join('') : ''}
                     </div>
                     
-                    <div class="service-details-wrapper" style="margin-top: 1rem;">
-                        <h4 style="color: #FF6B35; margin-bottom: 0.8rem; font-size: 1.1rem;">Detaylar:</h4>
-                        <p style="font-size: 0.9rem; color: #666; margin-bottom: 1.2rem; line-height: 1.6;">${service.details || service.description || 'Bu hizmet hakkında detaylı bilgi için bizimle iletişime geçin.'}</p>
-                        <div class="service-features">
-                            ${service.features ? service.features.split(',').map(f => `<span class="feature-tag" style="background: rgba(255, 107, 53, 0.1); color: #FF6B35; border: 1px solid rgba(255, 107, 53, 0.3); padding: 0.3rem 0.6rem; border-radius: 12px; font-size: 0.75rem; margin: 0.2rem; display: inline-block;">${f.trim()}</span>`).join('') : ''}
+                    ${(service.instagram || service.whatsapp || service.gmail) ? `
+                        <div class="service-social-links">
+                            ${service.instagram ? `<a href="${service.instagram}" target="_blank" class="service-social-btn instagram"><i class="fab fa-instagram"></i></a>` : ''}
+                            ${service.whatsapp ? `<a href="https://wa.me/${service.whatsapp.replace(/[^0-9]/g, '')}" target="_blank" class="service-social-btn whatsapp"><i class="fab fa-whatsapp"></i></a>` : ''}
+                            ${service.gmail ? `<a href="mailto:${service.gmail}" class="service-social-btn gmail"><i class="fas fa-envelope"></i></a>` : ''}
                         </div>
-                        ${(service.instagram || service.whatsapp || service.gmail) ? `
-                            <div class="service-social-links" style="margin-top: 1.2rem; padding-top: 0.8rem; border-top: 1px solid #eee;">
-                                ${service.instagram ? `<a href="${service.instagram}" target="_blank" class="service-social-btn instagram"><i class="fab fa-instagram"></i></a>` : ''}
-                                ${service.whatsapp ? `<a href="https://wa.me/${service.whatsapp.replace(/[^0-9]/g, '')}" target="_blank" class="service-social-btn whatsapp"><i class="fab fa-whatsapp"></i></a>` : ''}
-                                ${service.gmail ? `<a href="mailto:${service.gmail}" class="service-social-btn gmail"><i class="fas fa-envelope"></i></a>` : ''}
+                    ` : ''}
+                    
+                    <button class="service-action-btn" onclick="toggleServiceDetails(this)">
+                        <i class="fas fa-chevron-down"></i> DETAYLAR
+                    </button>
+                    
+                    <div class="service-expanded-content">
+                        <div class="service-details-wrapper">
+                            <h4 style="color: #FF6B35; margin-bottom: 1rem; font-size: 1.1rem;">Detaylar:</h4>
+                            <p style="font-size: 0.9rem; color: #666; margin-bottom: 1.5rem; line-height: 1.6;">${service.details || service.description || 'Bu hizmet hakkında detaylı bilgi için bizimle iletişime geçin.'}</p>
+                            <div class="service-features">
+                                ${service.features ? service.features.split(',').map(f => `<span class="feature-tag" style="background: rgba(255, 107, 53, 0.1); color: #FF6B35; border: 1px solid rgba(255, 107, 53, 0.3); padding: 0.3rem 0.6rem; border-radius: 12px; font-size: 0.75rem; margin: 0.2rem; display: inline-block;">${f.trim()}</span>`).join('') : ''}
                             </div>
-                        ` : ''}
                         </div>
                     </div>
                 </div>
