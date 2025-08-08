@@ -37,11 +37,8 @@ async function loadDynamicContent() {
         // const siteName = await getSiteName();
         // updateSiteName(siteName);
         
-        // Favicon yükle
-        const faviconUrl = await getFavicon();
-        if (faviconUrl) {
-            updatePageFavicon(faviconUrl);
-        }
+        // Favicon'ı yükle (statik logo kullanılıyor)
+        updatePageFavicon();
 
         // Hizmetleri yükle
         const services = await getServices();
@@ -116,13 +113,35 @@ function updateSiteName(siteName) {
     document.title = siteName;
 }
 
-// Sayfa favicon'ını güncelle
-function updatePageFavicon(faviconUrl) {
-    let link = document.querySelector("link[rel*='icon']") || document.createElement('link');
-    link.type = 'image/x-icon';
-    link.rel = 'shortcut icon';
-    link.href = faviconUrl;
-    document.getElementsByTagName('head')[0].appendChild(link);
+// Sayfa favicon'ını güncelle - Şeffaf arka planlı logo kullanılıyor
+function updatePageFavicon() {
+    // Mevcut tüm favicon linklerini temizle
+    const existingLinks = document.querySelectorAll("link[rel*='icon']");
+    existingLinks.forEach(link => link.remove());
+    
+    // Yeni favicon linkini oluştur
+    const link = document.createElement('link');
+    link.rel = 'icon';
+    link.type = 'image/png';
+    link.href = 'assets/images/favicon.png';
+    
+    // Farklı boyutlar için alternatif favicon tanımları
+    const link192 = document.createElement('link');
+    link192.rel = 'icon';
+    link192.type = 'image/png';
+    link192.sizes = '192x192';
+    link192.href = 'assets/images/favicon.png';
+    
+    const link32 = document.createElement('link');
+    link32.rel = 'icon';
+    link32.type = 'image/png';
+    link32.sizes = '32x32';
+    link32.href = 'assets/images/favicon.png';
+    
+    // Head'e ekle
+    document.head.appendChild(link);
+    document.head.appendChild(link192);
+    document.head.appendChild(link32);
 }
 
 // Hizmetleri render et

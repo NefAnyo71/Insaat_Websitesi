@@ -5,6 +5,44 @@
   box-sizing: border-box;
 }
 
+/* Sabit logo favicon görseli */
+.nav-favicon {
+  position: fixed;
+  top: 80px; /* Navbar yüksekliğine göre ayarlayın */
+  left: 20px;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  padding: 5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.nav-favicon:hover {
+  transform: translateY(-3px) scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.nav-favicon img {
+  display: block;
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .nav-favicon {
+    top: 70px;
+    left: 15px;
+  }
+  
+  .nav-favicon img {
+    width: 40px;
+    height: 40px;
+  }
+}
+
 /* CUSTOM SCROLLBAR */
 ::-webkit-scrollbar {
   width: 8px;
