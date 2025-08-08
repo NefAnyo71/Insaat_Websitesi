@@ -8,19 +8,19 @@
 /* Fixed Favicon Styles */
 .fixed-favicon {
   position: fixed;
-  top: 180px; /* Daha da aşağıya alındı */
+  top: 120px; /* Raised further up */
   left: 20px;
   z-index: 999;
   background: white;
-  width: 80px;
-  height: 80px;
+  width: 100px; /* Increased from 80px */
+  height: 100px; /* Increased from 80px */
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
-  padding: 5px;
+  padding: 8px; /* Slightly increased padding */
 }
 
 .fixed-favicon:hover {
@@ -37,14 +37,16 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .nav-favicon {
-    top: 70px;
+  .fixed-favicon {
+    top: 150px; /* Lowered further down */
     left: 15px;
+    width: 70px;
+    height: 70px;
   }
   
-  .nav-favicon img {
-    width: 40px;
-    height: 40px;
+  .fixed-favicon img {
+    width: 100%;
+    height: 100%;
   }
 }
 
