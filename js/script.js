@@ -1,5 +1,13 @@
 import { getServices, getProjects, getEmployees, getReferences, getSiteName, getFavicon, getExperience, getHeroImage } from './firebase.js';
 
+document.addEventListener('DOMContentLoaded', function() {
+    const copyrightElement = document.getElementById('copyright');
+    if (copyrightElement) {
+        const currentYear = new Date().getFullYear();
+        copyrightElement.innerHTML = `&copy; ${currentYear} Kef Yapı. Tüm hakları saklıdır.`;
+    }
+});
+
 // Loading screen kontrolü
 window.addEventListener('load', function() {
     setTimeout(() => {
