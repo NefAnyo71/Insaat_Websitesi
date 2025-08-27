@@ -1,6 +1,6 @@
 // Firebase yapılandırması
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
 // sunucuya ddos ve türevi saldırılar yapmayı denemeniz hakkınızda yasal işlem başlatılmasına neden olabilir 
 const API_URL = 'https://safe-api-three.vercel.app';
@@ -576,10 +576,26 @@ export async function setSiteLogo(logoUrl) {
   try {
     await initializeFirebase();
     const settingsRef = doc(db, "settings", "siteSettings");
-    await updateDoc(settingsRef, {
-      siteLogo: logoUrl,
-      updatedAt: new Date()
-    }, { merge: true });
+    
+    // First try to update, if it fails with 'not found', create the document
+    try {
+      await updateDoc(settingsRef, {
+        siteLogo: logoUrl,
+        updatedAt: new Date()
+      }, { merge: true });
+    } catch (updateError) {
+      if (updateError.code === 'not-found') {
+        // Document doesn't exist, create it
+        await setDoc(settingsRef, {
+          siteLogo: logoUrl,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        });
+      } else {
+        throw updateError; // Re-throw other errors
+      }
+    }
+    
     return true;
   } catch (error) {
     console.error("Site logosu kaydedilirken hata:", error);
@@ -611,10 +627,25 @@ export async function resetSiteLogo() {
   try {
     await initializeFirebase();
     const settingsRef = doc(db, "settings", "siteSettings");
-    await updateDoc(settingsRef, {
-      siteLogo: '',
-      updatedAt: new Date()
-    }, { merge: true });
+    
+    try {
+      await updateDoc(settingsRef, {
+        siteLogo: '',
+        updatedAt: new Date()
+      }, { merge: true });
+    } catch (updateError) {
+      if (updateError.code === 'not-found') {
+        // Document doesn't exist, create it with empty logo
+        await setDoc(settingsRef, {
+          siteLogo: '',
+          createdAt: new Date(),
+          updatedAt: new Date()
+        });
+      } else {
+        throw updateError;
+      }
+    }
+    
     return true;
   } catch (error) {
     console.error("Site logosu sıfırlanırken hata:", error);
