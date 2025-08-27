@@ -503,17 +503,29 @@
      <div class="form-section">
        <h2><i class="fas fa-image"></i> Favicon Yönetimi</h2>
        <div class="form-group">
-         <input type="url" id="favicon-url-input" placeholder="Favicon URL'si (Örn: https://example.com/favicon.ico)">
-         <a href="https://resimlink.com/" target="_blank" class="btn" style="margin-top: 8px; display: inline-block; font-size: 0.8rem;">
-           <i class="fas fa-link"></i> Favicon için görsel yükle (resimlink.com)
+         <label for="favicon-url-input">Favicon URL'si</label>
+         <input type="url" id="favicon-url-input" class="form-control" placeholder="https://example.com/favicon.ico">
+         <small class="form-text text-muted">Favicon için bir URL girin veya aşağıdaki butonu kullanın.</small>
+         <a href="https://resimlink.com/" target="_blank" class="btn btn-secondary mt-2">
+           <i class="fas fa-upload"></i> Görsel Yükle (resimlink.com)
          </a>
        </div>
-       <button class="btn" onclick="updateFavicon()"><i class="fas fa-save"></i> Kaydet</button>
+       
+       <div class="preview-section mt-4">
+         <h4>Önizleme</h4>
+         <div class="favicon-preview">
+           <img id="favicon-preview" src="" alt="Favicon Önizleme" style="display: none; max-width: 32px; margin: 10px 0;">
+           <p id="favicon-status" class="text-muted">Favicon yükleniyor...</p>
+         </div>
+       </div>
+       
+       <div class="form-group mt-4">
+         <button class="btn btn-primary" onclick="updateFavicon()">
+           <i class="fas fa-save"></i> Favicon'ı Güncelle
+         </button>
+       </div>
      </div>
    </div>
-
-
-      </div>
 
       <!-- Admin Yönetimi Tab -->
       <div id="admins" class="tab-content">

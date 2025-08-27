@@ -1042,52 +1042,114 @@ window.loadCurrentFavicon = async function() {
     if (faviconUrl) {
       previewImg.src = faviconUrl;
       previewImg.style.display = 'block';
-      statusSpan.textContent = 'Favicon ayarlandı';
+      statusSpan.textContent = 'Mevcut favicon yüklendi';
+      statusSpan.className = 'text-success';
       inputField.value = faviconUrl;
+      
+      // Ana sayfadaki favicon'ı güncelle
+      updatePageFavicon(faviconUrl);
     } else {
       previewImg.style.display = 'none';
-      statusSpan.textContent = 'Favicon ayarlanmamış';
+      statusSpan.textContent = 'Henüz favicon ayarlanmamış';
+      statusSpan.className = 'text-muted';
       inputField.value = '';
     }
   } catch (error) {
     console.error('Favicon yüklenirken hata:', error);
-    document.getElementById('favicon-status').textContent = 'Yükleme hatası';
+    const statusSpan = document.getElementById('favicon-status');
+    statusSpan.textContent = 'Favicon yüklenirken hata oluştu';
+    statusSpan.className = 'text-danger';
   }
 }
 
 // Favicon güncelle
 window.updateFavicon = async function() {
   const faviconUrl = document.getElementById('favicon-url-input').value.trim();
+  const statusSpan = document.getElementById('favicon-status');
+  const previewImg = document.getElementById('favicon-preview');
   
   if (!faviconUrl) {
-    alert('Lütfen favicon URL\'si girin!');
+    statusSpan.textContent = 'Lütfen geçerli bir URL girin';
+    statusSpan.className = 'text-danger';
     return;
   }
   
+  // Önizleme göster
   try {
-    await logAdminAccess('data_edit', { type: 'favicon', newUrl: faviconUrl });
+    // URL'nin geçerli bir resim olup olmadığını kontrol et
+    const img = new Image();
+    img.onload = async function() {
+      try {
+        previewImg.src = faviconUrl;
+        previewImg.style.display = 'block';
+        statusSpan.textContent = 'Favicon yükleniyor...';
+        statusSpan.className = 'text-info';
+        
+        await logAdminAccess('data_edit', { type: 'favicon', newUrl: faviconUrl });
+        
+        const success = await setFavicon(faviconUrl);
+        if (success) {
+          statusSpan.textContent = 'Favicon başarıyla güncellendi!';
+          statusSpan.className = 'text-success';
+          updatePageFavicon(faviconUrl);
+          
+          // 2 saniye sonra başarı mesajını kaldır
+          setTimeout(() => {
+            statusSpan.textContent = 'Mevcut favicon yüklendi';
+          }, 2000);
+        } else {
+          throw new Error('Favicon güncellenemedi');
+        }
+      } catch (error) {
+        console.error('Favicon güncelleme hatası:', error);
+        statusSpan.textContent = 'Favicon güncellenirken hata oluştu: ' + error.message;
+        statusSpan.className = 'text-danger';
+      }
+    };
     
-    const success = await setFavicon(faviconUrl);
-    if (success) {
-      alert('Favicon başarıyla güncellendi!');
-      loadCurrentFavicon();
-      updatePageFavicon(faviconUrl);
-    } else {
-      alert('Favicon güncellenirken hata oluştu!');
-    }
+    img.onerror = function() {
+      statusSpan.textContent = 'Geçersiz görsel URL\'si. Lütfen farklı bir URL deneyin.';
+      statusSpan.className = 'text-danger';
+      previewImg.style.display = 'none';
+    };
+    
+    img.src = faviconUrl;
   } catch (error) {
-    console.error('Favicon güncelleme hatası:', error);
-    alert('Favicon güncellenirken hata oluştu!');
+    console.error('Favicon doğrulama hatası:', error);
+    statusSpan.textContent = 'Favicon doğrulanırken hata oluştu: ' + error.message;
+    statusSpan.className = 'text-danger';
   }
 }
 
 // Sayfa favicon'ını güncelle
 function updatePageFavicon(faviconUrl) {
-  let link = document.querySelector("link[rel*='icon']") || document.createElement('link');
-  link.type = 'image/x-icon';
-  link.rel = 'shortcut icon';
-  link.href = faviconUrl;
-  document.getElementsByTagName('head')[0].appendChild(link);
+  if (!faviconUrl) return;
+  
+  // Tüm favicon linklerini bul
+  const links = document.querySelectorAll("link[rel*='icon'], link[rel*='shortcut']");
+  
+  // Eğer favicon linki yoksa yeni oluştur
+  if (links.length === 0) {
+    const link = document.createElement('link');
+    link.rel = 'shortcut icon';
+    link.type = 'image/x-icon';
+    link.href = faviconUrl;
+    document.head.appendChild(link);
+  } else {
+    // Tüm favicon linklerini güncelle
+    links.forEach(link => {
+      link.href = faviconUrl;
+    });
+  }
+  
+  // Tarayıcı önbelleğini güncellemek için favicon URL'sine timestamp ekle
+  const timestamp = new Date().getTime();
+  const favicon = document.querySelector("link[rel*='icon']");
+  if (favicon) {
+    const url = new URL(favicon.href);
+    url.searchParams.set('v', timestamp);
+    favicon.href = url.toString();
+  }
 }
 
 // İletişim ekleme
