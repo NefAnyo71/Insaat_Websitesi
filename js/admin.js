@@ -989,46 +989,119 @@ function loadAdminData() {
   loadEmployees();
   loadReferences();
   loadAdmins();
-  loadCurrentSiteName();
+  loadCurrentSiteLogo();
   loadCurrentExperience();
   loadCurrentHeroImage();
+  loadCurrentFavicon();
 }
 
-// Site adını yükle
-window.loadCurrentSiteName = async function() {
+// Site logosunu yükle
+window.loadCurrentSiteLogo = async function() {
   try {
-    const siteName = await getSiteName();
-    document.getElementById('current-site-name').textContent = siteName;
-    document.getElementById('site-name-input').value = siteName;
+    const logoUrl = await getSiteLogo();
+    const logoPreview = document.getElementById('logo-preview');
+    const logoStatus = document.getElementById('logo-status');
+    const logoUrlInput = document.getElementById('site-logo-url');
+    
+    if (logoUrl) {
+      logoPreview.src = logoUrl;
+      logoPreview.style.display = 'block';
+      logoStatus.textContent = 'Mevcut logo yüklendi';
+      logoStatus.className = 'text-success';
+      logoUrlInput.value = logoUrl;
+      
+      // Update the logo in the page
+      updatePageLogo(logoUrl);
+    } else {
+      logoPreview.style.display = 'none';
+      logoStatus.textContent = 'Henüz logo ayarlanmamış';
+      logoStatus.className = 'text-muted';
+    }
   } catch (error) {
-    console.error('Site adı yüklenirken hata:', error);
-    document.getElementById('current-site-name').textContent = 'Yükleme hatası';
+    console.error('Logo yüklenirken hata:', error);
+    const logoStatus = document.getElementById('logo-status');
+    logoStatus.textContent = 'Logo yüklenirken hata oluştu';
+    logoStatus.className = 'text-danger';
   }
 }
 
-// Site adını güncelle
-window.updateSiteName = async function() {
-  const newSiteName = document.getElementById('site-name-input').value.trim();
+// Site logosunu güncelle
+window.updateSiteLogo = async function() {
+  const logoUrl = document.getElementById('site-logo-url').value.trim();
+  const logoPreview = document.getElementById('logo-preview');
+  const logoStatus = document.getElementById('logo-status');
   
-  if (!newSiteName) {
-    alert('Lütfen site adını girin!');
+  if (!logoUrl) {
+    logoStatus.textContent = 'Lütfen geçerli bir URL girin';
+    logoStatus.className = 'text-danger';
     return;
   }
   
+  // Show preview
   try {
-    await logAdminAccess('data_edit', { type: 'sitename', newName: newSiteName });
+    // Check if URL is a valid image
+    const img = new Image();
+    img.onload = async function() {
+      try {
+        logoPreview.src = logoUrl;
+        logoPreview.style.display = 'block';
+        logoStatus.textContent = 'Logo yükleniyor...';
+        logoStatus.className = 'text-info';
+        
+        await logAdminAccess('data_edit', { type: 'sitelogo', newUrl: logoUrl });
+        
+        const success = await setSiteLogo(logoUrl);
+        if (success) {
+          logoStatus.textContent = 'Logo başarıyla güncellendi!';
+          logoStatus.className = 'text-success';
+          updatePageLogo(logoUrl);
+          
+          // Remove success message after 2 seconds
+          setTimeout(() => {
+            logoStatus.textContent = 'Mevcut logo yüklendi';
+          }, 2000);
+        } else {
+          throw new Error('Logo güncellenemedi');
+        }
+      } catch (error) {
+        console.error('Logo güncelleme hatası:', error);
+        logoStatus.textContent = 'Logo güncellenirken hata oluştu: ' + error.message;
+        logoStatus.className = 'text-danger';
+      }
+    };
     
-    const success = await setSiteName(newSiteName);
-    if (success) {
-      alert('Site adı başarıyla güncellendi!');
-      document.getElementById('current-site-name').textContent = newSiteName;
-    } else {
-      alert('Site adı güncellenirken hata oluştu!');
-    }
+    img.onerror = function() {
+      logoStatus.textContent = 'Geçersiz görsel URL\'si. Lütfen farklı bir URL deneyin.';
+      logoStatus.className = 'text-danger';
+      logoPreview.style.display = 'none';
+    };
+    
+    img.src = logoUrl;
   } catch (error) {
-    console.error('Site adı güncelleme hatası:', error);
-    alert('Site adı güncellenirken hata oluştu!');
+    console.error('Logo doğrulama hatası:', error);
+    logoStatus.textContent = 'Logo doğrulanırken hata oluştu: ' + error.message;
+    logoStatus.className = 'text-danger';
   }
+}
+
+// Update logo on the page
+function updatePageLogo(logoUrl) {
+  if (!logoUrl) return;
+  
+  // Update logo in the page
+  const logoImg = document.getElementById('site-logo');
+  const fallbackLogo = document.getElementById('fallback-logo');
+  
+  if (logoImg) {
+    logoImg.src = logoUrl;
+    logoImg.style.display = 'inline-block';
+    if (fallbackLogo) {
+      fallbackLogo.style.display = 'none';
+    }
+  }
+  
+  // Update in local storage for other pages
+  localStorage.setItem('siteLogoUrl', logoUrl);
 }
 
 // Favicon yükle

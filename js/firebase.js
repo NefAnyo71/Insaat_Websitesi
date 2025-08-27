@@ -1,6 +1,6 @@
 // Firebase yapılandırması
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
 // sunucuya ddos ve türevi saldırılar yapmayı denemeniz hakkınızda yasal işlem başlatılmasına neden olabilir 
 const API_URL = 'https://safe-api-three.vercel.app';
@@ -559,14 +559,65 @@ export async function getHeroImage() {
 export async function resetHeroImage() {
   try {
     await initializeFirebase();
-    
-    await addDoc(collection(db, "heroimage"), {
-      url: "default",
-      createdAt: new Date()
-    });
+    const settingsRef = doc(db, "settings", "siteSettings");
+    await updateDoc(settingsRef, {
+      heroImage: 'default',
+      updatedAt: new Date()
+    }, { merge: true });
     return true;
   } catch (error) {
     console.error("Hero görsel sıfırlanırken hata:", error);
+    return false;
+  }
+}
+
+// Site logosu ekleme/güncelleme
+export async function setSiteLogo(logoUrl) {
+  try {
+    await initializeFirebase();
+    const settingsRef = doc(db, "settings", "siteSettings");
+    await updateDoc(settingsRef, {
+      siteLogo: logoUrl,
+      updatedAt: new Date()
+    }, { merge: true });
+    return true;
+  } catch (error) {
+    console.error("Site logosu kaydedilirken hata:", error);
+    return false;
+  }
+}
+
+// Site logosu getirme
+export async function getSiteLogo() {
+  try {
+    await initializeFirebase();
+    const settingsRef = doc(db, "settings", "siteSettings");
+    const docSnap = await getDoc(settingsRef);
+    
+    if (docSnap.exists()) {
+      return docSnap.data().siteLogo || '';
+    } else {
+      // Eğer ayarlar dokümanı yoksa boş döndür
+      return '';
+    }
+  } catch (error) {
+    console.error("Site logosu getirilirken hata:", error);
+    return '';
+  }
+}
+
+// Varsayılan site logosuna dön
+export async function resetSiteLogo() {
+  try {
+    await initializeFirebase();
+    const settingsRef = doc(db, "settings", "siteSettings");
+    await updateDoc(settingsRef, {
+      siteLogo: '',
+      updatedAt: new Date()
+    }, { merge: true });
+    return true;
+  } catch (error) {
+    console.error("Site logosu sıfırlanırken hata:", error);
     return false;
   }
 }

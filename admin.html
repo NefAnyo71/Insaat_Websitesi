@@ -481,20 +481,24 @@
         </div>
       </div>
 
-      <!-- Site Adı Tab -->
+      <!-- Site Logosu Tab -->
       <div id="sitename" class="tab-content">
         <div class="form-section">
-          <h2><i class="fas fa-globe"></i> Site Adını Değiştir</h2>
+          <h2><i class="fas fa-image"></i> Site Logosu</h2>
           <div class="form-group">
-            <input type="text" id="site-name-input" placeholder="Yeni site adı (Örn: ABC İnşaat Şirketi)">
-            <small style="color: #666; font-size: 0.8rem;">Site adı navbar, loading screen ve title'da görünecektir.</small>
+            <label for="site-logo-url">Logo URL'si</label>
+            <input type="url" id="site-logo-url" placeholder="https://example.com/logo.png">
+            <small style="color: #666; font-size: 0.8rem;">Logo URL'si site başlığında görüntülenecektir.</small>
           </div>
-          <button class="btn" onclick="updateSiteName()"><i class="fas fa-save"></i> Kaydet</button>
+          <button class="btn" onclick="updateSiteLogo()"><i class="fas fa-save"></i> Logoyu Güncelle</button>
         </div>
         
         <div class="items-section">
-          <h3><i class="fas fa-info-circle"></i> Mevcut Site Adı</h3>
-          <div id="current-site-name" class="current-name-display" style="padding: 1rem; background: #f8f9fa; border-radius: 10px; font-size: 1.2rem; font-weight: 600; color: #FF6B35;">Yükleniyor...</div>
+          <h3><i class="fas fa-image"></i> Logo Önizleme</h3>
+          <div class="logo-preview-container" style="padding: 1rem; background: #f8f9fa; border-radius: 10px;">
+            <img id="logo-preview" src="" alt="Logo Önizleme" style="max-width: 200px; max-height: 100px; display: none;">
+            <p id="logo-status" style="margin: 0.5rem 0 0 0; color: #666;">Logo yüklenmedi</p>
+          </div>
         </div>
       </div>
 
