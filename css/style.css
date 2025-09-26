@@ -4023,13 +4023,12 @@ footer {
 .swiper-container {
   width: 100%;
   height: 100%;
-  /* height: 100%; */ /* Kaldırıldı */
-  padding-top: 50px; /* Kartların üst boşluğu */
-  padding-bottom: 50px; /* Kartların alt boşluğu */
   position: absolute;
   top: 0;
   left: 0;
   z-index: 5; /* Hero content'in arkasında */
+  width: 100%;
+  height: 100%;
   height: 100%; /* Kartların dikeyde ortalanması için eklendi */
   display: flex; /* Kartların dikeyde ortalanması için eklendi */
   align-items: center; /* Kartların dikeyde ortalanması için eklendi */
@@ -4052,8 +4051,8 @@ footer {
   font-size: 16px;
   background-position: center;
   background-size: cover;
-  width: 320px; /* Kart genişliği */
-  height: 450px; /* Kart yüksekliği */
+  width: 280px; /* Kart genişliği küçültüldü */
+  height: 400px; /* Kart yüksekliği küçültüldü */
   border-radius: 20px;
   display: flex;
   justify-content: center;
