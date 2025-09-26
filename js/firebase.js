@@ -747,10 +747,10 @@ export async function getContactInfo() {
       return docSnap.data();
     } else {
       // Varsayılan bilgiler
-      return { address: 'Adres bilgisi girilmemiş.', phone: 'Telefon bilgisi girilmemiş.', email: 'E-posta bilgisi girilmemiş.' };
+      return { address: 'İnönü Cad. Dirmil Mah. No:93/7, 48400 Bodrum/Muğla', phone: 'Telefon bilgisi girilmemiş.', email: 'E-posta bilgisi girilmemiş.' };
     }
   } catch (error) {
     console.error("İletişim bilgileri getirilirken hata:", error);
-    return { address: 'Hata oluştu.', phone: 'Hata oluştu.', email: 'Hata oluştu.' };
+    return { address: 'İnönü Cad. Dirmil Mah. No:93/7, 48400 Bodrum/Muğla', phone: 'Hata oluştu.', email: 'Hata oluştu.' };
   }
 }

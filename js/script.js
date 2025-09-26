@@ -144,8 +144,8 @@ async function initializeGoogleMap(contactInfo) {
     if (!address || address === 'Adres bilgisi girilmemiş.') {
         console.warn("Harita için adres bilgisi bulunamadı veya geçersiz.");
         // Varsayılan bir konum gösterebiliriz veya haritayı gizleyebiliriz.
-        // Şimdilik varsayılan bir konum gösterelim (Bodrum merkezi gibi).
-        const defaultLocation = { lat: 37.0343, lng: 27.4296 }; // Bodrum, Türkiye
+        // Yeni varsayılan konumu gösterelim.
+        const defaultLocation = { lat: 37.0425, lng: 27.4185 }; // İnönü Cad. Dirmil Mah. No:93/7
         renderMap(defaultLocation, "Varsayılan Konum");
         return;
     }
@@ -157,8 +157,8 @@ async function initializeGoogleMap(contactInfo) {
         } else {
             console.error('Geocoding başarısız oldu: ' + status);
             // Geocoding başarısız olursa varsayılan bir konum göster
-            const defaultLocation = { lat: 37.0343, lng: 27.4296 }; // Bodrum, Türkiye
-            renderMap(defaultLocation, "Varsayılan Konum (Adres bulunamadı)");
+            const defaultLocation = { lat: 37.0425, lng: 27.4185 }; // İnönü Cad. Dirmil Mah. No:93/7
+            renderMap(defaultLocation, "Kef Yapı (Adres bulunamadı)");
         }
     });
 }
