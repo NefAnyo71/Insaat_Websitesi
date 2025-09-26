@@ -653,39 +653,6 @@ export async function resetSiteLogo() {
   }
 }
 
-// Yükleme Ekranı Logosu Ekleme/Güncelleme
-export async function setLoadingLogo(logoUrl) {
-  try {
-    await initializeFirebase();
-    const settingsRef = doc(db, "settings", "siteSettings");
-    await setDoc(settingsRef, { loadingScreenLogo: logoUrl }, { merge: true });
-    return true;
-  } catch (error) {
-    console.error("Yükleme ekranı logosu kaydedilirken hata:", error);
-    return false;
-  }
-}
-
-// Yükleme Ekranı Logosu Getirme
-export async function getLoadingLogo() {
-  try {
-    await initializeFirebase();
-    const settingsRef = doc(db, "settings", "siteSettings");
-    const docSnap = await getDoc(settingsRef);
-
-    if (docSnap.exists() && docSnap.data().loadingScreenLogo) {
-      return docSnap.data().loadingScreenLogo;
-    } else {
-      // Varsayılan logo (site logosu ile aynı olabilir veya farklı bir varsayılan)
-      const siteLogo = await getSiteLogo();
-      return siteLogo || 'assets/images/favicon.png'; // En son çare
-    }
-  } catch (error) {
-    console.error("Yükleme ekranı logosu getirilirken hata:", error);
-    return 'assets/images/favicon.png'; // Hata durumunda varsayılan
-  }
-}
-
 // Ana Sayfa Slider Fonksiyonları
 
 // Yeni slayt ekle

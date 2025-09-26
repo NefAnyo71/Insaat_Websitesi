@@ -1,4 +1,4 @@
-import { getServices, getProjects, getEmployees, getReferences, getSiteName, getFavicon, getExperience, getHeroImage, getHeroSlides, addContactMessage, getContactInfo, getLoadingLogo } from './firebase.js';
+import { getServices, getProjects, getEmployees, getReferences, getSiteName, getFavicon, getExperience, getHeroImage, getHeroSlides, addContactMessage, getContactInfo } from './firebase.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     const copyrightElement = document.getElementById('copyright');
@@ -116,13 +116,6 @@ async function loadDynamicContent() {
         // İletişim bilgilerini yükle
         const contactInfo = await getContactInfo();
         renderContactInfo(contactInfo);
-
-        // Yükleme ekranı logosunu yükle
-        const loadingLogoUrl = await getLoadingLogo();
-        const loadingLogoImg = document.getElementById('loading-logo-img');
-        if (loadingLogoImg && loadingLogoUrl) {
-            loadingLogoImg.src = loadingLogoUrl;
-        }
 
     } catch (error) {
         console.error('Veri yükleme hatası:', error);
