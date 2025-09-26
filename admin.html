@@ -342,18 +342,16 @@
             <input type="text" id="contact-address" placeholder="Adres">
             <input type="tel" id="contact-phone" placeholder="Telefon Numarası (Örn: +90 555 123 4567)">
             <input type="email" id="contact-email-input" placeholder="E-posta Adresi">
-            <input type="text" id="contact-latitude" placeholder="Enlem (Latitude)">
-            <input type="text" id="contact-longitude" placeholder="Boylam (Longitude)">
           </div>
           <button class="btn" onclick="updateContactInfo()"><i class="fas fa-save"></i> Bilgileri Kaydet</button>
         </div>
         <div class="items-section">
           <h3><i class="fas fa-info-circle"></i> Mevcut Bilgiler</h3>
           <div id="current-contact-info" class="current-info-display">
-            <p><strong><i class="fas fa-map-marker-alt"></i> Adres:</strong> <span id="current-address"></span></p>
-            <p><strong><i class="fas fa-phone-alt"></i> Telefon:</strong> <span id="current-phone"></span></p>
-            <p><strong><i class="fas fa-envelope"></i> E-posta:</strong> <span id="current-email"></span></p>
-            <p><strong><i class="fas fa-globe-americas"></i> Konum:</strong> Enlem: <span id="current-latitude"></span>, Boylam: <span id="current-longitude"></span></p>
+            <p><strong><i class="fas fa-map-marker-alt"></i> Adres:</strong> <span id="current-address">Yükleniyor...</span></p>
+            <p><strong><i class="fas fa-phone-alt"></i> Telefon:</strong> <span id="current-phone">Yükleniyor...</span></p>
+            <p><strong><i class="fas fa-envelope"></i> E-posta:</strong> <span id="current-email">Yükleniyor...</span></p>
+            <p><strong><i class="fas fa-globe-americas"></i> Harita Konumu:</strong> <span id="current-map-location">Yükleniyor...</span></p>
           </div>
         </div>
       </div>
