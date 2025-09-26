@@ -634,7 +634,6 @@ function openEditModal(type, data, id) {
         <button class="btn save-btn" onclick="saveEdit('admin', '${id}')">Kaydet</button>
       </div>
     `;
-    let imagesArr = Array.isArray(data.imageUrls) ? data.imageUrls : [];
   } else if (type === 'heroSlide') {
     let imagesArr = Array.isArray(data.imageUrls) ? data.imageUrls : (data.imageUrl ? [data.imageUrl] : ['']);
     if (imagesArr.length === 0) imagesArr = [''];
@@ -644,7 +643,6 @@ function openEditModal(type, data, id) {
         ${idx === 0 ? `<button type="button" class="btn-small" onclick="addSlideImageInputEdit()"><i class="fas fa-plus"></i></button>` : `<button type="button" class="btn-small btn-remove" onclick="removeSlideImageInputEdit(this)"><i class="fas fa-minus"></i></button>`}
       </div>
     `).join('');
-  } else if (type === 'heroSlide') {
     modalContent = `
       <h2><i class="fas fa-edit"></i> Slayt Düzenle</h2>
       <div class="edit-form">
@@ -1633,7 +1631,7 @@ async function loadHeroSlides() {
     const firstImage = (slide.imageUrls && slide.imageUrls.length > 0) ? slide.imageUrls[0] : 'https://via.placeholder.com/100x60';
     div.innerHTML = `
       <img src="${firstImage}" style="width: 100px; height: 60px; object-fit: cover; border-radius: 5px; margin-bottom: 10px;">
-      <h4>${slide.title || 'Başlıksız Slayt'}</h4>
+      <h4>${slide.title || '(Başlık Yok)'}</h4>
       <p><strong>Görsel Sayısı:</strong> ${slide.imageUrls?.length || 0}</p>
       <div class="item-actions">
         <button class="edit-btn" onclick="editHeroSlide('${slide.id}')">Düzenle</button>
