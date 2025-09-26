@@ -1,4 +1,4 @@
-import { getServices, getProjects, getEmployees, getReferences, getSiteName, getFavicon, getExperience, getHeroImage } from './firebase.js';
+import { getServices, getProjects, getEmployees, getReferences, getSiteName, getFavicon, getExperience, getHeroImage, getHeroSlides } from './firebase.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     const copyrightElement = document.getElementById('copyright');
@@ -21,7 +21,10 @@ window.addEventListener('load', function() {
             document.body.style.overflow = 'visible';
             initializePageAnimations();
         }, 800);
-    }, 2000); // 2 saniye loading göster
+
+        // Start hero text animation after a delay
+        setTimeout(startHeroAnimation, 2500); // Loading'den hemen sonra başlasın
+    }, 2000); 
 });
 
 // Sayfa yüklendiğinde Firebase'den verileri çek
@@ -82,6 +85,11 @@ async function loadDynamicContent() {
             updateHeroBackground(heroImageUrl);
         }
 
+        // Hero slider'ı yükle
+        const slides = await getHeroSlides();
+        if (slides.length > 0) {
+            renderHeroSlider(slides);
+        }
     } catch (error) {
         console.error('Veri yükleme hatası:', error);
     }
@@ -1220,3 +1228,57 @@ window.initServiceCardHovers = function() {
     });
 };
 
+// Hero Section Animation and Slider Logic
+function startHeroAnimation() {
+    const heroContent = document.querySelector('.hero-content');
+    const sliderContainer = document.getElementById('hero-slider-container');
+
+    // Add class to start the text animation
+    heroContent.classList.add('animate-out');
+
+    // After text animation finishes, show the slider
+    setTimeout(() => {
+        heroContent.style.display = 'none';
+        if (sliderContainer) {
+            sliderContainer.classList.add('visible');
+        }
+    }, 1500); // Must match the animation duration in CSS
+}
+
+function renderHeroSlider(slides) {
+    const sliderWrapper = document.querySelector('#hero-slider-container .swiper-wrapper');
+    if (!sliderWrapper) return;
+
+    sliderWrapper.innerHTML = ''; // Clear existing slides
+
+    slides.forEach(slide => {
+        const slideElement = document.createElement('div');
+        slideElement.className = 'swiper-slide';
+
+        slideElement.innerHTML = `
+            <img src="${slide.imageUrl}" alt="${slide.title || 'Hero Slide'}">
+            <div class="slide-content">
+                ${slide.title ? `<h2>${slide.title}</h2>` : ''}
+                ${slide.description ? `<p>${slide.description}</p>` : ''}
+            </div>
+        `;
+        sliderWrapper.appendChild(slideElement);
+    });
+
+    // Initialize Swiper
+    new Swiper('.swiper-container', {
+        loop: true,
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+    });
+}

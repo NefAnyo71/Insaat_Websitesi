@@ -23,7 +23,9 @@ import {
   resetHeroImage,
   getSiteLogo,
   setSiteLogo,
-  resetSiteLogo
+  resetSiteLogo,
+  addHeroSlide as firebaseAddHeroSlide,
+  getHeroSlides
 } from './firebase.js';
 
 // Görsel input ekleme
@@ -1019,6 +1021,7 @@ function loadAdminData() {
   loadCurrentExperience();
   loadCurrentHeroImage();
   loadCurrentFavicon();
+  loadHeroSlides();
 }
 
 // Site logosunu yükle
@@ -1485,3 +1488,59 @@ document.addEventListener('DOMContentLoaded', function() {
     adminContent.style.display = 'none';
   }
 });
+
+// Hero Slider Fonksiyonları
+window.addHeroSlide = async function() {
+  const title = document.getElementById('slide-title').value;
+  const imageUrl = document.getElementById('slide-image-url').value;
+  const description = document.getElementById('slide-description').value;
+
+  if (!imageUrl) {
+    alert('Lütfen slayt için bir görsel URL\'si girin!');
+    return;
+  }
+
+  const success = await firebaseAddHeroSlide({ title, imageUrl, description });
+
+  if (success) {
+    alert('Slayt başarıyla eklendi!');
+    document.getElementById('slide-title').value = '';
+    document.getElementById('slide-image-url').value = '';
+    document.getElementById('slide-description').value = '';
+    loadHeroSlides();
+  } else {
+    alert('Slayt eklenirken bir hata oluştu.');
+  }
+};
+
+async function loadHeroSlides() {
+  const slides = await getHeroSlides();
+  const container = document.getElementById('hero-slides-list');
+  container.innerHTML = '';
+
+  slides.forEach(slide => {
+    const div = document.createElement('div');
+    div.className = 'item';
+    div.innerHTML = `
+      <img src="${slide.imageUrl}" style="width: 100px; height: 60px; object-fit: cover; border-radius: 5px; margin-bottom: 10px;">
+      <h4>${slide.title || 'Başlıksız Slayt'}</h4>
+      <p>${(slide.description || '').substring(0, 50)}...</p>
+      <div class="item-actions">
+        <button class="delete-btn" onclick="deleteHeroSlide('${slide.id}')">Sil</button>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+window.deleteHeroSlide = async function(id) {
+  if (confirm('Bu slaytı silmek istediğinizden emin misiniz?')) {
+    const success = await deleteItem('heroSlides', id);
+    if (success) {
+      alert('Slayt başarıyla silindi!');
+      loadHeroSlides();
+    } else {
+      alert('Slayt silinirken bir hata oluştu.');
+    }
+  }
+};

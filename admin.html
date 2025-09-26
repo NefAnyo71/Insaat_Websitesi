@@ -264,6 +264,7 @@
         <button class="tab" onclick="showTab('references')"><i class="fas fa-handshake"></i> Referanslar</button>
         <button class="tab" onclick="showTab('experience')"><i class="fas fa-award"></i> Deneyim</button>
         <button class="tab" onclick="showTab('heroimage')"><i class="fas fa-image"></i> Ana Sayfa Görseli</button>
+        <button class="tab" onclick="showTab('heroSlider')"><i class="fas fa-images"></i> Ana Sayfa Slider</button>
         <button class="tab" onclick="showTab('sitename')"><i class="fas fa-globe"></i> Site Adı</button>
         <button class="tab" onclick="showTab('favicon')"><i class="fas fa-image"></i> Favicon</button>
         <button class="tab" onclick="showTab('admins')"><i class="fas fa-user-shield"></i> Admin Yönetimi</button>
@@ -478,6 +479,25 @@
               <p id="hero-status" style="margin: 0; color: #666;">Yükleniyor...</p>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- Ana Sayfa Slider Tab -->
+      <div id="heroSlider" class="tab-content">
+        <div class="form-section">
+          <h2><i class="fas fa-plus-circle"></i> Yeni Slayt Ekle</h2>
+          <div class="form-group">
+            <input type="text" id="slide-title" placeholder="Slayt Başlığı (isteğe bağlı)">
+            <input type="url" id="slide-image-url" placeholder="Slayt Görsel URL'si">
+            <textarea id="slide-description" placeholder="Slayt Açıklaması (isteğe bağlı)"></textarea>
+            <small style="color: #666; font-size: 0.8rem;">Görsel yüklemek için: <a href="https://resimlink.com/" target="_blank" style="color: #FF6B35;">resimlink.com</a></small>
+          </div>
+          <button class="btn" onclick="addHeroSlide()"><i class="fas fa-plus"></i> Slayt Ekle</button>
+        </div>
+
+        <div class="items-section">
+          <h3><i class="fas fa-list"></i> Mevcut Slaytlar</h3>
+          <div id="hero-slides-list" class="items-list"></div>
         </div>
       </div>
 

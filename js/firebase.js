@@ -652,3 +652,39 @@ export async function resetSiteLogo() {
     return false;
   }
 }
+
+// Ana Sayfa Slider Fonksiyonları
+
+// Yeni slayt ekle
+export async function addHeroSlide(slideData) {
+  try {
+    await initializeFirebase();
+    await addDoc(collection(db, "heroSlides"), {
+      ...slideData,
+      createdAt: new Date()
+    });
+    return true;
+  } catch (error) {
+    console.error("Slayt eklenirken hata:", error);
+    return false;
+  }
+}
+
+// Tüm slaytları getir
+export async function getHeroSlides() {
+  try {
+    await initializeFirebase();
+    const querySnapshot = await getDocs(collection(db, "heroSlides"));
+    const slides = [];
+    querySnapshot.forEach((doc) => {
+      slides.push({ id: doc.id, ...doc.data() });
+    });
+    // Tarihe göre sırala (en yeni en üstte)
+    slides.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+    return slides;
+  } catch (error) {
+    console.error("Slaytlar getirilirken hata:", error);
+    // Hata durumunda boş bir dizi döndürerek sitenin çökmesini engelle
+    return [];
+  }
+}
