@@ -117,66 +117,9 @@ async function loadDynamicContent() {
         const contactInfo = await getContactInfo();
         renderContactInfo(contactInfo);
 
-        // Global scope'a initMap fonksiyonunu ekle
-        window.initMap = () => {
-            initializeGoogleMap(contactInfo);
-        };
-
-        // Eğer Google Maps API zaten yüklendiyse haritayı başlat
-        // Bu kontrol, defer ve async ile yüklenen scriptlerde her zaman doğru çalışmayabilir.
-        // initMap callback'i zaten API yüklendiğinde çağrılacak.
-        // Ancak DOMContentLoaded sırasında API henüz yüklenmemişse bu kısım çalışmaz.
-        // initMap callback'i ana mekanizma olmalı.
-        // if (typeof google !== 'undefined' && typeof google.maps !== 'undefined') {
-        //     initializeGoogleMap(contactInfo);
-        // }
-
     } catch (error) {
         console.error('Veri yükleme hatası:', error);
     }
-}
-
-// Google Map'i başlatan fonksiyon
-async function initializeGoogleMap(contactInfo) {
-    const geocoder = new google.maps.Geocoder();
-    const address = contactInfo.address;
-
-    if (!address || address === 'Adres bilgisi girilmemiş.') {
-        console.warn("Harita için adres bilgisi bulunamadı veya geçersiz.");
-        // Varsayılan bir konum gösterebiliriz veya haritayı gizleyebiliriz.
-        // Yeni varsayılan konumu gösterelim.
-        const defaultLocation = { lat: 37.0425, lng: 27.4185 }; // İnönü Cad. Dirmil Mah. No:93/7
-        renderMap(defaultLocation, "Varsayılan Konum");
-        return;
-    }
-
-    geocoder.geocode({ 'address': address }, function(results, status) {
-        if (status === 'OK') {
-            const location = results[0].geometry.location;
-            renderMap(location, address);
-        } else {
-            console.error('Geocoding başarısız oldu: ' + status);
-            // Geocoding başarısız olursa varsayılan bir konum göster
-            const defaultLocation = { lat: 37.0425, lng: 27.4185 }; // İnönü Cad. Dirmil Mah. No:93/7
-            renderMap(defaultLocation, "Kef Yapı (Adres bulunamadı)");
-        }
-    });
-}
-
-function renderMap(location, title) {
-    const mapElement = document.getElementById("map");
-    if (!mapElement) {
-        console.error("Harita elementi bulunamadı!");
-        return;
-    }
-
-    const map = new google.maps.Map(mapElement, {
-        zoom: 15,
-        center: location,
-        mapId: 'KefYapi_Map' // Harita stiliniz için bir ID
-    });
-
-    new google.maps.Marker({ position: location, map: map, title: title });
 }
 
 // İletişim bilgilerini render et
