@@ -2517,6 +2517,16 @@ footer {
   animation: logoFloat 2s ease-in-out infinite;
 }
 
+.loading-logo img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: white;
+  padding: 5px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
 .loading-logo i {
   font-size: 4rem;
   color: #FF6B35;

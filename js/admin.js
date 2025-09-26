@@ -28,7 +28,9 @@ import {
   getHeroSlides,
   getContactMessages,
   setContactInfo,
-  getContactInfo
+  getContactInfo,
+  setLoadingLogo,
+  getLoadingLogo
 } from './firebase.js';
 
 // Görsel input ekleme
@@ -1085,6 +1087,42 @@ window.loadCurrentHeroImage = async function() {
   }
 }
 
+// Yükleme Ekranı Logosu Fonksiyonları
+window.updateLoadingLogo = async function() {
+  const logoUrl = document.getElementById('loading-logo-url').value.trim();
+  if (!logoUrl) {
+    alert('Lütfen bir logo URL\'si girin.');
+    return;
+  }
+  const success = await setLoadingLogo(logoUrl);
+  if (success) {
+    alert('Yükleme ekranı logosu başarıyla güncellendi!');
+    loadCurrentLoadingLogo();
+  } else {
+    alert('Logo güncellenirken bir hata oluştu.');
+  }
+};
+
+async function loadCurrentLoadingLogo() {
+  try {
+    const logoUrl = await getLoadingLogo();
+    const previewImg = document.getElementById('loading-logo-preview');
+    const statusText = document.getElementById('loading-logo-status');
+    const inputField = document.getElementById('loading-logo-url');
+
+    if (logoUrl) {
+      previewImg.src = logoUrl;
+      previewImg.style.display = 'block';
+      statusText.textContent = 'Mevcut logo yüklendi.';
+      inputField.value = logoUrl;
+    } else {
+      statusText.textContent = 'Henüz bir logo ayarlanmamış.';
+    }
+  } catch (error) {
+    console.error('Yükleme logosu yüklenirken hata:', error);
+  }
+}
+
 // Admin verilerini yükle
 function loadAdminData() {
   loadServices();
@@ -1099,6 +1137,7 @@ function loadAdminData() {
   loadHeroSlides();
   loadContactMessages();
   loadCurrentContactInfo();
+  loadCurrentLoadingLogo();
 }
 
 // Site logosunu yükle
