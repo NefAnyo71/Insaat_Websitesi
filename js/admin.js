@@ -472,6 +472,18 @@ window.editReference = async function(id) {
   }
 }
 
+window.editHeroSlide = async function(id) {
+  try {
+    const slides = await getHeroSlides();
+    const slide = slides.find(s => s.id === id);
+    if (slide) {
+      openEditModal('heroSlide', slide, id);
+    }
+  } catch (error) {
+    console.error('Slayt düzenleme verisi alınırken hata:', error);
+  }
+}
+
 // Edit modal aç
 function openEditModal(type, data, id) {
   let modalContent = '';
@@ -622,6 +634,46 @@ function openEditModal(type, data, id) {
         <button class="btn save-btn" onclick="saveEdit('admin', '${id}')">Kaydet</button>
       </div>
     `;
+    let imagesArr = Array.isArray(data.imageUrls) ? data.imageUrls : [];
+    if (imagesArr.length === 0) imagesArr = [''];
+    let imagesInputsHTML = imagesArr.map((img, idx) => `
+      <div class="image-input-group">
+        <input type="url" class="slide-image-input" placeholder="Görsel URL ${idx+1}" value="${img || ''}">
+        ${idx === 0 ? `<button type="button" class="btn-small" onclick="addSlideImageInputEdit()"><i class="fas fa-plus"></i></button>` : `<button type="button" class="btn-small btn-remove" onclick="removeSlideImageInputEdit(this)"><i class="fas fa-minus"></i></button>`}
+      </div>
+    `).join('');
+  } else if (type === 'heroSlide') {
+    modalContent = `
+      <h2><i class="fas fa-edit"></i> Slayt Düzenle</h2>
+      <div class="edit-form">
+        <input type="text" id="edit-slide-title" placeholder="Slayt Başlığı" value="${data.title || ''}">
+        <textarea id="edit-slide-description" placeholder="Slayt Açıklaması">${data.description || ''}</textarea>
+        <div style="margin: 1rem 0; padding: 1rem; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #FF6B35;">
+          <h4 style="margin: 0 0 0.5rem 0; color: #FF6B35;"><i class="fas fa-images"></i> Slayt Görselleri</h4>
+          <div id="edit-slide-images-container">${imagesInputsHTML}</div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn cancel-btn" onclick="closeEditModal()">İptal</button>
+        <button class="btn save-btn" onclick="saveEdit('heroSlide', '${id}')">Kaydet</button>
+      </div>
+    `;
+    setTimeout(() => {
+      window.addSlideImageInputEdit = function() {
+        const container = document.getElementById('edit-slide-images-container');
+        const inputCount = container.querySelectorAll('.image-input-group').length;
+        const newInputGroup = document.createElement('div');
+        newInputGroup.className = 'image-input-group';
+        newInputGroup.innerHTML = `<input type="url" class="slide-image-input" placeholder="Görsel URL ${inputCount + 1}"><button type="button" class="btn-small btn-remove" onclick="removeSlideImageInputEdit(this)"><i class="fas fa-minus"></i></button>`;
+        container.appendChild(newInputGroup);
+      };
+      window.removeSlideImageInputEdit = function(button) {
+        const container = document.getElementById('edit-slide-images-container');
+        if (container.querySelectorAll('.image-input-group').length > 1) {
+          button.parentElement.remove();
+        } else { alert('En az bir görsel alanı olmalıdır!'); }
+      };
+    }, 20);
   }
   
   const modalHTML = `
@@ -780,6 +832,26 @@ window.saveEdit = async function(type, id) {
     } catch (error) {
       console.error('Çalışan güncelleme hatası:', error);
       alert('Çalışan güncellenirken hata oluştu!');
+    }
+  } else if (type === 'heroSlide') {
+    const title = document.getElementById('edit-slide-title').value.trim();
+    const description = document.getElementById('edit-slide-description').value.trim();
+    const imageInputs = document.querySelectorAll('#edit-slide-images-container .slide-image-input');
+    const imageUrls = Array.from(imageInputs).map(input => input.value.trim()).filter(url => url !== '');
+
+    if (imageUrls.length === 0) {
+      alert('Lütfen en az bir görsel URL\'si girin!');
+      return;
+    }
+    try {
+      const { updateHeroSlide } = await import('./firebase.js');
+      await updateHeroSlide(id, { title, description, imageUrls });
+      alert('Slayt başarıyla güncellendi!');
+      closeEditModal();
+      loadHeroSlides();
+    } catch (error) {
+      console.error('Slayt güncelleme hatası:', error);
+      alert('Slayt güncellenirken hata oluştu!');
     }
   } else {
     alert('Bilinmeyen güncelleme türü!');
@@ -1494,25 +1566,55 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
+// Slayt görsel input ekleme
+window.addSlideImageInput = function() {
+  const container = document.getElementById('slide-images-container');
+  const inputCount = container.querySelectorAll('.image-input-group').length;
+  const newInputGroup = document.createElement('div');
+  newInputGroup.className = 'image-input-group';
+  newInputGroup.innerHTML = `
+    <input type="url" class="slide-image-input" placeholder="Görsel URL ${inputCount + 1}">
+    <button type="button" class="btn-small btn-remove" onclick="removeSlideImageInput(this)"><i class="fas fa-minus"></i></button>
+  `;
+  container.appendChild(newInputGroup);
+}
+
+// Slayt görsel input kaldırma
+window.removeSlideImageInput = function(button) {
+  const container = document.getElementById('slide-images-container');
+  if (container.querySelectorAll('.image-input-group').length > 1) {
+    button.parentElement.remove();
+  } else {
+    alert('En az bir görsel alanı olmalıdır!');
+  }
+}
+
 // Hero Slider Fonksiyonları
 window.addHeroSlide = async function() {
   const title = document.getElementById('slide-title').value;
-  const imageUrl = document.getElementById('slide-image-url').value;
   const description = document.getElementById('slide-description').value;
+  const imageInputs = document.querySelectorAll('#slide-images-container .slide-image-input');
+  const imageUrls = Array.from(imageInputs).map(input => input.value.trim()).filter(url => url !== '');
 
-  if (!imageUrl) {
-    alert('Lütfen slayt için bir görsel URL\'si girin!');
+  if (imageUrls.length === 0) {
+    alert('Lütfen slayt için en az bir görsel URL\'si girin!');
     return;
   }
 
-  const success = await firebaseAddHeroSlide({ title, imageUrl, description });
+  const success = await firebaseAddHeroSlide({ title, imageUrls, description });
 
   if (success) {
     alert('Slayt başarıyla eklendi!');
     document.getElementById('slide-title').value = '';
-    document.getElementById('slide-image-url').value = '';
     document.getElementById('slide-description').value = '';
     loadHeroSlides();
+    // Reset image inputs
+    const container = document.getElementById('slide-images-container');
+    container.innerHTML = `
+      <div class="image-input-group">
+        <input type="url" class="slide-image-input" placeholder="Görsel URL 1"><button type="button" class="btn-small" onclick="addSlideImageInput()"><i class="fas fa-plus"></i></button>
+      </div>
+    `;
   } else {
     alert('Slayt eklenirken bir hata oluştu.');
   }
@@ -1526,10 +1628,11 @@ async function loadHeroSlides() {
   slides.forEach(slide => {
     const div = document.createElement('div');
     div.className = 'item';
+    const firstImage = (slide.imageUrls && slide.imageUrls.length > 0) ? slide.imageUrls[0] : 'https://via.placeholder.com/100x60';
     div.innerHTML = `
-      <img src="${slide.imageUrl}" style="width: 100px; height: 60px; object-fit: cover; border-radius: 5px; margin-bottom: 10px;">
+      <img src="${firstImage}" style="width: 100px; height: 60px; object-fit: cover; border-radius: 5px; margin-bottom: 10px;">
       <h4>${slide.title || 'Başlıksız Slayt'}</h4>
-      <p>${(slide.description || '').substring(0, 50)}...</p>
+      <p><strong>Görsel Sayısı:</strong> ${slide.imageUrls?.length || 0}</p>
       <div class="item-actions">
         <button class="delete-btn" onclick="deleteHeroSlide('${slide.id}')">Sil</button>
       </div>

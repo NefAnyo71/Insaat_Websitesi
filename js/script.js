@@ -1284,18 +1284,22 @@ function renderHeroSlider(slides) {
 
     sliderWrapper.innerHTML = ''; // Clear existing slides
 
-    slides.forEach(slide => {
-        const slideElement = document.createElement('div');
-        slideElement.className = 'swiper-slide';
-
-        slideElement.innerHTML = `
-            <img src="${slide.imageUrl}" alt="${slide.title || 'Hero Slide'}">
-            <div class="slide-content">
-                ${slide.title ? `<h2>${slide.title}</h2>` : ''}
-                ${slide.description ? `<p>${slide.description}</p>` : ''}
-            </div>
-        `;
-        sliderWrapper.appendChild(slideElement);
+    slides.forEach(slideData => {
+        // Her bir slayt verisindeki görseller için ayrı swiper-slide oluştur
+        if (slideData.imageUrls && slideData.imageUrls.length > 0) {
+            slideData.imageUrls.forEach(imageUrl => {
+                const slideElement = document.createElement('div');
+                slideElement.className = 'swiper-slide';
+                slideElement.innerHTML = `
+                    <img src="${imageUrl}" alt="${slideData.title || 'Hero Slide'}">
+                    <div class="slide-content">
+                        ${slideData.title ? `<h2>${slideData.title}</h2>` : ''}
+                        ${slideData.description ? `<p>${slideData.description}</p>` : ''}
+                    </div>
+                `;
+                sliderWrapper.appendChild(slideElement);
+            });
+        }
     });
 
     // Initialize Swiper
