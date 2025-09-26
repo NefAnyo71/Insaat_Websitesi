@@ -4033,7 +4033,7 @@ footer {
 }
 
 .swiper-container.visible {
-  opacity: 0.6; /* %40 saydamlık (%60 opaklık) */
+  opacity: 0.55; /* ~%45 saydamlık (%55 opaklık) */
   visibility: visible;
 }
 
