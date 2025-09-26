@@ -268,6 +268,8 @@
         <button class="tab" onclick="showTab('sitename')"><i class="fas fa-globe"></i> Site Adı</button>
         <button class="tab" onclick="showTab('favicon')"><i class="fas fa-image"></i> Favicon</button>
         <button class="tab" onclick="showTab('admins')"><i class="fas fa-user-shield"></i> Admin Yönetimi</button>
+        <button class="tab" onclick="showTab('contactInfo')"><i class="fas fa-address-book"></i> İletişim Bilgileri</button>
+        <button class="tab" onclick="showTab('contactMessages')"><i class="fas fa-envelope-open-text"></i> Gelen Mesajlar</button>
       </div>
 
       <!-- Bayilerimiz Tab -->
@@ -329,6 +331,36 @@
         <div class="items-section">
           <h3><i class="fas fa-list"></i> Mevcut Bayilerimiz</h3>
           <div id="services-list" class="items-list"></div>
+        </div>
+      </div>
+
+      <!-- İletişim Bilgileri Tab -->
+      <div id="contactInfo" class="tab-content">
+        <div class="form-section">
+          <h2><i class="fas fa-address-book"></i> İletişim Bilgilerini Düzenle</h2>
+          <div class="form-group">
+            <input type="text" id="contact-address" placeholder="Adres">
+            <input type="tel" id="contact-phone" placeholder="Telefon Numarası (Örn: +90 555 123 4567)">
+            <input type="email" id="contact-email-input" placeholder="E-posta Adresi">
+          </div>
+          <button class="btn" onclick="updateContactInfo()"><i class="fas fa-save"></i> Bilgileri Kaydet</button>
+        </div>
+        <div class="items-section">
+          <h3><i class="fas fa-info-circle"></i> Mevcut Bilgiler</h3>
+          <div id="current-contact-info" class="current-info-display">
+            <p><strong><i class="fas fa-map-marker-alt"></i> Adres:</strong> <span id="current-address">Yükleniyor...</span></p>
+            <p><strong><i class="fas fa-phone-alt"></i> Telefon:</strong> <span id="current-phone">Yükleniyor...</span></p>
+            <p><strong><i class="fas fa-envelope"></i> E-posta:</strong> <span id="current-email">Yükleniyor...</span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gelen Mesajlar Tab -->
+      <div id="contactMessages" class="tab-content">
+        <div class="items-section">
+          <h2><i class="fas fa-envelope-open-text"></i> Gelen İletişim Mesajları</h2>
+          <p>Burada web siteniz üzerinden gönderilen mesajları görebilirsiniz.</p>
+          <div id="contact-messages-list" class="items-list"></div>
         </div>
       </div>
 

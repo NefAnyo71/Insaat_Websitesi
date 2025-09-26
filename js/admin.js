@@ -25,7 +25,10 @@ import {
   setSiteLogo,
   resetSiteLogo,
   addHeroSlide as firebaseAddHeroSlide,
-  getHeroSlides
+  getHeroSlides,
+  getContactMessages,
+  setContactInfo,
+  getContactInfo
 } from './firebase.js';
 
 // Görsel input ekleme
@@ -1022,6 +1025,8 @@ function loadAdminData() {
   loadCurrentHeroImage();
   loadCurrentFavicon();
   loadHeroSlides();
+  loadContactMessages();
+  loadCurrentContactInfo();
 }
 
 // Site logosunu yükle
@@ -1541,6 +1546,86 @@ window.deleteHeroSlide = async function(id) {
       loadHeroSlides();
     } else {
       alert('Slayt silinirken bir hata oluştu.');
+    }
+  }
+};
+
+// İletişim Bilgileri Fonksiyonları
+window.updateContactInfo = async function() {
+  const address = document.getElementById('contact-address').value;
+  const phone = document.getElementById('contact-phone').value;
+  const email = document.getElementById('contact-email-input').value;
+
+  if (!address || !phone || !email) {
+    alert('Lütfen tüm iletişim bilgilerini doldurun!');
+    return;
+  }
+
+  const success = await setContactInfo({ address, phone, email });
+  if (success) {
+    alert('İletişim bilgileri başarıyla güncellendi!');
+    loadCurrentContactInfo();
+  } else {
+    alert('Bilgiler güncellenirken bir hata oluştu.');
+  }
+};
+
+async function loadCurrentContactInfo() {
+  const info = await getContactInfo();
+  document.getElementById('current-address').textContent = info.address || 'Girilmemiş';
+  document.getElementById('current-phone').textContent = info.phone || 'Girilmemiş';
+  document.getElementById('current-email').textContent = info.email || 'Girilmemiş';
+
+  // Form alanlarını da doldur
+  document.getElementById('contact-address').value = info.address || '';
+  document.getElementById('contact-phone').value = info.phone || '';
+  document.getElementById('contact-email-input').value = info.email || '';
+}
+
+// Gelen Mesajlar Fonksiyonları
+async function loadContactMessages() {
+  const messages = await getContactMessages();
+  const container = document.getElementById('contact-messages-list');
+  container.innerHTML = '';
+
+  if (messages.length === 0) {
+    container.innerHTML = '<p>Henüz gelen mesaj yok.</p>';
+    return;
+  }
+
+  messages.forEach(msg => {
+    const div = document.createElement('div');
+    div.className = 'item contact-message-item';
+    const sentDate = msg.createdAt?.toDate().toLocaleString('tr-TR') || 'Bilinmiyor';
+
+    div.innerHTML = `
+      <div class="message-header">
+        <h4>${msg.subject || 'Konusuz'}</h4>
+        <span class="message-date">${sentDate}</span>
+      </div>
+      <div class="message-sender">
+        <span><strong>Gönderen:</strong> ${msg.name || 'İsimsiz'}</span>
+        <span><strong>E-posta:</strong> <a href="mailto:${msg.email}">${msg.email || ''}</a></span>
+      </div>
+      <div class="message-body">
+        <p>${msg.message || ''}</p>
+      </div>
+      <div class="item-actions">
+        <button class="delete-btn" onclick="deleteContactMessage('${msg.id}')">Sil</button>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+window.deleteContactMessage = async function(id) {
+  if (confirm('Bu mesajı kalıcı olarak silmek istediğinizden emin misiniz?')) {
+    const success = await deleteItem('contactMessages', id);
+    if (success) {
+      alert('Mesaj başarıyla silindi!');
+      loadContactMessages();
+    } else {
+      alert('Mesaj silinirken bir hata oluştu.');
     }
   }
 };

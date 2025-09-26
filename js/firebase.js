@@ -688,3 +688,69 @@ export async function getHeroSlides() {
     return [];
   }
 }
+
+// İletişim Mesajı Ekleme
+export async function addContactMessage(messageData) {
+  try {
+    await initializeFirebase();
+    await addDoc(collection(db, "contactMessages"), {
+      ...messageData,
+      createdAt: new Date(),
+      isRead: false
+    });
+    return true;
+  } catch (error) {
+    console.error("İletişim mesajı gönderilirken hata:", error);
+    return false;
+  }
+}
+
+// İletişim Mesajlarını Getirme
+export async function getContactMessages() {
+  try {
+    await initializeFirebase();
+    const querySnapshot = await getDocs(collection(db, "contactMessages"));
+    const messages = [];
+    querySnapshot.forEach((doc) => {
+      messages.push({ id: doc.id, ...doc.data() });
+    });
+    // Tarihe göre sırala (en yeni en üstte)
+    messages.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+    return messages;
+  } catch (error) {
+    console.error("İletişim mesajları getirilirken hata:", error);
+    return [];
+  }
+}
+
+// İletişim Bilgilerini Kaydetme/Güncelleme
+export async function setContactInfo(infoData) {
+  try {
+    await initializeFirebase();
+    const contactInfoRef = doc(db, "settings", "contactInfo");
+    await setDoc(contactInfoRef, infoData, { merge: true });
+    return true;
+  } catch (error) {
+    console.error("İletişim bilgileri kaydedilirken hata:", error);
+    return false;
+  }
+}
+
+// İletişim Bilgilerini Getirme
+export async function getContactInfo() {
+  try {
+    await initializeFirebase();
+    const contactInfoRef = doc(db, "settings", "contactInfo");
+    const docSnap = await getDoc(contactInfoRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data();
+    } else {
+      // Varsayılan bilgiler
+      return { address: 'Adres bilgisi girilmemiş.', phone: 'Telefon bilgisi girilmemiş.', email: 'E-posta bilgisi girilmemiş.' };
+    }
+  } catch (error) {
+    console.error("İletişim bilgileri getirilirken hata:", error);
+    return { address: 'Hata oluştu.', phone: 'Hata oluştu.', email: 'Hata oluştu.' };
+  }
+}

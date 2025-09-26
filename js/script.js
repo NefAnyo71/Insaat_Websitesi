@@ -1,4 +1,4 @@
-import { getServices, getProjects, getEmployees, getReferences, getSiteName, getFavicon, getExperience, getHeroImage, getHeroSlides } from './firebase.js';
+import { getServices, getProjects, getEmployees, getReferences, getSiteName, getFavicon, getExperience, getHeroImage, getHeroSlides, addContactMessage, getContactInfo } from './firebase.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     const copyrightElement = document.getElementById('copyright');
@@ -24,6 +24,7 @@ window.addEventListener('load', function() {
 
         // Start hero text animation after a delay
         setTimeout(startHeroAnimation, 5500); // Metin animasyonları bittikten 3 saniye sonra başlasın
+        setTimeout(startHeroAnimation, 4500); // Metin animasyonları bittikten 2 saniye sonra başlasın
     }, 2000); 
 });
 
@@ -39,6 +40,27 @@ document.addEventListener('DOMContentLoaded', async function() {
     setTimeout(() => {
         initServiceCardHovers();
     }, 1000); // İçerik yüklendikten sonra hover'ları başlat
+
+    // İletişim formu gönderimini handle et
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const name = document.getElementById('contact-name').value;
+            const email = document.getElementById('contact-email').value;
+            const subject = document.getElementById('contact-subject').value;
+            const message = document.getElementById('contact-message').value;
+
+            const success = await addContactMessage({ name, email, subject, message });
+
+            if (success) {
+                alert('Mesajınız başarıyla gönderildi. En kısa sürede size geri döneceğiz.');
+                contactForm.reset();
+            } else {
+                alert('Mesajınız gönderilirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.');
+            }
+        });
+    }
 });
 
 // Firebase'den dinamik içerikleri yükle
@@ -90,9 +112,26 @@ async function loadDynamicContent() {
         if (slides.length > 0) {
             renderHeroSlider(slides);
         }
+
+        // İletişim bilgilerini yükle
+        const contactInfo = await getContactInfo();
+        renderContactInfo(contactInfo);
+
     } catch (error) {
         console.error('Veri yükleme hatası:', error);
     }
+}
+
+// İletişim bilgilerini render et
+function renderContactInfo(info) {
+    const list = document.getElementById('contact-details-list');
+    if (!list) return;
+
+    list.innerHTML = `
+        <li><i class="fas fa-map-marker-alt"></i> <span>${info.address || ''}</span></li>
+        <li><i class="fas fa-phone-alt"></i> <a href="tel:${(info.phone || '').replace(/\s/g, '')}">${info.phone || ''}</a></li>
+        <li><i class="fas fa-envelope"></i> <a href="mailto:${info.email || ''}">${info.email || ''}</a></li>
+    `;
 }
 
 // Site adını güncelle
