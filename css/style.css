@@ -3987,3 +3987,103 @@ footer {
     animation: blink 1s infinite 6s;
   }
 }
+
+/* HERO TEXT ANIMATION */
+.hero-content.animate-out #hero-main-text {
+  animation: moveUp 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.hero-content.animate-out #hero-sub-text {
+  animation: moveDown 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes moveUp {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-25vh);
+    opacity: 0;
+  }
+}
+
+@keyframes moveDown {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(25vh);
+    opacity: 0;
+  }
+}
+
+/* HERO SLIDER STYLES */
+.swiper-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5; /* Hero content'in arkasında */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1.5s ease, visibility 1.5s ease;
+}
+
+.swiper-container.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.6);
+}
+
+.slide-content {
+  position: absolute;
+  color: white;
+  text-align: center;
+  max-width: 700px;
+  padding: 20px;
+  animation: slideTextFadeIn 1s ease forwards;
+}
+
+.slide-content h2 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+}
+
+.slide-content p {
+  font-size: 1.2rem;
+  text-shadow: 1px 1px 6px rgba(0,0,0,0.7);
+}
+
+@keyframes slideTextFadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.swiper-pagination-bullet-active {
+  background: #FF6B35 !important;
+}
+
+.swiper-button-next, .swiper-button-prev {
+  color: #FF6B35 !important;
+}
