@@ -1312,7 +1312,7 @@ function renderHeroSlider(slides) {
     new Swiper('.swiper-container', {
         loop: true,
         autoplay: {
-            delay: 5000,
+            delay: 7000,
             disableOnInteraction: false,
         },
         pagination: {
