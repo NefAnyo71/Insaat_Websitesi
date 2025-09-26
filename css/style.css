@@ -4038,6 +4038,7 @@ footer {
 }
 
 .swiper-slide {
+  position: relative; /* İçerik konumlandırması için gerekli */
   text-align: center;
   font-size: 18px;
   background: #000;
@@ -4058,8 +4059,9 @@ footer {
   position: absolute;
   color: white;
   text-align: center;
-  max-width: 700px;
-  padding: 20px;
+  width: 90%; /* Genişliği yüzde olarak ayarlayarak taşmayı önle */
+  max-width: 800px; /* Maksimum genişliği belirle */
+  padding: 1rem;
   animation: slideTextFadeIn 1s ease forwards;
 }
 
@@ -4104,10 +4106,14 @@ footer {
 
 @media (max-width: 768px) {
   .swiper-container {
-    height: 350px;
+    /* Bu kural zaten var, dokunmuyoruz */
   }
   .slide-content h2 {
     font-size: 1.8rem;
+  }
+  .slide-content p {
+    font-size: 1rem;
+    line-height: 1.4;
   }
 }
 
@@ -4117,6 +4123,10 @@ footer {
   }
   .slide-content h2 {
     font-size: 1.8rem;
+  }
+  .slide-content p {
+    font-size: 0.9rem;
+    display: none; /* Çok küçük ekranlarda açıklamayı gizle */
   }
 }
 
