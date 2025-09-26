@@ -689,19 +689,6 @@ export async function getHeroSlides() {
   }
 }
 
-// Slayt güncelleme
-export async function updateHeroSlide(id, slideData) {
-  try {
-    await initializeFirebase();
-    const slideRef = doc(db, "heroSlides", id);
-    await updateDoc(slideRef, { ...slideData, updatedAt: new Date() });
-    return true;
-  } catch (error) {
-    console.error("Slayt güncellenirken hata:", error);
-    return false;
-  }
-}
-
 // İletişim Mesajı Ekleme
 export async function addContactMessage(messageData) {
   try {

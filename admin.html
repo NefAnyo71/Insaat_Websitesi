@@ -521,17 +521,9 @@
           <h2><i class="fas fa-plus-circle"></i> Yeni Slayt Ekle</h2>
           <div class="form-group">
             <input type="text" id="slide-title" placeholder="Slayt Başlığı (isteğe bağlı)">
+            <input type="url" id="slide-image-url" placeholder="Slayt Görsel URL'si">
             <textarea id="slide-description" placeholder="Slayt Açıklaması (isteğe bağlı)"></textarea>
-            <div style="margin: 1rem 0; padding: 1rem; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #FF6B35;">
-              <h4 style="margin: 0 0 0.5rem 0; color: #FF6B35;"><i class="fas fa-images"></i> Slayt Görselleri (Birden fazla ekleyebilirsiniz)</h4>
-              <div id="slide-images-container">
-                <div class="image-input-group">
-                  <input type="url" class="slide-image-input" placeholder="Görsel URL 1">
-                  <button type="button" class="btn-small" onclick="addSlideImageInput()"><i class="fas fa-plus"></i></button>
-                </div>
-              </div>
-              <small style="color: #666; font-size: 0.8rem;">Görsel yüklemek için: <a href="https://resimlink.com/" target="_blank" style="color: #FF6B35;">resimlink.com</a></small>
-            </div>
+            <small style="color: #666; font-size: 0.8rem;">Görsel yüklemek için: <a href="https://resimlink.com/" target="_blank" style="color: #FF6B35;">resimlink.com</a></small>
           </div>
           <button class="btn" onclick="addHeroSlide()"><i class="fas fa-plus"></i> Slayt Ekle</button>
         </div>
