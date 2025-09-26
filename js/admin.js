@@ -635,6 +635,8 @@ function openEditModal(type, data, id) {
       </div>
     `;
     let imagesArr = Array.isArray(data.imageUrls) ? data.imageUrls : [];
+  } else if (type === 'heroSlide') {
+    let imagesArr = Array.isArray(data.imageUrls) ? data.imageUrls : (data.imageUrl ? [data.imageUrl] : ['']);
     if (imagesArr.length === 0) imagesArr = [''];
     let imagesInputsHTML = imagesArr.map((img, idx) => `
       <div class="image-input-group">
