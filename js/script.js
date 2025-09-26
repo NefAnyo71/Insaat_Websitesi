@@ -116,10 +116,35 @@ async function loadDynamicContent() {
         // İletişim bilgilerini yükle
         const contactInfo = await getContactInfo();
         renderContactInfo(contactInfo);
+        
+        // Global scope'a initMap fonksiyonunu ekle
+        window.initMap = () => {
+            initializeGoogleMap(contactInfo);
+        };
+
+        // Eğer Google Maps API zaten yüklendiyse haritayı başlat
+        if (typeof google !== 'undefined' && typeof google.maps !== 'undefined') {
+            initializeGoogleMap(contactInfo);
+        }
 
     } catch (error) {
         console.error('Veri yükleme hatası:', error);
     }
+}
+
+// Google Map'i başlatan fonksiyon
+function initializeGoogleMap(contactInfo) {
+    const lat = parseFloat(contactInfo.latitude || '40.1828'); // Varsayılan enlem
+    const lng = parseFloat(contactInfo.longitude || '29.0664'); // Varsayılan boylam
+    const location = { lat: lat, lng: lng };
+
+    const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 15,
+        center: location,
+        mapId: 'KefYapi_Map' // Harita stiliniz için bir ID
+    });
+
+    new google.maps.Marker({ position: location, map: map, title: "Kef Yapı" });
 }
 
 // İletişim bilgilerini render et

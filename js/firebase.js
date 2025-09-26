@@ -747,10 +747,10 @@ export async function getContactInfo() {
       return docSnap.data();
     } else {
       // Varsayılan bilgiler
-      return { address: 'Adres bilgisi girilmemiş.', phone: 'Telefon bilgisi girilmemiş.', email: 'E-posta bilgisi girilmemiş.' };
+      return { address: 'Adres bilgisi girilmemiş.', phone: 'Telefon bilgisi girilmemiş.', email: 'E-posta bilgisi girilmemiş.', latitude: '40.1828', longitude: '29.0664' };
     }
   } catch (error) {
     console.error("İletişim bilgileri getirilirken hata:", error);
-    return { address: 'Hata oluştu.', phone: 'Hata oluştu.', email: 'Hata oluştu.' };
+    return { address: 'Hata oluştu.', phone: 'Hata oluştu.', email: 'Hata oluştu.', latitude: '40.1828', longitude: '29.0664' };
   }
 }

@@ -1555,13 +1555,15 @@ window.updateContactInfo = async function() {
   const address = document.getElementById('contact-address').value;
   const phone = document.getElementById('contact-phone').value;
   const email = document.getElementById('contact-email-input').value;
+  const latitude = document.getElementById('contact-latitude').value;
+  const longitude = document.getElementById('contact-longitude').value;
 
-  if (!address || !phone || !email) {
+  if (!address || !phone || !email || !latitude || !longitude) {
     alert('Lütfen tüm iletişim bilgilerini doldurun!');
     return;
   }
 
-  const success = await setContactInfo({ address, phone, email });
+  const success = await setContactInfo({ address, phone, email, latitude, longitude });
   if (success) {
     alert('İletişim bilgileri başarıyla güncellendi!');
     loadCurrentContactInfo();
@@ -1572,14 +1574,18 @@ window.updateContactInfo = async function() {
 
 async function loadCurrentContactInfo() {
   const info = await getContactInfo();
-  document.getElementById('current-address').textContent = info.address || 'Girilmemiş';
-  document.getElementById('current-phone').textContent = info.phone || 'Girilmemiş';
-  document.getElementById('current-email').textContent = info.email || 'Girilmemiş';
+  document.getElementById('current-address').textContent = info.address || '';
+  document.getElementById('current-phone').textContent = info.phone || '';
+  document.getElementById('current-email').textContent = info.email || '';
+  document.getElementById('current-latitude').textContent = info.latitude || '';
+  document.getElementById('current-longitude').textContent = info.longitude || '';
 
   // Form alanlarını da doldur
   document.getElementById('contact-address').value = info.address || '';
   document.getElementById('contact-phone').value = info.phone || '';
   document.getElementById('contact-email-input').value = info.email || '';
+  document.getElementById('contact-latitude').value = info.latitude || '';
+  document.getElementById('contact-longitude').value = info.longitude || '';
 }
 
 // Gelen Mesajlar Fonksiyonları
