@@ -1269,13 +1269,17 @@ window.initServiceCardHovers = function() {
 function startHeroAnimation() {
     const heroContent = document.querySelector('.hero-content');
     const sliderContainer = document.getElementById('hero-slider-container');
-    const heroMainText = document.getElementById('hero-main-text');
-    const heroSubText = document.getElementById('hero-sub-text');
 
-    // Sadece slider'ı görünür yap, metinleri gizleme
-    if (sliderContainer) {
-        sliderContainer.classList.add('visible');
-    }
+    // Add class to start the text animation
+    heroContent.classList.add('animate-out');
+
+    // After text animation finishes, show the slider
+    setTimeout(() => {
+        heroContent.style.display = 'none';
+        if (sliderContainer) {
+            sliderContainer.classList.add('visible');
+        }
+    }, 1500); // Must match the animation duration in CSS
 }
 
 function renderHeroSlider(slides) {
