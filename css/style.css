@@ -4022,8 +4022,8 @@ footer {
 /* HERO SLIDER STYLES */
 .swiper-container {
   width: 100%;
-  max-width: 800px; /* Slider'ın maksimum genişliği */
-  height: 450px; /* Slider'ın yüksekliği */
+  max-width: 900px; /* Slider'ın maksimum genişliği */
+  height: 500px; /* Slider'ın yüksekliği */
   margin-top: 2rem; /* Üstündeki metinle arasına boşluk */
   border-radius: 20px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
@@ -4032,10 +4032,12 @@ footer {
   opacity: 0;
   visibility: hidden;
   transition: opacity 1.5s ease, visibility 1.5s ease, transform 1.5s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
 }
 
 .swiper-container.visible {
-  opacity: 1;
+  opacity: 0.9;
   visibility: visible;
 }
 
@@ -4092,6 +4094,15 @@ footer {
 }
 
 @media (max-width: 768px) {
+  .swiper-container {
+    height: 350px;
+  }
+  .slide-content h2 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
   .swiper-container {
     height: 300px;
   }
