@@ -23,7 +23,7 @@ window.addEventListener('load', function() {
         }, 800);
 
         // Start hero text animation after a delay
-        setTimeout(startHeroAnimation, 2500); // Loading'den hemen sonra başlasın
+        setTimeout(startHeroAnimation, 5500); // Metin animasyonları bittikten 3 saniye sonra başlasın
     }, 2000); 
 });
 
