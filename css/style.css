@@ -4059,10 +4059,13 @@ footer {
   position: absolute;
   color: white;
   text-align: center;
-  width: 90%; /* Genişliği yüzde olarak ayarlayarak taşmayı önle */
+  width: 90%;
   max-width: 800px; /* Maksimum genişliği belirle */
   padding: 1rem;
   animation: slideTextFadeIn 1s ease forwards;
+  top: 15%; /* Yazıyı yukarıdan %15'lik bir mesafeye konumlandır */
+  left: 50%;
+  transform: translateX(-50%); /* Yatayda tam ortala */
 }
 
 .slide-content h2 {
