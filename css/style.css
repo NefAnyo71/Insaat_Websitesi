@@ -109,6 +109,7 @@ nav {
   height: 100px;
   transition: all 0.3s ease;
   opacity: 0;
+  animation: fadeInNav 0.8s ease-out 0.2s forwards;
 }
 
 .mobile-menu-btn {
@@ -180,6 +181,18 @@ nav.scrolled .mobile-menu-btn span {
 @keyframes bounce {
   from { transform: translate(-50%, 0); }
   to { transform: translate(-50%, -5px); }
+}
+
+/* Navbar'ın yumuşak bir şekilde belirmesi için animasyon */
+@keyframes fadeInNav {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Navigation Links */
