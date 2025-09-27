@@ -75,6 +75,12 @@
 html {
   scrollbar-width: thin;
   scrollbar-color: #FF6B35 #001248;
+  /* Yatay kaydırmayı engelle */
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden;
 }
 
 body {
@@ -4071,13 +4077,14 @@ footer {
   position: absolute;
   color: white;
   text-align: left;
-  width: 90%;
+  width: 80%; /* Genişliği ayarla */
   max-width: 800px; /* Maksimum genişliği belirle */
   padding: 1rem;
   animation: slideTextFadeIn 1s ease forwards;
-  top: 15%; /* Yazıyı yukarıdan %15'lik bir mesafeye konumlandır */
-  left: 10%;
-  transform: translateX(0); /* Ortalamayı kaldır */
+  top: 50%; /* Dikeyde ortala */
+  left: 50%; /* Yatayda ortala */
+  transform: translate(-50%, -50%); /* Tam ortalamak için */
+  text-align: center; /* Yazıyı ortala */
 }
 
 .slide-content h2 {
@@ -4134,14 +4141,17 @@ footer {
 
 @media (max-width: 480px) {
   .swiper-container {
-    height: 300px;
+    height: 100vh; /* Mobil cihazlarda tam ekran kaplasın */
   }
   .slide-content h2 {
     font-size: 1.8rem;
   }
   .slide-content p {
     font-size: 0.9rem;
-    display: none; /* Çok küçük ekranlarda açıklamayı gizle */
+    /* display: none;  Çok küçük ekranlarda açıklamayı gizle - Şimdilik kalsın */
+  }
+  .slide-content {
+    width: 90%; /* Mobil için genişliği artır */
   }
 }
 

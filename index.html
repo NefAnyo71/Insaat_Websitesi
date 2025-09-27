@@ -386,7 +386,7 @@
       menuBtn.addEventListener('click', function() {
         this.classList.toggle('active');
         navLinks.classList.toggle('active');
-        document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+        document.body.style.overflowY = navLinks.classList.contains('active') ? 'hidden' : 'auto';
         
         // Remove attention when menu is opened
         if (this.classList.contains('active')) {
@@ -400,7 +400,7 @@
         link.addEventListener('click', () => {
           menuBtn.classList.remove('active');
           navLinks.classList.remove('active');
-          document.body.style.overflow = '';
+          document.body.style.overflowY = 'auto';
         });
       });
       
@@ -409,7 +409,7 @@
         if (!e.target.closest('.nav-links') && !e.target.closest('.mobile-menu-btn')) {
           menuBtn.classList.remove('active');
           navLinks.classList.remove('active');
-          document.body.style.overflow = '';
+          document.body.style.overflowY = 'auto';
         }
       });
       
