@@ -517,12 +517,6 @@ function initializePageAnimations() {
         hero.style.animation = 'fadeInUp 1s ease 0.3s both';
     }
 
-    // Navbar animasyonu
-    const nav = document.querySelector('nav');
-    if (nav) {
-        nav.style.animation = 'slideInFromLeft 0.8s ease 0.1s both';
-    }
-
     // Bölüm başlıkları animasyonu
     document.querySelectorAll('section h2').forEach((title, index) => {
         title.style.animation = `scaleIn 0.6s ease ${0.2 + index * 0.1}s both`;
