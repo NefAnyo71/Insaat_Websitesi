@@ -133,21 +133,19 @@ nav {
   background-color: #ffffff;
   border-radius: 2px;
   transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-  position: relative;
-  transform-origin: 4px 0px;
+  position: absolute; /* Mutlak konumlandırma için */
+  transform-origin: center;
 }
 
 nav.scrolled .mobile-menu-btn span {
     background-color: #333;
 }
 
-/* Active state */
-.mobile-menu-btn.active {
-  /* No background change needed */
-}
+.mobile-menu-btn span:nth-child(1) { transform: translateY(-10px); }
+.mobile-menu-btn span:nth-child(3) { transform: translateY(10px); }
 
 .mobile-menu-btn.active span:nth-child(1) {
-  transform: rotate(45deg) translate(3px, -1px);
+  transform: translateY(0) rotate(45deg);
 }
 
 .mobile-menu-btn.active span:nth-child(2) {
@@ -156,7 +154,7 @@ nav.scrolled .mobile-menu-btn span {
 }
 
 .mobile-menu-btn.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(5px, 0px);
+  transform: translateY(0) rotate(-45deg);
 }
 
 /* Attention effect */
