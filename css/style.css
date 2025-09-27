@@ -4137,6 +4137,9 @@ footer {
     font-size: 1rem;
     line-height: 1.4;
   }
+  .slide-content {
+    display: none; /* Mobilde başlık ve yazıları gizle */
+  }
 }
 
 @media (max-width: 480px) {
